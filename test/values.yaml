@@ -1,0 +1,36 @@
+default:
+  ingress: &ingress
+    enabled: true
+    tls: false
+
+results:
+  ingress:
+    <<: *ingress
+
+stream:
+  ingress:
+    <<: *ingress
+
+persistence:
+  ingress:
+    <<: *ingress
+
+api:
+  ingress:
+    <<: *ingress
+
+crontinuous:
+  ingress:
+    <<: *ingress
+
+scanengine:
+  ingress:
+    <<: *ingress
+
+ui:
+  ingress:
+    <<: *ingress
+
+insights:
+  ingress:
+    <<: *ingress

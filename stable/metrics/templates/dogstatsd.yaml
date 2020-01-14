@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "metrics.fullname" . }}-dogstatsd
+  labels:
+    app: {{ include "metrics.fullname" . }}-dogstatsd
+spec:
+  ports:
+    - port: 8125
+      protocol: UDP
+  selector:
+    app: {{ include "metrics.fullname" . }}-dogstatsd
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ include "metrics.fullname" . }}-dogstatsd
+  labels:
+    app: {{ include "metrics.fullname" . }}-dogstatsd
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ include "metrics.fullname" . }}-dogstatsd
+    spec:
+      containers:
+        - image: datadog/docker-dd-agent:latest-dogstatsd
+          name: dogstatsd
+          envFrom:
+          - secretRef:
+              name: {{ include "metrics.fullname" . }}-dogstatsd
+          ports:
+            - containerPort: 8125
+              name: dogstatsd
+              protocol: UDP

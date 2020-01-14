@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "insights.fullname" . }}
+  labels:
+    {{- include "insights.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "insights.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "insights.selectorLabels" . | nindent 8 }}
+      annotations:
+        {{- with .Values.annotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "insights.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+      {{- $dot := . }}
+      {{- range .Values.conf.proxies }}
+        - name: "{{ $dot.Chart.Name }}-{{ .name }}"
+          securityContext:
+            {{- toYaml $dot.Values.securityContext | nindent 12 }}
+          image: "{{ $dot.Values.image.repository }}:{{ $dot.Values.image.tag }}"
+          imagePullPolicy: {{ $dot.Values.image.pullPolicy }}
+          env:
+            - name: AWS_REGION
+              value: "{{ $dot.Values.conf.region }}"
+            - name: ACCESS_LOG
+              value: "{{ $dot.Values.conf.log }}"
+            - name: AWS_S3_BUCKET
+              value: "{{ .s3Bucket }}"
+            - name: STRIP_PATH
+              value: "{{ .prefix }}"
+            - name: HEALTHCHECK_PATH
+              value: "{{ $dot.Values.probePath }}"
+            - name: APP_PORT
+              value: "{{ .port }}"
+          ports:
+            - name: http
+              containerPort: {{ .port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: "{{ $dot.Values.probePath }}"
+              port: http
+          readinessProbe:
+            httpGet:
+              path: "{{ $dot.Values.probePath }}"
+              port: http
+          resources:
+            {{- toYaml $dot.Values.resources | nindent 12 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

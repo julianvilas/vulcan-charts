@@ -1,0 +1,104 @@
+# Default values for api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: containers.mpi-internal.com/spt-security/vulcan-api
+  tag: docker
+  pullPolicy: IfNotPresent
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 50
+  targetMemoryUtilizationPercentage: 50
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+containerPort: 8080
+probePath: /api/v1/healthcheck
+
+conf:
+  region: TBD
+  debug: "false"
+  secretKey: TBDTBD
+  bucketReports: TBD
+  bucketLogs: TBD
+  cookieDomain: vulcan
+  saml:
+    metadata: https://okta/app/TBD/sso/saml/metadata
+    issuer: http://okta/TBD
+    callback: https://vulcan-api/api/v1/login/callback
+    trustedDomains: '["vulcan-api"]'
+  queueArn: arn:aws:sqs:TBD:TBD:TBD
+  ses:
+    region: TBD
+    subject: "[Test] Security Overview"
+    from: tbd@tbd.com
+    cc: tbd@tbd.com
+  vulnerabilityDbUrl: vulnerabilitydbapi # the current FIAAS
+  gaId: UA-109338366-3
+  s3PrivateBucket: TBD
+  s3PublicBucket: TBD
+  proxyEndpoint: https://vulcan-insights
+  vulcanUi: https://vulcan-www
+  viewReport: vulcan-api/api/v1/report?team_id=%s&scan_id=%s
+  ensureHeimdall: https://public-redirect/index.html?reportUrl=
+
+db:
+  host: TBD
+  name: TBD
+  user: TBD
+  password: TBD
+  port: 5432
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  tls: true
+  host: vulcan-api
+  path: /
+  annotations: {}
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
