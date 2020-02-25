@@ -13,6 +13,8 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 probePath: /healthcheck
+containerPort: 8080
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: false
@@ -20,9 +22,16 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name:
 
+proxy:
+  cache: true
+  probePath: /healthz
+  probeInitialDelay: 5
+  metricsPort: 9101
+  maxconn: 64
+
 conf:
   region: tbd
-  log: "true"
+  log: "false"
   proxies:
     - name: private
       s3Bucket: tbd
