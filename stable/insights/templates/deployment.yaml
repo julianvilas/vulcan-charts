@@ -33,7 +33,7 @@ spec:
           image: haproxy:alpine
           ports:
             - name: http
-              containerPort: {{ .Values.containerPort }}
+              containerPort: {{ .Values.proxy.port }}
             - name: metrics
               containerPort: {{ .Values.proxy.metricsPort }}
           volumeMounts:
@@ -51,8 +51,9 @@ spec:
               port: metrics
             initialDelaySeconds: {{ .Values.proxy.probeInitialDelay }}
       {{- $dot := . }}
-      {{- range .Values.conf.proxies }}
-        - name: "{{ $dot.Chart.Name }}-{{ .name }}"
+      {{- range $i, $p := .Values.conf.proxies }}
+        {{- $port := add $dot.Values.containerPort $i }}
+        - name: "app-{{ $p.name }}"
           securityContext:
             {{- toYaml $dot.Values.securityContext | nindent 12 }}
           image: "{{ $dot.Values.image.repository }}:{{ $dot.Values.image.tag }}"
@@ -63,25 +64,25 @@ spec:
             - name: ACCESS_LOG
               value: "{{ $dot.Values.conf.log }}"
             - name: AWS_S3_BUCKET
-              value: "{{ .s3Bucket }}"
+              value: "{{ $p.s3Bucket }}"
             - name: STRIP_PATH
-              value: "{{ .prefix }}"
+              value: "{{ $p.prefix }}"
             - name: HEALTHCHECK_PATH
               value: "{{ $dot.Values.probePath }}"
             - name: APP_PORT
-              value: "{{ .port }}"
+              value: "{{ $port }}"
           ports:
-            - name: {{ .name }}
-              containerPort: {{ .port }}
+            - name: {{ $p.name }}
+              containerPort: {{ $port }}
               protocol: TCP
           livenessProbe:
             httpGet:
               path: "{{ $dot.Values.probePath }}"
-              port: {{ .port }}
+              port: {{ $port }}
           readinessProbe:
             httpGet:
               path: "{{ $dot.Values.probePath }}"
-              port: {{ .port }}
+              port: {{ $port }}
           resources:
             {{- toYaml $dot.Values.resources | nindent 12 }}
       {{- end }}

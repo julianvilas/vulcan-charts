@@ -24,6 +24,7 @@ serviceAccount:
 
 proxy:
   cache: true
+  port: 80
   probePath: /healthz
   probeInitialDelay: 5
   metricsPort: 9101
@@ -36,11 +37,9 @@ conf:
     - name: private
       s3Bucket: tbd
       prefix: ""
-      port: 80
     - name: public
       s3Bucket: tbd
       prefix: "/public"
-      port: 81
 
 podSecurityContext: {}
   # fsGroup: 2000

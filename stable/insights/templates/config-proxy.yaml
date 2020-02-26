@@ -24,7 +24,7 @@ data:
     {{- end }}
 
     frontend http
-      bind *:{{ .Values.containerPort }}
+      bind *:{{ .Values.proxy.port }}
       log global
       option httplog
     {{- if .Values.proxy.cache }}
@@ -42,9 +42,11 @@ data:
       {{- end }}
 
     {{- $dot := . }}
-    {{- range .Values.conf.proxies }}
-    backend {{ .name }}
-      server app 127.0.0.1:{{ .port }}
+    {{- range $i, $p := .Values.conf.proxies }}
+    {{- $port := add $dot.Values.containerPort $i }}
+
+    backend {{ $p.name }}
+      server app 127.0.0.1:{{ $port }}
     {{- end }}
 
     frontend stats
