@@ -74,6 +74,9 @@ db:
   sslMode: disable
   ca:
 
+# extraEnv:
+#   FOO: BAR
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: false

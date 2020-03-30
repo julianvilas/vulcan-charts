@@ -33,6 +33,9 @@ conf:
   bucketReports: TBD
   bucketLogs: TBD
 
+# extraEnv:
+#   FOO: BAR
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: false

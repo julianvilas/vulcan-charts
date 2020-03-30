@@ -47,6 +47,10 @@ spec:
             value: "{{ .Values.conf.apiUrl }}"
           - name: PORT
             value: "{{ .Values.containerPort }}"
+        {{- range $name, $value := .Values.extraEnv }}
+          - name: {{ $name }}
+            value: {{ $value | quote }}
+        {{- end }}
           ports:
             - name: {{ ternary "app" "http" .Values.proxy.enabled }}
               containerPort: {{ .Values.containerPort }}
