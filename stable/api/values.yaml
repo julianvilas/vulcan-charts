@@ -63,7 +63,7 @@ conf:
   proxyEndpoint: https://vulcan-insights
   vulcanUi: https://vulcan-www
   viewReport: vulcan-api/api/v1/report?team_id=%s&scan_id=%s
-  ensureHeimdall: https://public-redirect/index.html?reportUrl=
+  redirectUrl: https://public-redirect/index.html?reportUrl=
 
 db:
   host: TBD
