@@ -119,8 +119,8 @@ spec:
             value: "{{ .Values.conf.vulcanUi }}"
           - name: VIEW_REPORT
             value: "{{ .Values.conf.viewReport }}"
-          - name: ENSURE_HEIMDALL
-            value: "{{ .Values.conf.ensureHeimdall }}"
+          - name: REDIRECT_URL
+            value: "{{ .Values.conf.redirectUrl }}"
           # Security overview vars.
           - name: COMPANY_NAME
             value:  "{{ .Values.conf.general.companyName }}"
