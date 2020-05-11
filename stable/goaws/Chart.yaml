@@ -1,6 +1,6 @@
 apiVersion: v2
-name: crontinuous
-description: A Helm chart for deploying Vulcan crontinuous
+name: goaws
+description: A Helm chart for deploying Vulcan goaws
 home: https://github.com/adevinta/vulcan-charts
 icon: https://raw.githubusercontent.com/adevinta/vulcan-charts/master/docs/logo/vulcan.png
 

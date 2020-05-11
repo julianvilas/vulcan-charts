@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: adevinta/vulcan-persistence
-  tag: docker
+  tag: latest
   pullPolicy: IfNotPresent
 
 autoscaling:
@@ -28,16 +28,24 @@ proxy:
   enabled: false
 
 conf:
-  snsTopic: "arn:aws:sns:TBD:TBD:TBD"
+  snsTopic: "arn:aws:sns:local:TBD:TBD"
   s3Scans: TBD
   secretKeyBase: TBDTBD
   channel: events
   nessusCheckQueue: TBD
   railsMaxThreads: 4
 
+  # loadSQL:   # SQL Script
+  queueGenId: 00000000-0000-0000-0000-000000000000
+  queueGenArn: arn:aws:sqs:local:012345678900:VulcanK8SChecksGeneric
+  queueGenName: VulcanK8SChecksGeneric
+  queueNesId: 00000000-0000-0000-0000-000000000001
+  queueNesArn: arn:aws:sqs:local:012345678900:VulcanK8SChecksTenable
+  queueNesName: VulcanK8SChecksTenable
+
 db:
   internal: false
-  host: TBD
+  host:
   name: TBD
   user: TBD
   password: TBD
@@ -73,7 +81,7 @@ service:
 ingress:
   enabled: false
   tls: true
-  host: chart-example.local
+  host:
   path: /
   annotations: {}
     # kubernetes.io/ingress.class: nginx

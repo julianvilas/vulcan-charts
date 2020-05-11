@@ -12,15 +12,8 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-# Those values are useless here, could be defined in the dependant charts.
-proxy:
-  enabled: false
-  port: 80
-  probePath: /healthz
-  probeInitialDelay: 2
-
 postgresql:
-  enabled: false  # Disabled by default.
+  enabled: true
   postgresqlUsername: postgres
   postgresqlPassword: TBD
   postgresqlDatabase: persistence
@@ -41,36 +34,169 @@ postgresql:
   metrics:
     enabled: true
 
+global:
+  domain: vulcan.local
+  region: local-region
+  minio:
+    enabled: true
+  sns:
+    enabled: true
+  sqs:
+    enabled: true
+  postgresql:
+    enabled: true
+
 defaults:
-  db: &db     # Disabled by default. Those parameters must match postgresql.* if enabled
-    internal: false
+  db: &db
     user: postgres
     password: TBD
     sslMode: disable
+  proxy:  &proxy
+    proxy:
+      enabled: true
+      port: 9090  # We use non 80 port to prevent prometheus trying to access metrics on port 80
+      probe: false
+      probePath: /healthz
+      probeInitialDelay: 5
+      probeTimeoutSeconds: 3
+      resources: {}
+
+goaws:
+  containerPort: 80
+  config:
+    goaws.yaml: |
+      Local:
+        Host: {{ .Release.Name }}-goaws
+        Port: {{ .Values.containerPort }}
+        AccountId: "012345678900"
+        LogToFile: false
+        QueueAttributeDefaults:
+          VisibilityTimeout: 30
+          ReceiveMessageWaitTimeSeconds: 0
+        Queues:
+          - Name: VulcanK8SAPIScans
+          - Name: VulcanK8SChecksGeneric
+          - Name: VulcanK8SChecksTenable
+          - Name: VulcanK8SMetricsChecks
+          - Name: VulcanK8SMetricsScans
+          - Name: VulcanK8SScanEngineChecks
+        Topics:
+          - Name: VulcanK8SChecks
+            Subscriptions:
+              - QueueName: VulcanK8SMetricsChecks
+                Raw: true
+              - QueueName: VulcanK8SScanEngineChecks
+                Raw: true
+                #FilterPolicy: '{"foo": ["bar"]}'
+          - Name: VulcanK8SScans
+            Subscriptions:
+              - QueueName: VulcanK8SAPIScans
+                Raw: true
+              - QueueName: VulcanK8SMetricsScans
+                Raw: true
+        RandomLatency:
+          Min: 0
+          Max: 0
+
+minio:
+  mode: standalone
+  defaultBuckets: "reports,logs,scans,insights,public-insights,crontinuous"
+  serviceAccount:
+    create: false
+  persistence:
+    enabled: false
+  service:
+    port: 80
+    type: NodePort    # To bypass problem with minio.chart
+  accessKey:
+    password: AKIAIOSFODNN7EXAMPLE
+  secretKey:
+    password: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+  extraEnv:
+    - name: MINIO_REGION_NAME
+      value: local-region
+
+results:
+  <<: *proxy
+  conf:
+    bucketReports: reports
+    bucketLogs: logs
 
 persistence:
+  <<: *proxy
   db:
     <<: *db
-    host: postgresql
     name: persistence
+  conf:
+    snsTopic: arn:aws:sns:local:012345678900:VulcanK8SChecks
+    nessusCheckQueue: VulcanK8SChecksTenable
+    s3Scans: scans
+
+    loadSQL:
+    queueGenId: e4febc2a-3c75-40a8-9dea-26d893050f75
+    queueGenArn: arn:aws:sqs:local:012345678900:VulcanK8SChecksGeneric
+    queueGenName: VulcanK8SChecksGeneric
+    queueNesId: a4febc2a-3c75-40a8-9dea-26d893050f75
+    queueNesArn: arn:aws:sqs:local:012345678900:VulcanK8SChecksTenable
+    queueNesName: VulcanK8SChecksTenable
 
 stream:
+  <<: *proxy
   db:
     <<: *db
-    host: postgresql
     name: persistence
 
-scanengine:
+api:
+  <<: *proxy
   db:
     <<: *db
-    host: postgresql
+    name: api
+  conf:
+    bucketReports: reports
+    bucketLogs: logs
+    s3PrivateBucket: insights
+    s3PublicBucket: public-insights
+    queueArn: arn:aws:sqs:local:012345678900:VulcanK8SAPIScans
+    queueName: VulcanK8SAPIScans
+  ingress:
+    path: /api
+
+crontinuous:
+  <<: *proxy
+  conf:
+    crontinuousBucket: crontinuous
+
+scanengine:
+  <<: *proxy
+  conf:
+    logLevel: "error"
+    queueArn: arn:aws:sqs:local:012345678900:VulcanK8SScanEngineChecks
+    queueName: VulcanK8SScanEngineChecks
+    snsArn: arn:aws:sns:local:012345678900:VulcanK8SScans
+  db:
+    <<: *db
     name: scanengine
 
-api:
-  db:
-    <<: *db
-    host: postgresql
-    name: api
+ui:
+  <<: *proxy
+
+insights:
+  <<: *proxy
+  conf:
+    proxies:
+      - name: private
+        s3Bucket: insights
+        prefix: ""
+      - name: public
+        s3Bucket: public-insights
+        prefix: "/public"
+
+metrics:
+  conf:
+    checksQueueArn: arn:aws:sqs:local:012345678900:VulcanK8SMetricsChecks
+    checksQueueName: VulcanK8SMetricsChecks
+    scansQueueArn: arn:aws:sqs:local:012345678900:VulcanK8SMetricsScans
+    scansQueueName: VulcanK8SMetricsScans
 
 serviceAccount:
   # Specifies whether a service account should be created

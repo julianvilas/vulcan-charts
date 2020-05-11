@@ -29,27 +29,7 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: proxy
-          image: haproxy:alpine
-          ports:
-            - name: http
-              containerPort: {{ .Values.proxy.port }}
-            - name: metrics
-              containerPort: {{ .Values.proxy.metricsPort }}
-          volumeMounts:
-          - mountPath: /usr/local/etc/haproxy
-            readOnly: true
-            name: config-proxy
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.proxy.probePath }}
-              port: metrics
-            initialDelaySeconds: {{ .Values.proxy.probeInitialDelay }}
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.proxy.probePath }}
-              port: metrics
-            initialDelaySeconds: {{ .Values.proxy.probeInitialDelay }}
+      {{- include "proxy-container" . | nindent 8 }}
       {{- $dot := . }}
       {{- range $i, $p := .Values.conf.proxies }}
         {{- $port := add $dot.Values.containerPort $i }}
@@ -60,7 +40,7 @@ spec:
           imagePullPolicy: {{ $dot.Values.image.pullPolicy }}
           env:
             - name: AWS_REGION
-              value: "{{ $dot.Values.conf.region }}"
+              value: "{{ $dot.Values.conf.region | default $dot.Values.global.region }}"
             - name: ACCESS_LOG
               value: "{{ $dot.Values.conf.log }}"
             - name: AWS_S3_BUCKET
@@ -71,6 +51,20 @@ spec:
               value: "{{ $dot.Values.probePath }}"
             - name: APP_PORT
               value: "{{ $port }}"
+            {{- if $dot.Values.global.minio.enabled }}
+            - name: AWS_API_ENDPOINT
+              value: "{{ include "minioEndpoint" $dot }}"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ printf "%s-minio" $dot.Release.Name  }}"
+                  key: access-key
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ printf "%s-minio" $dot.Release.Name  }}"
+                  key: secret-key
+            {{- end }}
           ports:
             - name: {{ $p.name }}
               containerPort: {{ $port }}

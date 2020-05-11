@@ -2,11 +2,15 @@
 Override names
 */}}
 {{- define "proxy-annotations" -}}
+{{- if .Values.proxy.enabled -}}
+checksum/config-proxy: {{ include "proxy-config-map" . | sha256sum }}
 prometheus.io/scrape: 'true'
 prometheus.io/port: '{{ .Values.proxy.metricsPort | default 9101 }}'
 {{- end -}}
+{{- end -}}
 
 {{- define "proxy-config-map" -}}
+{{- if .Values.proxy.enabled -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -60,8 +64,10 @@ data:
       http-request use-service prometheus-exporter if { path /metrics }
       monitor-uri {{ .Values.proxy.probePath | default "/healthz" }}
 {{- end -}}
+{{- end -}}
 
 {{- define "proxy-container" -}}
+{{- if .Values.proxy.enabled -}}
 - name: proxy
   image: haproxy:alpine
   ports:
@@ -73,23 +79,29 @@ data:
   - mountPath: /usr/local/etc/haproxy
     readOnly: true
     name: config-proxy
+  {{- if .Values.proxy.probe }}
   livenessProbe:
     httpGet:
       path: {{ .Values.proxy.probePath | default "/healthz" }}
       port: metrics
-    initialDelaySeconds: {{ .Values.proxy.probeInitialDelay | default 2 }}
+    initialDelaySeconds: {{ .Values.proxy.probeInitialDelay | default 5 }}
+    timeoutSeconds: {{ .Values.proxy.probeTimeoutSeconds | default 3 }}
   readinessProbe:
     httpGet:
       path: {{ .Values.proxy.probePath | default "/healthz" }}
       port: metrics
-    initialDelaySeconds: {{ .Values.proxy.probeInitialDelay | default 2 }}
+    initialDelaySeconds: {{ .Values.proxy.probeInitialDelay | default 5 }}
+    timeoutSeconds: {{ .Values.proxy.probeTimeoutSeconds | default 3 }}
+  {{- end }}
   resources:
-    {{- toYaml .Values.proxy.resources | nindent 12 }}
+    {{- toYaml .Values.proxy.resources | nindent 4 }}
+{{- end -}}
 {{- end -}}
 
 {{- define "proxy-volumes" -}}
-volumes:
+{{- if .Values.proxy.enabled -}}
 - name: config-proxy
   configMap:
     name: {{ .Release.Name }}-{{ .Chart.Name }}-proxy
+{{- end -}}
 {{- end -}}

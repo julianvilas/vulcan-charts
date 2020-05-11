@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: containers.mpi-internal.com/spt-security/vulcan-metrics
-  tag: docker
+  tag: latest
   pullPolicy: IfNotPresent
 
 autoscaling:
@@ -21,11 +21,11 @@ nameOverride: ""
 fullnameOverride: ""
 
 conf:
-  region: tbd
+  region:
   logLevel: warn
   sqsPollingInterval: 10
-  checksQueueArn: arn:aws:sqs:TBD:TBD:TBD
-  scansQueueArn: arn:aws:sqs:TBD:TBD:TBD
+  checksQueueArn: arn:aws:sqs:local:TBD:TBD
+  scansQueueArn: arn:aws:sqs:local:TBD:TBD
   resultsScheme: http
   devHoseURL: http://devhose/devhose
   ledgerToken: token
