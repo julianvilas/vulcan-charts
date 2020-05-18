@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "agent.fullname" . }}
+  labels:
+    {{- include "agent.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "agent.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "agent.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        {{- with .Values.annotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "agent.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+#          command: ["tail","-f","/dev/null"]
+          env:
+          - name: REGION
+            value: "{{ .Values.conf.region }}"
+          - name: JOBQUEUE_ID
+            value: "{{ .Values.conf.jobQueueId }}"
+          - name: LOG_LEVEL
+            value: "{{ .Values.conf.logLevel }}"
+          - name: CONCURRENT_JOBS
+            value: "{{ .Values.conf.concurrentJobs }}"
+          - name: PERSISTENCE_ENDPOINT
+            value: "{{ .Values.conf.persistenceEndpoint  | default  (include "persistenceEndpoint" .)}}/v1/"
+          - name: RESULTS_ENDPOINT
+            value: "{{ .Values.conf.resultsEndpoint | default  (include "resultsEndpoint" .)}}/v1/"
+          - name: STREAM_ENDPOINT
+            value: "ws://{{ .Values.conf.streamEndpoint | default  (include "streamHost" .)}}/stream"
+          - name: PORT
+            value: "{{ .Values.containerPort }}"
+          - name: CHECK_LOG_LEVEL
+            value: "{{ .Values.conf.checkLogLevel }}"
+          - name: NESSUS_ENDPOINT
+            value: "{{ .Values.conf.nessusEndpoint }}"
+          - name: GATEWAY_ENDPOINT
+            value: "{{ .Values.conf.gatewayEndpoint }}"
+        {{ include "infra-envs-sqs" . | nindent 10 }}
+        {{ include "infra-envs-sns" . | nindent 10 }}
+        {{ include "infra-envs-s3" . | nindent 10 }}
+        {{- range $name, $value := .Values.extraEnv }}
+          - name: {{ $name }}
+            value: {{ $value | quote }}
+        {{- end }}
+          envFrom:
+          - secretRef:
+              name: {{ include "vulcan.fullname" . }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.containerPort}}
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

@@ -72,3 +72,7 @@ dependencies:
   repository: https://charts.bitnami.com/bitnami
   alias: minio
   condition: global.minio.enabled
+- name: agent
+  version: 0.1.1
+  repository: "file://../agent"
+  condition: agent.enabled

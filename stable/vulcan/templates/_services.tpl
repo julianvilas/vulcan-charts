@@ -33,6 +33,10 @@ Override names
 {{- printf "%s-ui-db" .Release.Name -}}
 {{- end -}}
 
+{{- define "streamHost" -}}
+{{- printf "%s-stream" .Release.Name -}}
+{{- end -}}
+
 {{- define "metricsRedisAddr" -}}
 {{- printf "%s-metrics-redis:6379" .Release.Name -}}
 {{- end -}}

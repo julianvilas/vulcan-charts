@@ -195,6 +195,25 @@ sqsExporter:
   queueNamePrefix: VulcanK8S
   resources: {}
 
+agent:
+  <<: *infra
+  image:
+    pullPolicy: Always
+  enabled: true
+  conf:
+    jobQueueId: 00000000-0000-0000-0000-000000000000
+    logLevel: debug
+    concurrentJobs: 1000
+    # persistenceEndpint: http://vulcan-persistence/v1
+    # resultsEndpoint: http://vulcan-results/v1
+    # streamEndpoint: ws://vulcan-stream/stream
+    checkLogLevel: debug
+    nessusEndpoint: https://cloud.tenable.com
+    nessusUsername: SECRET
+    nessusPassword: SECRET
+    githubEnterpriseToken: SECRET
+    gatewayEndpoint: http://gateway.openfaas:8080/async-function
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: false
