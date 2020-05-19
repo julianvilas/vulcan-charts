@@ -59,6 +59,10 @@ dependencies:
   version: 0.2.0
   repository: "file://../metrics"
   condition: metrics.enabled
+- name: reportsgenerator
+  version: 0.2.0
+  repository: "file://../reportsgenerator"
+  condition: reportsgenerator.enabled
 - name: postgresql
   version: 8.9.4
   repository: https://charts.bitnami.com/bitnami
