@@ -198,7 +198,6 @@ reportsgenerator:
         privateBucket: insights
   db:
     <<: *db
-    host: postgresql
     name: reportsgenerator
 
 metrics:
