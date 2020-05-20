@@ -196,9 +196,11 @@ sqsExporter:
   resources: {}
 
 agent:
-  <<: *infra
   image:
+    repository: adevinta/vulcan-agent
+    tag: latest
     pullPolicy: Always
+  containerPort: 80
   enabled: true
   conf:
     jobQueueId: 00000000-0000-0000-0000-000000000000
@@ -213,6 +215,9 @@ agent:
     nessusPassword: SECRET
     githubEnterpriseToken: SECRET
     gatewayEndpoint: http://gateway.openfaas:8080/async-function
+
+openfaas:
+  enabled: false
 
 serviceAccount:
   # Specifies whether a service account should be created

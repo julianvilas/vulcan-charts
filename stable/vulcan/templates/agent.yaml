@@ -1,20 +1,23 @@
+{{- if .Values.agent.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "agent.fullname" . }}
+  name: {{ include "vulcan.fullname" . }}-agent
   labels:
-    {{- include "agent.labels" . | nindent 4 }}
+    {{- include "vulcan.labels" . | nindent 4 }}
+    app.kubernetes.io/component: agent
 spec:
-  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "agent.selectorLabels" . | nindent 6 }}
+      {{- include "vulcan.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: agent
   template:
     metadata:
       labels:
-        {{- include "agent.selectorLabels" . | nindent 8 }}
+        {{- include "vulcan.labels" . | nindent 8 }}
+        app.kubernetes.io/component: agent
       annotations:
-        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/agent-secrets.yaml") . | sha256sum }}
         {{- with .Values.annotations }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -23,52 +26,52 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ include "agent.serviceAccountName" . }}
+      serviceAccountName: {{ include "vulcan.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag }}"
+          imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
 #          command: ["tail","-f","/dev/null"]
           env:
           - name: REGION
-            value: "{{ .Values.conf.region }}"
+            value: "{{ .Values.global.region }}"
           - name: JOBQUEUE_ID
-            value: "{{ .Values.conf.jobQueueId }}"
+            value: "{{ .Values.agent.conf.jobQueueId }}"
           - name: LOG_LEVEL
-            value: "{{ .Values.conf.logLevel }}"
+            value: "{{ .Values.agent.conf.logLevel }}"
           - name: CONCURRENT_JOBS
-            value: "{{ .Values.conf.concurrentJobs }}"
+            value: "{{ .Values.agent.conf.concurrentJobs }}"
           - name: PERSISTENCE_ENDPOINT
-            value: "{{ .Values.conf.persistenceEndpoint  | default  (include "persistenceEndpoint" .)}}/v1/"
+            value: "{{ .Values.agent.conf.persistenceEndpoint  | default  (include "persistenceEndpoint" .)}}/v1/"
           - name: RESULTS_ENDPOINT
-            value: "{{ .Values.conf.resultsEndpoint | default  (include "resultsEndpoint" .)}}/v1/"
+            value: "{{ .Values.agent.conf.resultsEndpoint | default  (include "resultsEndpoint" .)}}/v1/"
           - name: STREAM_ENDPOINT
-            value: "ws://{{ .Values.conf.streamEndpoint | default  (include "streamHost" .)}}/stream"
+            value: "ws://{{ .Values.agent.conf.streamEndpoint | default  (include "streamHost" .)}}/stream"
           - name: PORT
-            value: "{{ .Values.containerPort }}"
+            value: "{{ .Values.agent.containerPort }}"
           - name: CHECK_LOG_LEVEL
-            value: "{{ .Values.conf.checkLogLevel }}"
+            value: "{{ .Values.agent.conf.checkLogLevel }}"
           - name: NESSUS_ENDPOINT
-            value: "{{ .Values.conf.nessusEndpoint }}"
+            value: "{{ .Values.agent.conf.nessusEndpoint }}"
           - name: GATEWAY_ENDPOINT
-            value: "{{ .Values.conf.gatewayEndpoint }}"
+            value: "{{ .Values.agent.conf.gatewayEndpoint }}"
         {{ include "infra-envs-sqs" . | nindent 10 }}
         {{ include "infra-envs-sns" . | nindent 10 }}
-        {{ include "infra-envs-s3" . | nindent 10 }}
-        {{- range $name, $value := .Values.extraEnv }}
+        {{ include "infra-envs-minio" . | nindent 10 }}
+        {{- range $name, $value := .Values.agent.extraEnv }}
           - name: {{ $name }}
             value: {{ $value | quote }}
         {{- end }}
           envFrom:
           - secretRef:
-              name: {{ include "vulcan.fullname" . }}
+              name: {{ include "vulcan.fullname" . }}-agent
           ports:
             - name: http
-              containerPort: {{ .Values.containerPort}}
+              containerPort: {{ .Values.agent.containerPort}}
               protocol: TCP
           # livenessProbe:
           #   httpGet:
@@ -79,7 +82,7 @@ spec:
           #     path: /
           #     port: http
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.agent.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -92,3 +95,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+{{- end -}}

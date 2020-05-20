@@ -72,7 +72,7 @@ dependencies:
   repository: https://charts.bitnami.com/bitnami
   alias: minio
   condition: global.minio.enabled
-- name: agent
-  version: 0.1.1
-  repository: "file://../agent"
-  condition: agent.enabled
+- name: openfaas
+  version: 5.8.2
+  repository: https://openfaas.github.io/faas-netes
+  condition: openfaas.enabled

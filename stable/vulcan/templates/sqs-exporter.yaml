@@ -49,6 +49,8 @@ spec:
             value: TBD
           - name: AWS_SECRET_ACCESS_KEY
             value: TBD
+          - name: AWS_REGION
+            value: {{ .Values.global.region }}
           {{- end }}
           resources:
             {{- toYaml .Values.sqsExporter.resources | nindent 12 }}
