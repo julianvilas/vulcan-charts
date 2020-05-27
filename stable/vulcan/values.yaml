@@ -196,12 +196,12 @@ sqsExporter:
   resources: {}
 
 agent:
+  enabled: true
   image:
     repository: adevinta/vulcan-agent
     tag: latest
     pullPolicy: Always
   containerPort: 80
-  enabled: true
   conf:
     jobQueueId: 00000000-0000-0000-0000-000000000000
     logLevel: debug
@@ -222,6 +222,29 @@ agent:
 
 openfaas:
   enabled: false
+  functionNamespace:          # Required ... the same namespace
+  ingress:
+    enabled: true
+  nats:
+    enableMonitoring: true
+  ingressOperator:
+    create: false
+  faasIdler:
+    dryRun: false
+  clusterRole: false
+  imagePullPolicy: Always
+  serviceType: NodePort
+  gateway:
+    directFunctions: true
+    replicas: 1
+    readTimeout: 30
+    writeTimeout: 300
+    upstreamTimeout: 300
+  openfaasImagePullPolicy: IfNotPresent
+  generateBasicAuth: true
+  basic_auth: true
+  queueWorker:
+    maxInflight: 100
 
 serviceAccount:
   # Specifies whether a service account should be created
