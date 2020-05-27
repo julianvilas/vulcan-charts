@@ -214,7 +214,11 @@ agent:
     nessusUsername: SECRET
     nessusPassword: SECRET
     githubEnterpriseToken: SECRET
-    gatewayEndpoint: http://gateway.openfaas:8080/async-function
+    gatewayEndpoint: http://gateway:8080/async-function
+  service:
+    enabled: true
+    type: ClusterIP
+    port: 80
 
 openfaas:
   enabled: false

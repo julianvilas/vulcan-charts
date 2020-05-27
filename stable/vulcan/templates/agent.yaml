@@ -1,4 +1,24 @@
 {{- if .Values.agent.enabled -}}
+{{- if .Values.agent.service.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "vulcan.fullname" . }}-agent
+  labels:
+{{ include "vulcan.labels" . | indent 4 }}
+spec:
+  type: {{ .Values.agent.service.type }}
+  ports:
+    - port: {{ .Values.agent.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "vulcan.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: agent
+---
+{{- end -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,7 +55,6 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag }}"
           imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
-#          command: ["tail","-f","/dev/null"]
           env:
           - name: REGION
             value: "{{ .Values.global.region }}"
@@ -60,7 +79,6 @@ spec:
           - name: GATEWAY_ENDPOINT
             value: "{{ .Values.agent.conf.gatewayEndpoint }}"
         {{ include "infra-envs-sqs" . | nindent 10 }}
-        {{ include "infra-envs-sns" . | nindent 10 }}
         {{ include "infra-envs-minio" . | nindent 10 }}
         {{- range $name, $value := .Values.agent.extraEnv }}
           - name: {{ $name }}
