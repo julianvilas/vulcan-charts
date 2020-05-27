@@ -29,6 +29,10 @@ Override names
 {{- printf "%s-results" .Release.Name -}}
 {{- end -}}
 
+{{- define "reportsgeneratorUrl" -}}
+{{- printf "http://%s-reportsgenerator/" .Release.Name -}}
+{{- end -}}
+
 {{- define "defaultBackendHost" -}}
 {{- printf "%s-ui-db" .Release.Name -}}
 {{- end -}}
@@ -83,6 +87,10 @@ Override names
 
 {{- define "scanengine.hostname" -}}
 {{ printf "%s.%s" "scanengine" .Values.global.domain }}
+{{- end -}}
+
+{{- define "reportsgenerator.hostname" -}}
+{{ printf "%s.%s" "reportsgenerator" .Values.global.domain }}
 {{- end -}}
 
 {{- define "stream.hostname" -}}

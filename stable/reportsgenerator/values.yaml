@@ -1,13 +1,21 @@
-# Default values for api.
+# Default values for reportsgenerator.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount:
+replicaCount: 1
 
 image:
-  repository: containers.mpi-internal.com/spt-security/vulcan-api
+  repository: containers.mpi-internal.com/spt-security/vulcan-reports-generator
   tag: latest
   pullPolicy: IfNotPresent
+
+proxy:
+  enabled: false
+
+containerPort: 8080
+probePath: /healthcheck
+probeInitialDelay: 5
+probeTimeout: 2
 
 autoscaling:
   enabled: false
@@ -19,33 +27,29 @@ autoscaling:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-containerPort: 8080
-probePath: /api/v1/healthcheck
-probeInitialDelay: 5
-probeTimeout: 3
-
-proxy:
-  enabled: false
 
 conf:
-  debug: "false"
-  secretKey: TBDTBD
-  bucketReports: TBD
-  bucketLogs: TBD
-  cookieDomain:     # default .Values.global.domain
-  saml:
-    metadata: https://okta/app/TBD/sso/saml/metadata
-    issuer: http://okta/TBD
-    callback: # https://vulcan-api/api/v1/login/callback
-    trustedDomains: # '["vulcan-api"]'
-  log:
-    level: INFO
-  queueArn: arn:aws:sqs:local:TBD:TBD
-  reports:
-    snsArn: arn:aws:sns:TBD:TBD:TBD
-  vulnerabilityDbUrl: vulnerabilitydbapi # the current FIAAS
-
+  logLevel: "info"
+  queueArn: arn:aws:sqs:TBD:TBD:TBD
+  persistenceEndpoint:
+  resultsEndpoint:
+  ses:
+    region:
+    from: tbd@tbd.com
+    cc: '["tbd@tbd.com"]'
+  generators:
+    scan:
+      emailSubject: TBD
+      publicBucket: TBD
+      privateBucket: TBD
+      gaId: UA-109338366-3
+      #proxyEndpoint: https://vulcan-insights
+      #vulcanUi: https://vulcan-www
+      #viewReport: vulcan-api/api/v1/report?team_id=%s&scan_id=%s
+      redirectUrl: # https://public-redirect/index.html?reportUrl=
+  
 db:
+  internal: false
   host:
   name: TBD
   user: TBD
@@ -53,10 +57,6 @@ db:
   port: 5432
   sslMode: disable
   ca:
-
-defaultBackend:
-  enabled: true
-  httpCodes: "403"
 
 # extraEnv:
 #   FOO: BAR
@@ -68,12 +68,10 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name:
 
-podSecurityContext:
-  {}
+podSecurityContext: {}
   # fsGroup: 2000
 
-securityContext:
-  {}
+securityContext: {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -88,12 +86,13 @@ service:
 ingress:
   enabled: false
   tls: true
-  host:
+  host: chart-example.local
   path: /
   annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
 
-resources:
-  {}
+resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
