@@ -257,9 +257,9 @@ openfaas:
   gateway:
     directFunctions: true
     replicas: 1
-    readTimeout: 30
-    writeTimeout: 300
-    upstreamTimeout: 300
+    readTimeout : "30s"
+    writeTimeout : "3700s"
+    upstreamTimeout : "3600s"  # Must be smaller than read/write_timeout
   openfaasImagePullPolicy: IfNotPresent
   generateBasicAuth: true
   basic_auth: true
