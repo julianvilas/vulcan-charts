@@ -110,16 +110,24 @@ defaults:
       probePath: /healthz
       probeInitialDelay: 5
       probeTimeoutSeconds: 3
+      lifecycle:
+        preStopSleep: 30
       resources: {}
 
 results:
   <<: *proxy
+  lifecycle:
+    preStopSleep: 30
   conf:
     bucketReports: reports
     bucketLogs: logs
 
 persistence:
   <<: *proxy
+  lifecycle:
+    preStopSleep: 30
+    # preStopCommand:  '["/bin/sh", "-c", "/app/stop.sh 30"]'
+  terminationGracePeriodSeconds: 60
   db:
     <<: *db
     name: persistence
@@ -138,12 +146,16 @@ persistence:
 
 stream:
   <<: *proxy
+  lifecycle:
+    preStopSleep: 30
   db:
     <<: *db
     name: persistence
 
 api:
   <<: *proxy
+  lifecycle:
+    preStopSleep: 30
   db:
     <<: *db
     name: api
@@ -159,11 +171,15 @@ api:
 
 crontinuous:
   <<: *proxy
+  lifecycle:
+    preStopSleep: 30
   conf:
     crontinuousBucket: crontinuous
 
 scanengine:
   <<: *proxy
+  lifecycle:
+    preStopSleep: 30
   conf:
     logLevel: "error"
     queueArn: arn:aws:sqs:local:012345678900:VulcanK8SScanEngineChecks
@@ -175,9 +191,13 @@ scanengine:
 
 ui:
   <<: *proxy
+  lifecycle:
+    preStopSleep: 30
 
 insights:
   <<: *proxy
+  lifecycle:
+    preStopSleep: 30
   conf:
     proxies:
       - name: private
@@ -189,6 +209,8 @@ insights:
 
 reportsgenerator:
   <<: *proxy
+  lifecycle:
+    preStopSleep: 30
   conf:
     logLevel: "error"
     queueArn: arn:aws:sqs:local:012345678900:VulcanK8SReportsGenerator
