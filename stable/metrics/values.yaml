@@ -20,9 +20,6 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-dogstatsd:
-  enabled: true
-
 conf:
   region:
   logLevel: warn
@@ -35,6 +32,8 @@ conf:
   ledgerSource: tbd
   ledgerTenant: tbd
   redisPassword: TBD
+  redisAddr:
+  resultsHost:
 
 # extraEnv:
 #   FOO: BAR

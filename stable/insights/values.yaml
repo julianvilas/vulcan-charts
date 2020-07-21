@@ -14,6 +14,13 @@ nameOverride: ""
 fullnameOverride: ""
 containerPort: 8080
 
+global:
+  minio:
+    enabled: false
+
+lifecycle:
+  preStopCommand:
+
 livenessProbe:
   enabled: true
   path: /healthcheck

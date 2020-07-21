@@ -39,12 +39,6 @@ readinessProbe:
   successThreshold: 1
   failureThreshold: 5
 
-proxy:
-  enabled: false
-
-dogstatsd:
-  enabled: false
-
 conf:
   debug: "false"
   secretKey: TBDTBD
@@ -63,6 +57,11 @@ conf:
     snsArn: arn:aws:sns:TBD:TBD:TBD
     redirectUrl:
   vulnerabilityDbUrl: vulnerabilitydbapi # the current FIAAS
+  persistenceHost:
+  crontinuousUrl:
+  reportsgeneratorUrl:
+  scanengineUrl:
+  apiHostname:
 
 db:
   host:

@@ -43,9 +43,6 @@ fullnameOverride: ""
 proxy:
   enabled: false
 
-dogstatsd:
-  enabled: false
-
 conf:
   apiUrl: # https://vulcan-api/api/v1/
 

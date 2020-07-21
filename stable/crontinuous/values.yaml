@@ -5,15 +5,9 @@
 replicaCount:
 
 image:
-  repository: nginx
+  repository: containers.mpi-internal.com/spt-security/vulcan-crontinuous
   tag: latest
   pullPolicy: Always
-
-proxy:
-  enabled: false
-
-dogstatsd:
-  enabled: false
 
 containerPort: 8080
 
@@ -46,11 +40,12 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-conf:    # TBD
+conf:
   region:
   vulcanToken: TBDTBDTBD
   crontinuousBucket: tbd
   vulcanUser: tbd
+  vulcanApi:  # http://host/api
 
 # extraEnv:
 #   FOO: BAR

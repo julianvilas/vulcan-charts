@@ -1,4 +1,4 @@
-{{- include "proxy-config-map" . }}
+{{- include "common-manifests" . }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -17,7 +17,7 @@ spec:
         {{- include "reportsgenerator.selectorLabels" . | nindent 8 }}
       annotations:
         checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
-        {{- include "proxy-annotations" . | nindent 8 }}
+        {{- include "common-annotations" . | nindent 8 }}
         {{- with .Values.annotations }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -37,12 +37,11 @@ spec:
           command: ['sh', '-c', 'until pg_isready -t 5; do echo WaitingDB; done;']
           env:
           - name: PGHOST
-            value: "{{ include "postgresqlHost" . }}"
+            value: "{{ .Values.db.host | default (include "postgresqlHost" .) }}"
           - name: PGPORT
             value: "{{ .Values.db.port }}"
       containers:
-        {{- include "dogstatsd-sidecar" . | nindent 8 }}
-        {{- include "proxy-container" . | nindent 8}}
+        {{- include "common-containers" . | nindent 8 }}
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
@@ -52,7 +51,7 @@ spec:
           - name: PORT
             value: "{{ .Values.containerPort }}"
           - name: PG_HOST
-            value: "{{ include "postgresqlHost" . }}"
+            value: "{{ .Values.db.host | default (include "postgresqlHost" .) }}"
           - name: PG_NAME
             value: "{{ .Values.db.name }}"
           - name: PG_USER
@@ -70,7 +69,7 @@ spec:
           - name: SQS_QUEUE_ARN
             value: "{{ .Values.conf.queueArn }}"
           - name: SES_REGION
-            value: "{{ .Values.conf.ses.region | default .Values.global.region }}"
+            value: "{{ .Values.conf.ses.region | default (include "region" .) }}"
           - name: SES_FROM
             value: "{{ .Values.conf.ses.from }}"
           - name: SES_CC
@@ -83,12 +82,10 @@ spec:
             value: "{{ .Values.conf.generators.scan.privateBucket }}"
           - name: SCAN_GA_ID
             value: "{{ .Values.conf.generators.scan.gaId }}"
-          - name: SCAN_S3_PUBLIC_BUCKET
-            value: "{{ .Values.conf.generators.scan.publicBucket }}"
           - name: PERSISTENCE_ENDPOINT
-            value: "{{ .Values.conf.persistenceEndpoint | default (include "persistenceEndpoint" .)}}"
+            value: "{{ .Values.conf.persistenceEndpoint | default (include "persistenceEndpoint" .) }}"
           - name: RESULTS_ENDPOINT
-            value: "{{ .Values.conf.resultsEndpoint | default (include "resultsEndpoint" .)}}"
+            value: "{{ .Values.conf.resultsEndpoint | default (include "resultsEndpoint" .) }}"
           - name: SCAN_PROXY_ENDPOINT
             value: "{{ .Values.conf.generators.scan.proxyEndpoint | default (printf "https://%s" ( include "insights.hostname" . )) }}"
           - name: VULCAN_UI
@@ -99,14 +96,7 @@ spec:
           - name: SCAN_REDIRECT_URL
             value: "{{ .Values.conf.generators.scan.redirectUrl }}"
           {{- end }}
-          {{- if .Values.global.sqs.enabled }}
-          - name: SQS_QUEUE_NAME
-            value: "{{ .Values.conf.queueName }}"
-          {{- end }}
-        {{- include "infra-envs-sqs" . | nindent 10 }}
-        {{- include "infra-envs-sns" . | nindent 10 }}
-        {{- include "infra-envs-minio" . | nindent 10 }}
-        {{- include "dogstatsd-envs" . | nindent 10 }}
+        {{- include "common-envs" . | nindent 10 }}
         {{- range $name, $value := .Values.extraEnv }}
           - name: {{ $name }}
             value: {{ $value | quote }}
@@ -115,14 +105,14 @@ spec:
           - secretRef:
               name: {{ include "reportsgenerator.fullname" . }}
           ports:
-            - name: {{ ternary "app" "http" .Values.proxy.enabled }}
+            - name: {{ include "common-appPortName" . }}
               containerPort: {{ .Values.containerPort }}
               protocol: TCP
           {{- include "common-lifecycle" . | nindent 10 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
-      {{- include "proxy-volumes" . | nindent 6}}
+      {{- include "common-volumes" . | nindent 6}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

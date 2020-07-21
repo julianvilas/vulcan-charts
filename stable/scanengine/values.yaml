@@ -40,16 +40,11 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-proxy:
-  enabled: false
-
-dogstatsd:
-  enabled: false
-
 conf:
   logLevel: "error"
   queueArn: arn:aws:sqs:local:TBD:TBD
   snsArn: arn:aws:sns:local:TBD:TBD
+  persistenceHost:
 
 db:
   internal: false

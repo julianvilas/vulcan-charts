@@ -32,7 +32,7 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-      {{- include "proxy-container" . | nindent 8 }}
+      {{- include "common-containers" . | nindent 8 }}
       {{- $dot := . }}
       {{- range $i, $p := .Values.conf.proxies }}
         {{- $port := add $dot.Values.containerPort $i }}
@@ -43,7 +43,7 @@ spec:
           imagePullPolicy: {{ $dot.Values.image.pullPolicy }}
           env:
             - name: AWS_REGION
-              value: "{{ $dot.Values.conf.region | default $dot.Values.global.region }}"
+              value: "{{ $dot.Values.conf.region | default (include "region" $dot) }}"
             - name: ACCESS_LOG
               value: "{{ $dot.Values.conf.log }}"
             - name: AWS_S3_BUCKET
