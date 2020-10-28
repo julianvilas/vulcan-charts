@@ -74,6 +74,15 @@ spec:
             value: "{{ .Values.conf.queueArn }}"
           - name: SNS_TOPIC_ARN
             value: "{{ .Values.conf.snsArn }}"
+          - name: "ASYNC_CHECK_CREATION"
+            value: "{{ .Values.conf.enable_async_creation }}"
+          - name: "AWS_SNS_CHECKS_ARN"
+            value: "{{ .Values.conf.sns_checks.topic_arn }}"
+          - name: "AWS_CHECK_CREATOR_WORKERS"
+            value: "{{ .Values.conf.check_creator.num_of_workers }}"
+          - name: "AWS_CHECK_CREATOR_PERIOD"
+            value: "{{ .Values.conf.check_creator.period }}"
+
         {{- include "common-envs" . | nindent 10 }}
         {{- range $name, $value := .Values.extraEnv }}
           - name: {{ $name }}
