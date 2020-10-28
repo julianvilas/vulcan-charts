@@ -56,6 +56,7 @@ goaws:
           - Name: VulcanK8SMetricsScans
           - Name: VulcanK8SScanEngineChecks
           - Name: VulcanK8SReportsGenerator
+          - Name: VulcanK8SPersistenceChecks
         Topics:
           - Name: VulcanK8SChecks
             Subscriptions:
@@ -73,6 +74,10 @@ goaws:
           - Name: VulcanK8SReportsGen
             Subscriptions:
               - QueueName: VulcanK8SReportsGenerator
+                Raw: true
+          - Name: VulcanK8SScanEngineChecks
+            Subscriptions:
+              - QueueName: VulcanK8SPersistenceChecks
                 Raw: true
         RandomLatency:
           Min: 0
