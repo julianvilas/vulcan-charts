@@ -26,6 +26,16 @@ conf:
   vulnsTopicArn: arn:aws:sns:local:TBD:TBD
   resultsUrl: http://vulcan-results
 
+db:
+  internal: false
+  host:
+  name: TBD
+  user: TBD
+  password: TBD
+  port: 5432
+  sslMode: disable
+  ca:
+
 # extraEnv:
 #   FOO: BAR
 
