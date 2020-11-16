@@ -48,6 +48,8 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+          - name: MAX_EVENT_AGE
+            value: "{{ .Values.conf.maxEventAge }}"
           - name: LOG_LEVEL
             value: "{{ .Values.conf.logLevel }}"
           - name: SQS_QUEUE_ARN
