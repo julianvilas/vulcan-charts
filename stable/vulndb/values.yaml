@@ -26,6 +26,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 conf:
+  maxEventAge: 365
   logLevel: "error"
   checksQueueArn: arn:aws:sqs:local:TBD:TBD
   vulnsTopicArn: arn:aws:sns:local:TBD:TBD
