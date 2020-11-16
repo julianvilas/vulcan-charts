@@ -1,6 +1,6 @@
 apiVersion: v2
-name: metrics
-description: A Helm chart for deploying Vulcan metrics
+name: vulndb
+description: A Helm chart for deploying Vulcan Vulnerability DB
 home: https://github.com/adevinta/vulcan-charts
 icon: https://raw.githubusercontent.com/adevinta/vulcan-charts/master/docs/logo/vulcan.png
 
