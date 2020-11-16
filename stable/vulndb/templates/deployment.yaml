@@ -46,6 +46,20 @@ spec:
             value: "{{ .Values.conf.vulnsTopicArn }}"
           - name: RESULTS_URL
             value: "{{ .Values.conf.resultsUrl }}"
+          - name: PG_HOST
+            value: "{{ .Values.db.host | default (include "postgresqlHost" .) }}"
+          - name: PG_NAME
+            value: "{{ .Values.db.name }}"
+          - name: PG_USER
+            value: "{{ .Values.db.user }}"
+          - name: PG_PORT
+            value: "{{ .Values.db.port }}"
+          - name: PG_SSLMODE
+            value: "{{ .Values.db.sslMode }}"
+          {{- if .Values.db.ca }}
+          - name: PG_CA_B64
+            value: "{{ .Values.db.ca | b64enc }}"
+          {{- end }}
         {{- include "common-envs" . | nindent 10 }}
         {{- range $name, $value := .Values.extraEnv }}
           - name: {{ $name }}
