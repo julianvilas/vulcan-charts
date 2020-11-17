@@ -63,6 +63,10 @@ dependencies:
   version: 0.2.0
   repository: "file://../reportsgenerator"
   condition: reportsgenerator.enabled
+- name: vulndbapi
+  version: 0.2.0
+  repository: "file://../vulndbapi"
+  condition: vulndbapi.enabled
 - name: vulndb
   version: 0.2.0
   repository: "file://../vulndb"
