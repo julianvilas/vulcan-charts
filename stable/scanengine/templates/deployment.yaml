@@ -82,7 +82,6 @@ spec:
             value: "{{ .Values.conf.checkCreator.numOfWorkers }}"
           - name: "AWS_CHECK_CREATOR_PERIOD"
             value: "{{ .Values.conf.checkCreator.period }}"
-
         {{- include "common-envs" . | nindent 10 }}
         {{- range $name, $value := .Values.extraEnv }}
           - name: {{ $name }}
