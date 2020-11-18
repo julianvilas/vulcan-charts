@@ -156,6 +156,7 @@ persistence:
     snsTopic: arn:aws:sns:local:012345678900:VulcanK8SChecks
     nessusCheckQueue: VulcanK8SChecksTenable
     s3Scans: scans
+    awsCreateChecksSqsUrl: https://sqs.eu-west-1.amazonaws.com/012345678900/VulcanK8SPersistenceChecks
 
 stream:
   <<: *common
@@ -209,6 +210,8 @@ scanengine:
     queueArn: arn:aws:sqs:local:012345678900:VulcanK8SScanEngineChecks
     queueName: VulcanK8SScanEngineChecks
     snsArn: arn:aws:sns:local:012345678900:VulcanK8SScans
+    snsChecks:
+      topicArn: arn:aws:sns:eu-west-1:012345678900:VulcanK8SScanEngineChecks
   db:
     <<: *db
     name: scanengine
