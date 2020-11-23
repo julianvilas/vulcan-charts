@@ -57,8 +57,8 @@ goaws:
           - Name: VulcanK8SMetricsScans
           - Name: VulcanK8SScanEngineChecks
           - Name: VulcanK8SReportsGenerator
-          - Name: VulcanK8SVulnerabilityDBChecks
           - Name: VulcanK8SPersistenceChecks
+          - Name: VulcanK8SVulnDBChecks
         Topics:
           - Name: VulcanK8SChecks
             Subscriptions:
@@ -77,8 +77,7 @@ goaws:
             Subscriptions:
               - QueueName: VulcanK8SReportsGenerator
                 Raw: true
-          - Name: VulcanK8SVulnerabilityDBNewVulns
-            Subscriptions:
+          - Name: VulcanK8SVulnDBVulns
           - Name: VulcanK8SScanEngineChecks
             Subscriptions:
               - QueueName: VulcanK8SPersistenceChecks
@@ -268,9 +267,7 @@ metrics:
     enabled: true
   conf:
     checksQueueArn: arn:aws:sqs:local:012345678900:VulcanK8SMetricsChecks
-    checksQueueName: VulcanK8SMetricsChecks
     scansQueueArn: arn:aws:sqs:local:012345678900:VulcanK8SMetricsScans
-    scansQueueName: VulcanK8SMetricsScans
 
 vulndbapi:
   <<: *common
@@ -291,9 +288,8 @@ vulndb:
     sns: true
   conf:
     logLevel: "error"
-    checksQueueArn: arn:aws:sqs:local:012345678900:VulcanK8SVulnerabilityDBChecks
-    checksQueueName: VulcanK8SVulnerabilityDBChecks
-    vulnsTopicArn: arn:aws:sns:local:012345678900:VulcanK8SVulnerabilityDBNewVulns
+    checksQueueArn: arn:aws:sqs:local:012345678900:VulcanK8SVulnDBChecks
+    vulnsTopicArn: arn:aws:sns:local:012345678900:VulcanK8SVulnDBVulns
   db:
     <<: *db
     name: vulnerabilitydb

@@ -49,8 +49,8 @@ conf:
   logLevel: "info"
   queueArn: arn:aws:sqs:TBD:TBD:TBD
   queueName: TBD
-  persistenceEndpoint:
-  resultsEndpoint:
+  persistenceUrl:
+  resultsUrl:
   ses:
     region:
     from: tbd@tbd.com
