@@ -58,6 +58,7 @@ goaws:
           - Name: VulcanK8SScanEngineChecks
           - Name: VulcanK8SReportsGenerator
           - Name: VulcanK8SVulnerabilityDBChecks
+          - Name: VulcanK8SPersistenceChecks
         Topics:
           - Name: VulcanK8SChecks
             Subscriptions:
@@ -78,6 +79,10 @@ goaws:
                 Raw: true
           - Name: VulcanK8SVulnerabilityDBNewVulns
             Subscriptions:
+          - Name: VulcanK8SScanEngineChecks
+            Subscriptions:
+              - QueueName: VulcanK8SPersistenceChecks
+                Raw: true
         RandomLatency:
           Min: 0
           Max: 0
@@ -155,6 +160,7 @@ persistence:
     snsTopic: arn:aws:sns:local:012345678900:VulcanK8SChecks
     nessusCheckQueue: VulcanK8SChecksTenable
     s3Scans: scans
+    awsCreateChecksSqsUrl: https://sqs.eu-west-1.amazonaws.com/012345678900/VulcanK8SPersistenceChecks
 
 stream:
   <<: *common
@@ -208,6 +214,8 @@ scanengine:
     queueArn: arn:aws:sqs:local:012345678900:VulcanK8SScanEngineChecks
     queueName: VulcanK8SScanEngineChecks
     snsArn: arn:aws:sns:local:012345678900:VulcanK8SScans
+    snsChecks:
+      topicArn: arn:aws:sns:eu-west-1:012345678900:VulcanK8SScanEngineChecks
   db:
     <<: *db
     name: scanengine

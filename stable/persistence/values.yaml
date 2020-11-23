@@ -51,6 +51,8 @@ conf:
   channel: events
   nessusCheckQueue: TBD
   railsMaxThreads: 4
+  awsCreateChecksSqsUrl:  "arn:aws:sqs:local:TBD:TBD"
+  awsCreateChecksWorkers: 4
 
 db:
   internal: false
