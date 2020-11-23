@@ -30,15 +30,15 @@ http
 {{- .Values.conf.ses.region -}}
 {{- end -}}
 
-{{- define "persistenceEndpoint" -}}
+{{- define "persistenceUrl" -}}
 {{- end -}}
 
 {{- define "postgresqlHost" -}}
 {{- .Values.db.host -}}
 {{- end -}}
 
-{{- define "resultsEndpoint" -}}
-{{- .Values.conf.resultsEndpoint -}}
+{{- define "resultsUrl" -}}
+{{- .Values.conf.resultsUrl -}}
 {{- end -}}
 
 {{- define "insights.hostname" -}}
