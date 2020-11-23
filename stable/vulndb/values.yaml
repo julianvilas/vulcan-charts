@@ -30,7 +30,8 @@ conf:
   logLevel: "error"
   checksQueueArn: arn:aws:sqs:local:TBD:TBD
   vulnsTopicArn: arn:aws:sns:local:TBD:TBD
-  resultsUrl: http://vulcan-results
+  resultsUrl: http://vulcan-results.vulcan.com
+  resultsInternalUrl: # http://vulcan-results
 
 db:
   internal: false
