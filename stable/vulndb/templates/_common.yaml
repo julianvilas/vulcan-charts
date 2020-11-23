@@ -30,3 +30,6 @@ http
 {{- define "resultsUrl" -}}
 {{- .Values.conf.resultsUrl -}}
 {{- end -}}
+
+{{- define "results.hostname" -}}
+{{- end -}}
