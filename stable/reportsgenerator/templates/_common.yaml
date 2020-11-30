@@ -40,9 +40,3 @@ http
 {{- define "resultsUrl" -}}
 {{- .Values.conf.resultsUrl -}}
 {{- end -}}
-
-{{- define "insights.hostname" -}}
-{{- end -}}
-
-{{- define "ui.hostname" -}}
-{{- end -}}

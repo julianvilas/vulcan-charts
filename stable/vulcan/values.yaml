@@ -143,6 +143,7 @@ results:
   conf:
     bucketReports: reports
     bucketLogs: logs
+    linkBase: http://results/v1
 
 persistence:
   <<: *common
