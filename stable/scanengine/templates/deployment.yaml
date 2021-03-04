@@ -70,18 +70,24 @@ spec:
             value: "{{ .Values.conf.logLevel }}"
           - name: PERSISTENCE_HOST
             value: "{{ .Values.conf.persistenceHost | default  (include "persistenceHost" .) }}"
-          - name: SQS_QUEUE_ARN
+          - name: CHECKS_SQS_ARN
             value: "{{ .Values.conf.queueArn }}"
-          - name: SNS_TOPIC_ARN
-            value: "{{ .Values.conf.snsArn }}"
-          - name: "ASYNC_CHECK_CREATION"
-            value: "{{ .Values.conf.enableAsyncCreation }}"
-          - name: "AWS_SNS_CHECKS_ARN"
-            value: "{{ .Values.conf.snsChecks.topicArn }}"
-          - name: "AWS_CHECK_CREATOR_WORKERS"
+          - name: "SCANS_SNS_ARN"
+            value: "{{ .Values.conf.scansSNS.topicArn }}"
+          - name: "CHECKS_SNS_ARN"
+            value: "{{ .Values.conf.checksSNS.topicArn }}"
+          - name: "STREAM_URL"
+            value: "{{ .Values.conf.streamUrl | default  (include "streamUrl" .) }}"
+          - name: "CHECKS_CREATOR_WORKERS"
             value: "{{ .Values.conf.checkCreator.numOfWorkers }}"
-          - name: "AWS_CHECK_CREATOR_PERIOD"
+          - name: "CHECKS_CREATOR_PERIOD"
             value: "{{ .Values.conf.checkCreator.period }}"
+          - name: "QUEUES_DEFAULT_ARN"
+            value: "{{ .Values.conf.queues.default.arn }}"
+          - name: "QUEUES_NESSUS_ARN"
+            value: "{{ .Values.conf.queues.nessus.arn }}"
+          - name: "QUEUES_NESSUS_CHECKTYPES"
+            value: "{{ .Values.conf.queues.nessus.checktypes }}"
         {{- include "common-envs" . | nindent 10 }}
         {{- range $name, $value := .Values.extraEnv }}
           - name: {{ $name }}
