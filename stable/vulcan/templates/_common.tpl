@@ -1,158 +1,138 @@
 {{- define "common-manifests" -}}
-{{- include "proxy-config-map" . }}
+{{- include "common-proxy-config-map" . }}
 {{- end -}}
 
 {{- define "common-annotations" -}}
-{{- include "proxy-annotations" . }}
+{{- include "common-proxy-annotations" . }}
 {{- end -}}
 
 {{/*
 Lifecycle common preStop
 */}}
-{{- define "common-lifecycle" -}}
-{{- if or .Values.lifecycle.preStopCommand .Values.lifecycle.preStopSleep -}}
+{{- define "common-container" -}}
+{{- with .Values.comp.securityContext }}
+securityContext:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
+image: "{{ .Values.comp.image.repository }}:{{ .Values.comp.image.tag }}"
+imagePullPolicy: {{ .Values.comp.image.pullPolicy }}
+{{- with .Values.comp.lifecycle }}
+{{- if or .preStopCommand .preStopSleep }}
 lifecycle:
   preStop:
     exec:
-{{- if .Values.lifecycle.preStopCommand }}
-      command: {{ .Values.lifecycle.preStopCommand }}
-{{- else }}
-      command: ["/bin/sh","-c","sleep {{ .Values.lifecycle.preStopSleep }};"]
+  {{- if .preStopCommand }}
+      command: {{ .preStopCommand }}
+  {{- else }}
+      command: ["/bin/sh","-c","sleep {{ .preStopSleep }};"]
+  {{- end }}
 {{- end -}}
 {{- end -}}
-{{- if .Values.livenessProbe.enabled }}
+{{- if .Values.comp.livenessProbe -}}
+{{- if and .Values.comp.livenessProbe.enabled (or .Values.comp.livenessProbe.command ( .Values.comp.livenessProbe.path | default .Values.comp.healthcheckPath )) }}
 livenessProbe:
-{{- if .Values.livenessProbe.command }}
+  {{- if .Values.comp.livenessProbe.command }}
   exec:
-    command: {{ .Values.livenessProbe.command }}
-{{- else }}
+    command: {{ .Values.comp.livenessProbe.command | default .Values.comp.healthcheckPath }}
+  {{- else }}
   httpGet:
-    path: {{ .Values.livenessProbe.path }}
-    port: {{ .Values.containerPort }}
+    path: {{ .Values.comp.livenessProbe.path | default .Values.comp.healthcheckPath }}
+    port: {{ .Values.comp.containerPort }}
+  {{- end }}
+  initialDelaySeconds: {{ .Values.comp.livenessProbe.initialDelaySeconds }}
+  periodSeconds: {{ .Values.comp.livenessProbe.periodSeconds }}
+  timeoutSeconds: {{ .Values.comp.livenessProbe.timeoutSeconds }}
+  successThreshold: {{ .Values.comp.livenessProbe.successThreshold }}
+  failureThreshold: {{ .Values.comp.livenessProbe.failureThreshold }}
 {{- end }}
-  initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-  periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-  timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
-  successThreshold: {{ .Values.livenessProbe.successThreshold }}
-  failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
 {{- end }}
-{{- if .Values.readinessProbe.enabled }}
+{{- if .Values.comp.readinessProbe -}}
+{{- if and .Values.comp.readinessProbe.enabled (or .Values.comp.readinessProbe.command ( .Values.comp.readinessProbe.path | default .Values.comp.healthcheckPath )) }}
 readinessProbe:
-{{- if .Values.readinessProbe.command }}
+  {{- if .Values.comp.readinessProbe.command }}
   exec:
-    command: {{ .Values.readinessProbe.command }}
-{{- else }}
+    command: {{ .Values.comp.readinessProbe.command }}
+  {{- else }}
   httpGet:
-    path: {{ .Values.readinessProbe.path }}
-    port: {{ .Values.containerPort }}
+    path: {{ .Values.comp.readinessProbe.path | default .Values.comp.healthcheckPath }}
+    port: {{ .Values.comp.containerPort }}
+  {{- end }}
+  initialDelaySeconds: {{ .Values.comp.readinessProbe.initialDelaySeconds }}
+  periodSeconds: {{ .Values.comp.readinessProbe.periodSeconds }}
+  timeoutSeconds: {{ .Values.comp.readinessProbe.timeoutSeconds }}
+  successThreshold: {{ .Values.comp.readinessProbe.successThreshold }}
+  failureThreshold: {{ .Values.comp.readinessProbe.failureThreshold }}
+{{- end -}}
+{{- end -}}
+{{- with .Values.comp.resources }}
+resources:
+  {{- toYaml . | nindent 2 }}
 {{- end }}
-  initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-  periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-  timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
-  successThreshold: {{ .Values.readinessProbe.successThreshold }}
-  failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+{{- end -}}
+
+
+{{- define "common-deployment-spec" -}}
+{{- with .Values.comp.terminationGracePeriodSeconds }}
+terminationGracePeriodSeconds: {{ . }}
+{{- end -}}
+{{- with .Values.comp.imagePullSecrets }}
+imagePullSecrets:
+{{- toYaml . | nindent 2 }}
+{{- end }}
+{{- with .Values.comp.podSecurityContext }}
+securityContext:
+{{- toYaml . | nindent 2 }}
+{{- end }}
+{{- with .Values.comp.nodeSelector }}
+nodeSelector:
+{{- toYaml . | nindent 2 }}
+{{- end }}
+{{- with .Values.comp.affinity }}
+affinity:
+{{- toYaml . | nindent 2 }}
+{{- end }}
+{{- with .Values.comp.tolerations }}
+tolerations:
+{{- toYaml . | nindent 2 }}
 {{- end }}
 {{- end -}}
 
-{{- define "common-spec" -}}
-{{- if .Values.terminationGracePeriodSeconds -}}
-terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
-{{- end -}}
+
+{{- define "common-deployment-sidecars" -}}
+{{- include "common-dogstatsd-sidecar" . }}
+{{- include "common-proxy-sidecar" . }}
 {{- end -}}
 
-{{- define "common-containers" -}}
-{{- include "dogstatsd-sidecar" . }}
-{{- include "proxy-container" . }}
+{{- define "common-container-envs" -}}
+{{ include "common-infra-envs" . }}
+{{ include "common-dogstatsd-envs" . }}
+{{- range $name, $value := .Values.comp.extraEnv }}
+- name: {{ $name }}
+  value: {{ $value | quote }}
+{{- end }}
 {{- end -}}
 
-{{- define "common-envs" -}}
-{{ include "infra-envs" . }}
-{{ include "dogstatsd-envs" . }}
-{{- end -}}
-
-{{- define "common-volumes" -}}
-{{- include "proxy-volumes" . }}
+{{- define "common-deployment-volumes" -}}
+{{- include "common-proxy-volumes" . }}
 {{- end -}}
 
 {{- define "common-appPortName" -}}
-{{- if .Values.proxy -}}
-{{- ternary "app" "http" .Values.proxy.enabled -}}
+{{- if .Values.comp.proxy -}}
+{{- ternary "app" "http" .Values.comp.proxy.enabled -}}
 {{- else -}}
 http
 {{- end -}}
 {{- end -}}
 
-{{- define "region" -}}
-{{- .Values.global.region -}}
-{{- end -}}
 
-{{- define "domain" -}}
-{{- .Values.global.domain -}}
-{{- end -}}
-
-{{/*
-Override names
-*/}}
-{{- define "persistenceHost" -}}
-{{- printf "%s-persistence" .Release.Name -}}
-{{- end -}}
-
-{{- define "vulcanApi" -}}
-{{- printf "http://%s-api/api" .Release.Name -}}
-{{- end -}}
-
-{{- define "scanengineUrl" -}}
-{{- printf "http://%s-scanengine" .Release.Name -}}
-{{- end -}}
-
-{{- define "crontinuousUrl" -}}
-{{- printf "http://%s-crontinuous/" .Release.Name -}}
-{{- end -}}
-
-{{- define "persistenceUrl" -}}
-{{- printf "http://%s-persistence" .Release.Name -}}
-{{- end -}}
-
-{{- define "resultsUrl" -}}
-{{- printf "http://%s-results" .Release.Name -}}
-{{- end -}}
-
-{{- define "resultsHost" -}}
-{{- printf "%s-results" .Release.Name -}}
-{{- end -}}
-
-{{- define "reportsgeneratorUrl" -}}
-{{- printf "http://%s-reportsgenerator/" .Release.Name -}}
-{{- end -}}
-
-{{- define "vulndbapiUrl" -}}
-{{- printf "http://%s-vulndbapi/" .Release.Name -}}
-{{- end -}}
-
-{{- define "vulndbUrl" -}}
-{{- printf "http://%s-vulndb/" .Release.Name -}}
-{{- end -}}
-
-{{- define "streamUrl" -}}
-{{- printf "http://%s-stream" .Release.Name -}}
-{{- end -}}
-
-{{- define "metricsRedisAddr" -}}
-{{- printf "%s-metrics-redis:6379" .Release.Name -}}
-{{- end -}}
-
-{{- define "minioEndpoint" -}}
-{{- printf "http://%s-minio" .Release.Name -}}
-{{- end -}}
-
-{{- define "sqsEndpoint" -}}
-{{- printf "http://%s-goaws" .Release.Name -}}
-{{- end -}}
-
-{{- define "snsEndpoint" -}}
-{{- printf "http://%s-goaws" .Release.Name -}}
-{{- end -}}
-
-{{- define "postgresqlHost" -}}
-{{- printf "%s-postgresql" .Release.Name -}}
+{{- define "common-deployment-init-waitfordb" -}}
+- name: waitfordb
+  image: "{{ .Values.waitfordb.image.repository }}:{{ .Values.waitfordb.image.tag }}"
+  imagePullPolicy: Always
+  command: ['sh', '-c', 'until pg_isready -t 5; do echo WaitingDB; done;']
+  env:
+  - name: PGHOST
+    value: {{ .Values.comp.db.host | default (include "postgresqlHost" .) | quote }}
+  - name: PGPORT
+    value: {{ .Values.comp.db.port | quote }}
 {{- end -}}

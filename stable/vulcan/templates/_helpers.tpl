@@ -47,17 +47,118 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Selector labels
 */}}
 {{- define "vulcan.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "vulcan.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/instance: {{ include "vulcan.name" . }}
 {{- end -}}
 
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "vulcan.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create -}}
-    {{ default (include "vulcan.fullname" .) .Values.serviceAccount.name }}
-{{- else -}}
-    {{ default "default" .Values.serviceAccount.name }}
+{{- define "api.fullname" -}}
+{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.api.name -}}
 {{- end -}}
+
+{{- define "crontinuous.fullname" -}}
+{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.crontinuous.name -}}
+{{- end -}}
+
+{{- define "goaws.fullname" -}}
+{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.goaws.name -}}
+{{- end -}}
+
+{{- define "insights.fullname" -}}
+{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.insights.name -}}
+{{- end -}}
+
+{{- define "metrics.fullname" -}}
+{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.metrics.name -}}
+{{- end -}}
+
+{{- define "persistence.fullname" -}}
+{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.persistence.name -}}
+{{- end -}}
+
+{{- define "redis.fullname" -}}
+{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.redis.name -}}
+{{- end -}}
+
+{{- define "reportsgenerator.fullname" -}}
+{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.reportsgenerator.name -}}
+{{- end -}}
+
+{{- define "results.fullname" -}}
+{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.results.name -}}
+{{- end -}}
+
+{{- define "scanengine.fullname" -}}
+{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.scanengine.name -}}
+{{- end -}}
+
+{{- define "stream.fullname" -}}
+{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.stream.name -}}
+{{- end -}}
+
+{{- define "ui.fullname" -}}
+{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.ui.name -}}
+{{- end -}}
+
+{{- define "vulndb.fullname" -}}
+{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.vulndb.name -}}
+{{- end -}}
+
+{{- define "vulndbapi.fullname" -}}
+{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.vulndbapi.name -}}
+{{- end -}}
+
+
+{{- define "region" -}}
+{{- .Values.global.region -}}
+{{- end -}}
+
+{{- define "domain" -}}
+{{- .Values.global.domain -}}
+{{- end -}}
+
+{{- define "api.url" -}}
+{{- printf "http://%s/api" (include "api.fullname" .) -}}
+{{- end -}}
+
+{{- define "scanengine.url" -}}
+{{- printf "http://%s" (include "scanengine.fullname" .) -}}
+{{- end -}}
+
+{{- define "crontinuous.url" -}}
+{{- printf "http://%s/" (include "crontinuous.fullname" .) -}}
+{{- end -}}
+
+{{- define "results.url" -}}
+{{- printf "http://%s" (include "results.fullname" .) -}}
+{{- end -}}
+
+{{- define "reportsgenerator.url" -}}
+{{- printf "http://%s/" (include "reportsgenerator.fullname" .) -}}
+{{- end -}}
+
+{{- define "vulndbapi.url" -}}
+{{- printf "http://%s/" (include "vulndbapi.fullname" .) -}}
+{{- end -}}
+
+{{- define "stream.url" -}}
+{{- printf "http://%s" (include "stream.fullname" .) -}}
+{{- end -}}
+
+{{- define "redis.url" -}}
+{{- printf "%s:6379" (include "redis.fullname" .) -}}
+{{- end -}}
+
+{{- define "minio.url" -}}
+{{- printf "http://%s-vulcans3" .Release.Name -}}
+{{- end -}}
+
+{{- define "sqs.url" -}}
+{{- printf "http://%s" (include "goaws.fullname" .) -}}
+{{- end -}}
+
+{{- define "sns.url" -}}
+{{- printf "http://%s" (include "goaws.fullname" .) -}}
+{{- end -}}
+
+{{- define "postgresqlHost" -}}
+{{- printf "%s-postgresql" .Release.Name -}}
 {{- end -}}

@@ -1,0 +1,102 @@
+minio:
+  enabled: true
+
+goaws:
+  enabled: true
+
+postgresql:
+  enabled: true
+
+
+results:
+  conf:
+    linkBase: https://results.chart-example.local
+  ingress:
+    enabled: true
+    hosts:
+      - host: results.vulcan.local
+        paths: [/]
+
+stream:
+  ingress:
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    enabled: true
+    hosts:
+      - host: stream.vulcan.local
+        paths: [/]
+
+persistence:
+  ingress:
+    enabled: true
+    hosts:
+      - host: persistence.vulcan.local
+        paths: [/]
+
+api:
+  conf:
+    saml:
+      callback: https://www.vulcan.local/api/v1/login/callback
+      trustedDomains: '["www.vulcan.local"]'
+
+  ingress:
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: 8m
+    hosts:
+      - host: www.vulcan.local
+        paths: [/api]
+
+crontinuous:
+  conf:
+    teamsWhitelistScan: '["team1", "team2"]'
+    teamsWhitelistReport: '["team3"]'
+  ingress:
+    enabled: false
+
+scanengine:
+  ingress:
+    enabled: false
+
+ui:
+  conf:
+    apiUrl: https://www.vulcan.local/api/v1/
+  ingress:
+    enabled: true
+    hosts:
+      - host: www.vulcan.local
+        paths: [/]
+
+insights:
+  ingress:
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        more_set_headers "X-Frame-Options: SAMEORIGIN";
+        more_set_headers "X-Content-Type-Options: nosniff";
+        more_set_headers "X-Frame-Options: DENY";
+        more_set_headers "X-Xss-Protection: 1";
+        more_set_headers "Strict-Transport-Security: max-age=31536000; includeSubDomains";
+        more_set_headers "Content-Security-Policy: default-src 'none'; script-src 'self' 'unsafe-inline' https://insights.vulcan.local https://www.google-analytics.com; font-src 'self' https://insights.vulcan.local; connect-src 'self' https://insights.vulcan.local; img-src 'self' https://insights.vulcan.local https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://insights.vulcan.local; object-src 'none'";
+    hosts:
+      - host: insights.vulcan.local
+        paths: [/]
+
+reportsgenerator:
+  conf:
+    generators:
+      scan:
+        vulcanUi: http://www.vulcan.local/
+        proxyEndpoint: http://insights.vulcan.local
+    ses:
+      cc: '["tbd@tbd.com"]'
+  ingress:
+    enabled: false
+
+vulndbapi:
+  ingress:
+    enabled: true
+    hosts:
+      - host: vulndbapi.vulcan.local
+        paths: [/]

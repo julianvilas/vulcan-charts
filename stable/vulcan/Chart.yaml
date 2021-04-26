@@ -16,71 +16,18 @@ type: application
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 0.2.0
+version: 0.3.0
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application.
 appVersion: 1.16.0
 
 dependencies:
-- name: results
-  version: 0.2.0
-  repository: "file://../results"
-  condition: results.enabled
-- name: stream
-  version: 0.2.0
-  repository: "file://../stream"
-  condition: stream.enabled
-- name: persistence
-  version: 0.2.0
-  repository: "file://../persistence"
-  condition: persistence.enabled
-- name: api
-  version: 0.2.0
-  repository: "file://../api"
-  condition: api.enabled
-- name: crontinuous
-  version: 0.2.0
-  repository: "file://../crontinuous"
-  condition: crontinuous.enabled
-- name: scanengine
-  version: 0.2.0
-  repository: "file://../scanengine"
-  condition: scanengine.enabled
-- name: insights
-  version: 0.2.0
-  repository: "file://../insights"
-  condition: insights.enabled
-- name: ui
-  version: 0.2.0
-  repository: "file://../ui"
-  condition: ui.enabled
-- name: metrics
-  version: 0.2.0
-  repository: "file://../metrics"
-  condition: metrics.enabled
-- name: reportsgenerator
-  version: 0.2.0
-  repository: "file://../reportsgenerator"
-  condition: reportsgenerator.enabled
-- name: vulndbapi
-  version: 0.2.0
-  repository: "file://../vulndbapi"
-  condition: vulndbapi.enabled
-- name: vulndb
-  version: 0.2.0
-  repository: "file://../vulndb"
-  condition: vulndb.enabled
 - name: postgresql
   version: 8.9.4
   repository: https://charts.bitnami.com/bitnami
-  condition: global.postgresql.enabled
-- name: goaws
-  version: 0.2.0
-  repository: "file://../goaws"
-  condition: global.sns.enabled,global.sqs.enabled
+  condition: postgresql.enabled
 - name: minio
   version: 3.3.6
   repository: https://charts.bitnami.com/bitnami
-  alias: minio
-  condition: global.minio.enabled
+  condition: minio.enabled

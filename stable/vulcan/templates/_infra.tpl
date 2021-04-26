@@ -1,23 +1,23 @@
-{{- define "infra-envs" -}}
+{{- define "common-infra-envs" -}}
 {{- $auth := 0 -}}
-{{- if .Values.infra -}}
-{{- if and  .Values.infra.sns .Values.global.sns.enabled -}}
+{{- if .Values.comp.infra -}}
+{{- if and  .Values.comp.infra.sns .Values.goaws.enabled -}}
 - name: AWS_SNS_ENDPOINT
-  value: "{{ include "snsEndpoint" . }}"
+  value: {{ include "sns.url" . | quote }}
 {{- $auth = 1 -}}
 {{- end -}}
-{{- if and .Values.infra.sqs .Values.global.sqs.enabled }}
+{{- if and .Values.comp.infra.sqs .Values.goaws.enabled }}
 - name: AWS_SQS_ENDPOINT
-  value: "{{ include "sqsEndpoint" . }}"
+  value: {{ include "sqs.url" . | quote }}
 {{- $auth = 1 -}}
 {{- end -}}
-{{- if and .Values.infra.s3 .Values.global.minio.enabled }}
+{{- if and .Values.comp.infra.s3 .Values.minio.enabled }}
 - name: AWS_S3_ENDPOINT
-  value: "{{ include "minioEndpoint" . }}"
+  value: {{ include "minio.url" . | quote }}
 - name: PATH_STYLE
   value: "true"
 - name: AWS_S3_REGION
-  value: "{{ .Values.global.region }}"
+  value: {{ .Values.global.region | quote }}
 - name: AWS_ACCESS_KEY_ID
   valueFrom:
     secretKeyRef:

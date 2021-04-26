@@ -1,0 +1,2 @@
+{{- $_ := (set .Values "comp" .Values.crontinuous) -}}
+{{- include "common-hpa" . }}

@@ -1,0 +1,40 @@
+{{- $_ := (set .Values "comp" .Values.sqsexporter) -}}
+{{- if .Values.sqsexporter.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "vulcan.fullname" . }}-{{ .Values.comp.name }}
+  labels: {{- include "vulcan.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ .Values.comp.name }}
+spec:
+  selector:
+    matchLabels: {{- include "vulcan.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/name: {{ .Values.comp.name }}
+  template:
+    metadata:
+      labels: {{- include "vulcan.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/name: {{ .Values.comp.name }}
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: {{ .Values.comp.containerPort | quote }}
+        {{- with .Values.comp.annotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      containers:
+        - name: {{ .Values.comp.name }}
+          {{- include "common-container" . | nindent 10 }}
+          env:
+          - name: PORT
+            value: {{ .Values.comp.containerPort | quote }}
+          - name: SQS_QUEUE_NAME_PREFIX
+            value: {{ .Values.comp.queueNamePrefix }}
+          - name: AWS_REGION
+            value: {{ .Values.global.region | quote }}
+        {{- include "common-container-envs" . | nindent 10 }}
+          ports:
+            - name: metrics
+              containerPort: {{ .Values.comp.containerPort }}
+              protocol: TCP
+    {{- include "common-deployment-spec" . | nindent 6 }}
+{{- end -}}

@@ -1,0 +1,2 @@
+{{- $_ := set .Values "comp" .Values.api -}}
+{{- include "common-ingress" . }}

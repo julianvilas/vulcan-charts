@@ -1,0 +1,22 @@
+{{/*
+Override names
+*/}}
+{{- define "common-service" -}}
+{{- if and .Values.comp.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "vulcan.fullname" . }}-{{ .Values.comp.name }}
+  labels: {{- include "vulcan.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ .Values.comp.name }}
+spec:
+  type: {{ .Values.comp.service.type }}
+  ports:
+    - port: {{ .Values.comp.service.port }}
+      targetPort: {{ .Values.comp.service.targetPort | default "http" }}
+      protocol: {{ .Values.comp.service.protocol | default "TCP" }}
+      name: {{ .Values.comp.service.portName | default "http" }}
+  selector: {{- include "vulcan.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/name: {{ .Values.comp.name }}
+{{- end -}}
+{{- end -}}

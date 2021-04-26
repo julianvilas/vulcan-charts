@@ -4,19 +4,131 @@
 global:
   domain: vulcan.local
   region: local
-  minio:
-    enabled: true
-  goaws:
-    accountId: "012345678900"
-  sns:
-    enabled: true
-  sqs:
-    enabled: true
-  postgresql:
+
+# -- Anchors
+anchors:
+
+  # -- postgres database settings
+  db: &db
+    host:
+    name:
+    user: postgres
+    password: TBD
+    port:
+    sslMode: disable
+    ca:
+
+  dogstatsd: &dogstatsd
+    image: 
+      repository: datadog/dogstatsd
+      tag: 7.27.0
     enabled: true
 
+  # Default values for all the components
+  comp: &comp
+
+    replicaCount:
+    image:
+      pullPolicy: Always
+
+    # -- custom env variables
+    extraEnv: {}
+    #   FOO: BAR
+
+    # -- proxy settings
+    proxy: &proxy
+      enabled: true
+      image:
+        repository: haproxy
+        tag: 2.3-alpine
+      port: 9090
+      metricsPort: 9101
+      cache:
+        enabled: false
+        maxSize: 64 # mb
+        maxAge: 240 # seconds
+      probe: false
+      probePath: /healthz
+      probeInitialDelay: 5
+      probeTimeoutSeconds: 3
+      timeoutConnect:
+      timeoutClient:
+      timeoutServer:
+      timeoutTunnel:
+      lifecycle:
+        preStopSleep: 30
+      resources: {}
+
+    podSecurityContext: {}
+
+    securityContext: {}
+
+    imagePullSecrets: []
+    nameOverride: ""
+    fullnameOverride: ""
+    containerPort: 8080
+
+    lifecycle:
+      preStopSleep: 30
+
+    # -- liveness settings
+    livenessProbe: &comp-livenessProbe
+      enabled: true
+      path:
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      timeoutSeconds: 3
+      successThreshold: 1
+      failureThreshold: 10
+
+    # -- readiness settings
+    readinessProbe: &comp-readynessProbe
+      enabled: true
+      # -- defaults to healthcheckPath
+      path:
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      timeoutSeconds: 3
+      successThreshold: 1
+      failureThreshold: 5
+
+    # -- autoscaling settings
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 5
+      targetCPUUtilizationPercentage: 50
+      targetMemoryUtilizationPercentage:
+
+    # -- service settings
+    service:
+      type: ClusterIP
+      port: 80
+      portName:
+      protocol: TCP
+      targetPort:
+
+    # -- ingress settings
+    ingress:
+      enabled: false
+      annotations: {}
+      hosts: []
+      tls: []
+
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+
+
+waitfordb:
+  image:
+    repository: postgres
+    tag: 9.6-alpine
+
+
 postgresql:
-  enabled: true
+  enabled: false
   postgresqlUsername: postgres
   postgresqlPassword: TBD
   postgresqlDatabase: persistence
@@ -39,14 +151,24 @@ postgresql:
   metrics:
     enabled: true
 
+
 goaws:
+  enabled: false
+  name: goaws
+  <<: *comp
+
+  image:
+    repository: pafortin/goaws
+    tag: v0.3.1
+    pullPolicy: Always
+
   containerPort: 8080
   config:
     goaws.yaml: |
       Local:
         Host: {{ .Release.Name }}-goaws
         Port: {{ .Values.containerPort }}
-        AccountId: "{{ .Values.global.goaws.accountId }}"
+        AccountId: "012345678900"
         LogToFile: false
         QueueAttributeDefaults:
           VisibilityTimeout: 30
@@ -92,6 +214,8 @@ goaws:
           Max: 0
 
 minio:
+  enabled: false
+  nameOverride: vulcans3
   mode: standalone
   defaultBuckets: "reports,logs,scans,insights,public-insights,crontinuous"
   serviceAccount:
@@ -109,74 +233,74 @@ minio:
     - name: MINIO_REGION_NAME
       value: local
 
-defaults:
-  db: &db
-    user: postgres
-    password: TBD
-    sslMode: disable
-  common:  &common
-    proxy:
-      enabled: true
-      image:
-        repository: haproxy
-        tag: 2.2-alpine
-      port: 9090  # We use non 80 port to prevent prometheus trying to access metrics on port 80
-      cache:
-        enabled: false
-        maxSize: 64 # mb
-        maxAge: 240 # seconds
-      probe: false
-      probePath: /healthz
-      probeInitialDelay: 5
-      probeTimeoutSeconds: 3
-      # timeoutConnect: 5s
-      # timeoutClient: 25s
-      # timeoutServer: 25s
-      # timeoutTunnel: 3600s
-      lifecycle:
-        preStopSleep: 30
-      resources: {}
-    dogstatsd: &dogstatsd
-      image: 
-        repository: datadog/dogstatsd
-        tag: 7.25.1
 
 results:
-  <<: *common
-  lifecycle:
-    preStopSleep: 30
-  infra:
-    s3: true
+  enabled: true
+  name: results
+  <<: *comp
+
+  image:
+    repository: adevinta/vulcan-results
+    tag: latest
+    pullPolicy: Always
+
   conf:
+    debug: "false"
+    region:
     bucketReports: reports
     bucketLogs: logs
-    linkBase: http://results/v1
+    linkBase: http://chart-example.local
+
+  healthcheckPath: /healthcheck
+
+  dogstatsd: *dogstatsd
+
+  infra:
+    s3: true
+
 
 persistence:
-  <<: *common
-  lifecycle:
-    preStopSleep: 30
-    # preStopCommand:  '["/bin/sh", "-c", "/app/stop.sh 30"]'
-  terminationGracePeriodSeconds: 60
+  enabled: true
+  name: persistence
+  <<: *comp
+
+  image:
+    repository: adevinta/vulcan-persistence
+    tag: latest
+    pullPolicy: Always
+
+  healthcheckPath: /status
+
   infra:
     s3: true
     sns: true
     sqs: true
+
+  # -- postgres database settings
   db:
     <<: *db
     name: persistence
+
   conf:
     logLevel: warn
-    snsTopic: arn:aws:sns:local:012345678900:VulcanK8SChecks
-    nessusCheckQueue: VulcanK8SChecksTenable
-    s3Scans: scans
-    # awsCreateChecksSqsUrl: https://localhost/012345678900/VulcanK8SPersistenceChecks
-    awsCreateChecksSqsName: VulcanK8SPersistenceChecks
+    secretKeyBase: TBDTBD
+    railsMaxThreads: 4
+
+  dogstatsd: *dogstatsd
+
 
 stream:
-  <<: *common
-  lifecycle:
-    preStopSleep: 30
+  enabled: true
+  name: stream
+  <<: *comp
+
+  image:
+    repository: adevinta/vulcan-stream
+    tag: latest
+    pullPolicy: Always
+
+  healthcheckPath: /status
+
   conf:
     logLevel: "DEBUG"
     redis:
@@ -187,18 +311,33 @@ stream:
       db: 0   # default
       ttl: 0  # default
 
+  dogstatsd: *dogstatsd
+
+
 api:
-  <<: *common
+  enabled: true
+  name: api
+  <<: *comp
+
+  image:
+    repository: adevinta/vulcan-api
+    tag: latest
+    pullPolicy: Always
+
   infra:
     sqs: true
     sns: true
     s3: true
-  lifecycle:
-    preStopSleep: 30
+
+  healthcheckPath: /api/v1/healthcheck
+
+  # -- postgres database settings
   db:
     <<: *db
     name: api
+
   conf:
+    debug: "false"
     bucketReports: reports
     bucketLogs: logs
     s3PrivateBucket: insights
@@ -207,25 +346,80 @@ api:
     queueName: VulcanK8SAPIScans
     reports:
       snsArn: arn:aws:sns:local:012345678900:VulcanK8SReportsGen
+      redirectUrl:
+      vulcanUIUrl:
+    secretKey: TBDTBD
+    cookieDomain:     # default .Values.global.domain
+    saml:
+      metadata: https://okta/app/TBD/sso/saml/metadata
+      issuer: http://okta/TBD
+      callback: # https://vulcan-api/api/v1/login/callback
+      trustedDomains: '[]'  # '["vulcan-api"]'
+    log:
+      level: INFO
+    defaultOwners: '[]'  # '["owner1","owner2"]'
+    vulndbapiUrl: # http://vulnerabilitydbapi
+    persistenceHost:
+    crontinuousUrl:
+    reportsgeneratorUrl:
+    scanengineUrl:
+    apiHostname:
+    awscatalogue:
+      kind: None
+      url: http://catalogue.example.com
+      key: key
+      retries: 1
+      retry_interval: 2
+
+  dogstatsd: *dogstatsd
+
   ingress:
     path: /api
 
+
 crontinuous:
-  <<: *common
+  enabled: true
+  name: crontinuous
+  <<: *comp
+
+  image:
+    repository: adevinta/vulcan-crontinuous
+    tag: latest
+    pullPolicy: Always
+
   infra:
     s3: true
-  lifecycle:
-    preStopSleep: 30
+
+  healthcheckPath: /healthcheck
+
   conf:
+    region:
+    vulcanToken: TBDTBDTBD
     crontinuousBucket: crontinuous
+    vulcanUser: tbd
+    vulcanApi:  # http://host/api
+    enableTeamsWhitelistScan: "false"
+    teamsWhitelistScan: '[]'
+    enableTeamsWhitelistReport: "false"
+    teamsWhitelistReport: '[]'
+
 
 scanengine:
-  <<: *common
-  lifecycle:
-    preStopSleep: 30
+  enabled: true
+  name: scanengine
+  <<: *comp
+
+  image:
+    repository: adevinta/vulcan-scan-engine
+    tag: latest
+    pullPolicy: Always
+
+  healthcheckPath: /v1/healthcheck
+
   infra:
     sqs: true
     sns: true
+
   conf:
     logLevel: "error"
     queueArn: arn:aws:sqs:local:012345678900:VulcanK8SScanEngineChecks
@@ -240,140 +434,261 @@ scanengine:
       nessus:
         arn: VulcanK8SChecksTenable
         checktypes: '["vulcan-nessus"]'
+    persistenceHost:
+    streamUrl:
+    checkCreator:
+      numOfWorkers: 2
+      period: 20
 
+  # -- postgres database settings
   db:
     <<: *db
     name: scanengine
 
+  dogstatsd: *dogstatsd
+
+
 ui:
-  <<: *common
-  lifecycle:
-    preStopSleep: 30
+  enabled: true
+  name: ui
+  <<: *comp
+
+  image:
+    repository: adevinta/vulcan-ui
+    tag: latest
+    pullPolicy: Always
+
+  healthcheckPath: /index.html
+
   infra:
     sqs: false
 
-insights:
-  <<: *common
-  lifecycle:
-    preStopSleep: 30
   conf:
-    proxies:
-      - name: private
-        s3Bucket: insights
-        prefix: ""
-      - name: public
-        s3Bucket: public-insights
-        prefix: "/public"
+    apiUrl: # https://vulcan-api/api/v1/
+    docs:
+      apiLink: # vulcan API doc
+      whitelistingLink: # vulcan scanner IPs
+      discoveryLink: # vulcan asset discovery doc
+      auditRoleLink: # vulcan AWS audit role doc
+    contact:
+      email: # vulcan contact email
+      slack: # vulcan slack channel
+
+
+insights:
+  enabled: true
+  name: insights
+  <<: *comp
+
+  image:
+    repository: pottava/s3-proxy
+    tag: "2.0"
+    pullPolicy: Always
+
+  healthcheckPath: /healthcheck
+
+  # -- proxy settings. mandatory for insights
+  proxy:
+    <<: *proxy
+    enabled: true
+    cache:
+      enabled: true
+
+  conf:
+    region:
+    log: "false"
+    private:
+      name: private
+      s3Bucket: insights
+      prefix: ""
+    public:
+      name: public
+      s3Bucket: public-insights
+      prefix: "/public"
+
 
 reportsgenerator:
-  <<: *common
-  lifecycle:
-    preStopSleep: 30
+  enabled: true
+  name: reportsgenerator
+  <<: *comp
+
+  image:
+    repository: adevinta/vulcan-reports-generator
+    tag: latest
+    pullPolicy: Always
+
+  healthcheckPath: /healthcheck
+
   infra:
     sqs: true
+
   conf:
     logLevel: "error"
     queueArn: arn:aws:sqs:local:012345678900:VulcanK8SReportsGenerator
     queueName: VulcanK8SReportsGenerator
+    scanengineUrl:
+    resultsUrl:
     generators:
       scan:
+        emailSubject: "Security Overview"
         publicBucket: public-insights
         privateBucket: insights
+        gaId: UA-000000000-0
+        proxyEndpoint: # https://vulcan-insights
+        contact:
+          companyName: Example
+          email: vulcan@example.com
+          jira: https://jira.example.com/
+          slackChannel: https://www.slack.com/archives/XXXXX
+          supportEmail: vulcan@example.com
+        docs:
+          apiDocLink: https://www.example.com/org/vulcan-api/examples/#how-do-i-list-the-members-of-a-team
+          roadmapLink: https://docs.google.com/spreadsheets/d/xxxxxxxxxxxxxxx/edit?usp=sharing
+        vulcanUi: # https://vulcan-www
+        viewReport: # vulcan-api/api/v1/report?team_id=%s&scan_id=%s
+        redirectUrl: # https://public-redirect/index.html?reportUrl=
+      livereport:
+        emailSubject: #Vulcan Digest
+    ses:
+      region:
+      from: tbd@tbd.com
+      cc: '["tbd@tbd.com"]'
+
+  # -- postgres database settings
   db:
     <<: *db
     name: reportsgenerator
 
+  dogstatsd: *dogstatsd
+
+
+redis:
+  enabled: true
+  name: redis
+  <<: *comp
+
+  image:
+    repository: bitnami/redis
+    tag: "6.0.12"
+    pullPolicy: Always
+
+  containerPort: 6379
+
+  conf:
+    redisPassword: TBD 
+
+  service:
+    type: ClusterIP
+    port: 6379
+    protocol: TCP
+    targetPort: 6379
+    portName: redis
+
+
 metrics:
+  enabled: true
+  name: metrics
+  <<: *comp
+
+  image:
+    repository: containers.mpi-internal.com/spt-security/vulcan-metrics
+    tag: latest
+    pullPolicy: Always
+
   proxy:
     enabled: false
-  infra:
-    sqs: true
-  dogstatsd:
-    <<: *dogstatsd
-    enabled: true
+
   conf:
+    region:
+    logLevel: warn
+    sqsPollingInterval: 10
     checksQueueArn: arn:aws:sqs:local:012345678900:VulcanK8SMetricsChecks
     scansQueueArn: arn:aws:sqs:local:012345678900:VulcanK8SMetricsScans
     findingsQueueArn: arn:aws:sqs:local:012345678900:VulcanK8SMetricsFindings
+    resultsScheme: http
+    devHoseURL: http://devhose/devhose
+    devHoseToken: token
+    devHoseTenant: tbd
+    devHoseMetricsSource: tbd
+    devHoseFindingsSource: tbd
+    redisAddr:
+    redisPassword:
+    resultsHost:
+    vulcanApi: # http://host/api
+    vulcanAPIToken: token
+    vulcanAPIExternal: # https://external/api
+
+  infra:
+    sqs: true
+
+  dogstatsd: *dogstatsd
+
 
 vulndbapi:
-  <<: *common
-  lifecycle:
-    preStopSleep: 30
+  enabled: true
+  name: vulndbapi
+  <<: *comp
+
+  image:
+    repository: adevinta/vulnerability-db-api
+    tag: latest
+    pullPolicy: Always
+
+  healthcheckPath: /healthcheck
+
   conf:
-    logLevel: "error"
+    logLevel: info
+
+  # -- postgres database settings
   db:
     <<: *db
     name: vulnerabilitydb
 
+
 vulndb:
-  <<: *common
-  proxy:
-    enabled: false
-  infra:
-    sqs: true
-    sns: true
+  enabled: true
+  name: vulndb
+  <<: *comp
+
+  image:
+    repository: adevinta/vulnerability-db
+    tag: latest
+    pullPolicy: Always
+
   conf:
     logLevel: "error"
     checksQueueArn: arn:aws:sqs:local:012345678900:VulcanK8SVulnDBChecks
     vulnsTopicArn: arn:aws:sns:local:012345678900:VulcanK8SVulnDBVulns
+    maxEventAge: 365
+    resultsUrl: http://vulcan-results.vulcan.com
+    resultsInternalUrl: # http://vulcan-results
+
+  proxy:
+    enabled: false
+
+  infra:
+    sqs: true
+    sns: true
+
+  # -- postgres database settings
   db:
     <<: *db
     name: vulnerabilitydb
 
-sqsExporter:
+
+sqsexporter:
   enabled: true
+  name: sqsexporter
+  <<: *comp
   image:
-    repository: jesusfcr/sqs-exporter
-    tag: custom-endpoint
+    repository: jesusfcr/sqs-prometheus-exporter
+    tag: 0.2.0
+    pullPolicy: Always
+
   queueNamePrefix: VulcanK8S
-  resources: {}
+  infra:
+    sqs: true
+
 
 dogstatsd:
   apiKey: TBD
-
-# customTplManifests: |
-#     apiVersion: v1
-#     kind: ConfigMap
-#     metadata:
-#       labels:
-#         {{- include "vulcan.labels" . | nindent 4 }}
-#       name: {{ .Release.Name }}-extra
-#     data:
-#       FOO: var
-
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: false
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name:
-
-podSecurityContext: {}
-  # fsGroup: 2000
-
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
