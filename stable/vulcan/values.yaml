@@ -12,14 +12,14 @@ anchors:
   db: &db
     host:
     name:
-    user: postgres
+    user:
     password: TBD
-    port:
+    port: 5432
     sslMode: disable
     ca:
 
   dogstatsd: &dogstatsd
-    image: 
+    image:
       repository: datadog/dogstatsd
       tag: 7.27.0
     enabled: true
@@ -40,13 +40,13 @@ anchors:
       enabled: true
       image:
         repository: haproxy
-        tag: 2.3-alpine
+        tag: 2.3.10-alpine
       port: 9090
       metricsPort: 9101
       cache:
         enabled: false
-        maxSize: 64 # mb
-        maxAge: 240 # seconds
+        maxSize: 64   # mb
+        maxAge: 240   # seconds
       probe: false
       probePath: /healthz
       probeInitialDelay: 5
@@ -124,11 +124,13 @@ anchors:
 waitfordb:
   image:
     repository: postgres
-    tag: 9.6-alpine
+    tag: 9.6.21-alpine
 
 
 postgresql:
   enabled: false
+  service:
+    port: 5432
   postgresqlUsername: postgres
   postgresqlPassword: TBD
   postgresqlDatabase: persistence
@@ -151,6 +153,18 @@ postgresql:
   metrics:
     enabled: true
 
+redis:
+  enabled: false
+  architecture: standalone
+  auth:
+    enabled: false
+  master:
+    service:
+      port: 6379
+    persistence:
+      enabled: false
+  serviceAccount:
+    create: false
 
 goaws:
   enabled: false
@@ -166,8 +180,8 @@ goaws:
   config:
     goaws.yaml: |
       Local:
-        Host: {{ .Release.Name }}-goaws
-        Port: {{ .Values.containerPort }}
+        Host: {{ include "goaws.fullname" . }}
+        Port: {{ .Values.goaws.containerPort }}
         AccountId: "012345678900"
         LogToFile: false
         QueueAttributeDefaults:
@@ -175,23 +189,21 @@ goaws:
           ReceiveMessageWaitTimeSeconds: 0
         Queues:
           - Name: VulcanK8SAPIScans
-          - Name: VulcanK8SChecksGeneric
-          - Name: VulcanK8SChecksTenable
           - Name: VulcanK8SMetricsChecks
-          - Name: VulcanK8SMetricsScans
           - Name: VulcanK8SMetricsFindings
-          - Name: VulcanK8SScanEngineChecks
+          - Name: VulcanK8SMetricsScans
           - Name: VulcanK8SReportsGenerator
-          - Name: VulcanK8SPersistenceChecks
+          - Name: VulcanK8SScanEngineCheckStatus
+          - Name: VulcanK8SV2ChecksGeneric
+          - Name: VulcanK8SV2ChecksTenable
           - Name: VulcanK8SVulnDBChecks
         Topics:
           - Name: VulcanK8SChecks
             Subscriptions:
               - QueueName: VulcanK8SMetricsChecks
                 Raw: true
-              - QueueName: VulcanK8SScanEngineChecks
+              - QueueName: VulcanK8SVulnDBChecks
                 Raw: true
-                #FilterPolicy: '{"foo": ["bar"]}'
           - Name: VulcanK8SScans
             Subscriptions:
               - QueueName: VulcanK8SAPIScans
@@ -202,11 +214,8 @@ goaws:
             Subscriptions:
               - QueueName: VulcanK8SReportsGenerator
                 Raw: true
-          - Name: VulcanK8SScanEngineChecks
-            Subscriptions:
-              - QueueName: VulcanK8SPersistenceChecks
-                Raw: true
           - Name: VulcanK8SVulnDBVulns
+            Subscriptions:
               - QueueName: VulcanK8SMetricsFindings
                 Raw: true
         RandomLatency:
@@ -215,7 +224,7 @@ goaws:
 
 minio:
   enabled: false
-  nameOverride: vulcans3
+  nameOverride: minio
   mode: standalone
   defaultBuckets: "reports,logs,scans,insights,public-insights,crontinuous"
   serviceAccount:
@@ -255,7 +264,7 @@ results:
 
   dogstatsd: *dogstatsd
 
-  infra:
+  meta:
     s3: true
 
 
@@ -271,7 +280,7 @@ persistence:
 
   healthcheckPath: /status
 
-  infra:
+  meta:
     s3: true
     sns: true
     sqs: true
@@ -303,13 +312,14 @@ stream:
 
   conf:
     logLevel: "DEBUG"
-    redis:
-      host: TBD
-      port: TDB
-      usr: TBD
-      pwd: TBD
-      db: 0   # default
-      ttl: 0  # default
+    ttl: 0  # default
+
+  redis:
+    host:
+    port:
+    username:
+    password:
+    db: 0   # default
 
   dogstatsd: *dogstatsd
 
@@ -324,7 +334,7 @@ api:
     tag: latest
     pullPolicy: Always
 
-  infra:
+  meta:
     sqs: true
     sns: true
     s3: true
@@ -353,12 +363,12 @@ api:
     saml:
       metadata: https://okta/app/TBD/sso/saml/metadata
       issuer: http://okta/TBD
-      callback: # https://vulcan-api/api/v1/login/callback
+      callback:   # https://vulcan-api/api/v1/login/callback
       trustedDomains: '[]'  # '["vulcan-api"]'
     log:
       level: INFO
     defaultOwners: '[]'  # '["owner1","owner2"]'
-    vulndbapiUrl: # http://vulnerabilitydbapi
+    vulndbapiUrl:   # http://vulnerabilitydbapi
     persistenceHost:
     crontinuousUrl:
     reportsgeneratorUrl:
@@ -387,7 +397,7 @@ crontinuous:
     tag: latest
     pullPolicy: Always
 
-  infra:
+  meta:
     s3: true
 
   healthcheckPath: /healthcheck
@@ -397,7 +407,7 @@ crontinuous:
     vulcanToken: TBDTBDTBD
     crontinuousBucket: crontinuous
     vulcanUser: tbd
-    vulcanApi:  # http://host/api
+    vulcanApi:    # http://host/api
     enableTeamsWhitelistScan: "false"
     teamsWhitelistScan: '[]'
     enableTeamsWhitelistReport: "false"
@@ -416,23 +426,23 @@ scanengine:
 
   healthcheckPath: /v1/healthcheck
 
-  infra:
+  meta:
     sqs: true
     sns: true
 
   conf:
     logLevel: "error"
-    queueArn: arn:aws:sqs:local:012345678900:VulcanK8SScanEngineChecks
-    queueName: VulcanK8SScanEngineChecks
+    queueArn: arn:aws:sqs:local:012345678900:VulcanK8SScanEngineCheckStatus
+    queueName: VulcanK8SScanEngineCheckStatus
     scansSNS:
       topicArn: arn:aws:sns:local:012345678900:VulcanK8SScans
     checksSNS:
-      topicArn: arn:aws:sns:eu-west-1:012345678900:VulcanK8SScanEngineChecks
+      topicArn: arn:aws:sns:local:012345678900:VulcanK8SChecks
     queues:
       default:
-        arn: VulcanK8SChecksGeneric
+        arn: arn:aws:sqs:local:012345678900:VulcanK8SV2ChecksGeneric
       nessus:
-        arn: VulcanK8SChecksTenable
+        arn: arn:aws:sqs:local:012345678900:VulcanK8SV2ChecksTenable
         checktypes: '["vulcan-nessus"]'
     persistenceHost:
     streamUrl:
@@ -460,19 +470,19 @@ ui:
 
   healthcheckPath: /index.html
 
-  infra:
+  meta:
     sqs: false
 
   conf:
-    apiUrl: # https://vulcan-api/api/v1/
+    apiUrl:   # https://vulcan-api/api/v1/
     docs:
-      apiLink: # vulcan API doc
-      whitelistingLink: # vulcan scanner IPs
-      discoveryLink: # vulcan asset discovery doc
-      auditRoleLink: # vulcan AWS audit role doc
+      apiLink: https://docs.erxample.com/vulcan/vulcan-api/   # vulcan API doc
+      whitelistingLink:   # vulcan scanner IPs
+      discoveryLink: https://docs.example.com/vulcan/discovery  # vulcan asset discovery doc
+      auditRoleLink: https://docs.example.com/vulcan/network-access  # vulcan AWS audit role doc
     contact:
-      email: # vulcan contact email
-      slack: # vulcan slack channel
+      email: vulcan@example.com   # vulcan contact email
+      slack: https://example.slack.com/archives/XXXXX    # vulcan slack channel
 
 
 insights:
@@ -519,7 +529,7 @@ reportsgenerator:
 
   healthcheckPath: /healthcheck
 
-  infra:
+  meta:
     sqs: true
 
   conf:
@@ -534,21 +544,21 @@ reportsgenerator:
         publicBucket: public-insights
         privateBucket: insights
         gaId: UA-000000000-0
-        proxyEndpoint: # https://vulcan-insights
+        proxyEndpoint:     # https://vulcan-insights
         contact:
           companyName: Example
           email: vulcan@example.com
           jira: https://jira.example.com/
-          slackChannel: https://www.slack.com/archives/XXXXX
+          slackChannel: https://example.slack.com/archives/XXXXX
           supportEmail: vulcan@example.com
         docs:
-          apiDocLink: https://www.example.com/org/vulcan-api/examples/#how-do-i-list-the-members-of-a-team
-          roadmapLink: https://docs.google.com/spreadsheets/d/xxxxxxxxxxxxxxx/edit?usp=sharing
-        vulcanUi: # https://vulcan-www
-        viewReport: # vulcan-api/api/v1/report?team_id=%s&scan_id=%s
-        redirectUrl: # https://public-redirect/index.html?reportUrl=
+          apiDocLink: https://docs.example.com/vulcan/vulcan-api/examples/#how-do-i-list-the-members-of-a-team
+          roadmapLink: https://docs.example.com/vulcan/roadmap
+        vulcanUi:     # https://vulcan-www
+        viewReport:   # vulcan-api/api/v1/report?team_id=%s&scan_id=%s
+        redirectUrl:  # https://public-redirect/index.html?reportUrl=
       livereport:
-        emailSubject: #Vulcan Digest
+        emailSubject:   # Vulcan Digest
     ses:
       region:
       from: tbd@tbd.com
@@ -560,29 +570,6 @@ reportsgenerator:
     name: reportsgenerator
 
   dogstatsd: *dogstatsd
-
-
-redis:
-  enabled: true
-  name: redis
-  <<: *comp
-
-  image:
-    repository: bitnami/redis
-    tag: "6.0.12"
-    pullPolicy: Always
-
-  containerPort: 6379
-
-  conf:
-    redisPassword: TBD 
-
-  service:
-    type: ClusterIP
-    port: 6379
-    protocol: TCP
-    targetPort: 6379
-    portName: redis
 
 
 metrics:
@@ -611,14 +598,15 @@ metrics:
     devHoseTenant: tbd
     devHoseMetricsSource: tbd
     devHoseFindingsSource: tbd
-    redisAddr:
-    redisPassword:
-    resultsHost:
-    vulcanApi: # http://host/api
+    vulcanApi:    # http://host/api
     vulcanAPIToken: token
-    vulcanAPIExternal: # https://external/api
+    vulcanAPIExternal:    # https://external/api
 
-  infra:
+  # : redis sidecar
+  redis:
+    image: bitnami/redis:6.2.3
+
+  meta:
     sqs: true
 
   dogstatsd: *dogstatsd
@@ -661,12 +649,12 @@ vulndb:
     vulnsTopicArn: arn:aws:sns:local:012345678900:VulcanK8SVulnDBVulns
     maxEventAge: 365
     resultsUrl: http://vulcan-results.vulcan.com
-    resultsInternalUrl: # http://vulcan-results
+    resultsInternalUrl:   # http://vulcan-results
 
   proxy:
     enabled: false
 
-  infra:
+  meta:
     sqs: true
     sns: true
 
@@ -682,13 +670,24 @@ sqsexporter:
   <<: *comp
   image:
     repository: jesusfcr/sqs-prometheus-exporter
-    tag: 0.2.0
+    tag: 0.3.0
     pullPolicy: Always
 
   queueNamePrefix: VulcanK8S
-  infra:
+  meta:
     sqs: true
 
 
 dogstatsd:
   apiKey: TBD
+
+
+# -- Allows to inject custom manifests that would be processed as templates
+extraManifests: {}
+  # config1: |
+  #   apiVersion: v1
+  #   kind: ConfigMap
+  #   ...
+  # config2: |
+  #   apiVersion: v1
+  #   ...

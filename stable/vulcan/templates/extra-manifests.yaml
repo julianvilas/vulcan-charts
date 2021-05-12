@@ -1,0 +1,11 @@
+{{- $root := . -}}
+{{- with .Values.extraManifests }}
+{{- range (values .) }}
+---
+{{- if typeIs "string" . }}
+{{- tpl . $root }}
+{{- else }}
+{{- tpl (. | toYaml) $root }}
+{{- end }}
+{{- end }}
+{{- end }}

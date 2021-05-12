@@ -74,10 +74,6 @@ app.kubernetes.io/instance: {{ include "vulcan.name" . }}
 {{- printf "%s-%s" (include "vulcan.fullname" .) .Values.persistence.name -}}
 {{- end -}}
 
-{{- define "redis.fullname" -}}
-{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.redis.name -}}
-{{- end -}}
-
 {{- define "reportsgenerator.fullname" -}}
 {{- printf "%s-%s" (include "vulcan.fullname" .) .Values.reportsgenerator.name -}}
 {{- end -}}
@@ -143,22 +139,122 @@ app.kubernetes.io/instance: {{ include "vulcan.name" . }}
 {{- printf "http://%s" (include "stream.fullname" .) -}}
 {{- end -}}
 
-{{- define "redis.url" -}}
-{{- printf "%s:6379" (include "redis.fullname" .) -}}
-{{- end -}}
-
 {{- define "minio.url" -}}
-{{- printf "http://%s-vulcans3" .Release.Name -}}
+  {{- if .Values.goaws.enabled -}}
+    {{- printf "http://%s-minio" .Release.Name -}}
+  {{- end -}}
 {{- end -}}
 
 {{- define "sqs.url" -}}
-{{- printf "http://%s" (include "goaws.fullname" .) -}}
+  {{- if .Values.goaws.enabled -}}
+    {{- printf "http://%s" (include "goaws.fullname" .) -}}
+  {{- end -}}
 {{- end -}}
 
 {{- define "sns.url" -}}
-{{- printf "http://%s" (include "goaws.fullname" .) -}}
+  {{- if .Values.goaws.enabled -}}
+    {{- printf "http://%s" (include "goaws.fullname" .) -}}
+  {{- end -}}
 {{- end -}}
 
-{{- define "postgresqlHost" -}}
-{{- printf "%s-postgresql" .Release.Name -}}
+
+{{- define "pg.host" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- printf "%s-postgresql" .Release.Name -}}
+  {{- else -}}
+    {{- .Values.comp.db.host -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "pg.database" -}}
+  {{- .Values.comp.db.name -}}
+{{- end -}}
+
+{{- define "pg.username" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- .Values.postgresql.postgresqlUsername -}}
+  {{- else -}}
+    {{- .Values.comp.db.user -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "pg.password" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- .Values.postgresql.postgresqlPassword | default "" -}}
+  {{- else -}}
+    {{- .Values.comp.db.password | default "" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "pg.port" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- .Values.postgresql.service.port | default "5432" -}}
+  {{- else -}}
+    {{- .Values.comp.db.port | default "5432" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "pg.sslMode" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- "disable" -}}
+  {{- else -}}
+    {{- .Values.comp.db.sslMode | default "allow" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "pg.b64ca" -}}
+  {{- if and (not .Values.postgresql.enabled) .Values.comp.db.ca -}}
+    {{- .Values.comp.db.ca | b64enc -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "pg.encryptedPassword" -}}
+  {{- include "pg.password" . | b64enc -}}
+{{- end -}}
+
+
+{{- define "redis.host" -}}
+  {{- if .Values.redis.enabled -}}
+    {{- printf "%s-redis-master" .Release.Name -}}
+  {{- else -}}
+    {{- .Values.comp.redis.host -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "redis.db" -}}
+  {{- .Values.comp.redis.db | default "0" -}}
+{{- end -}}
+
+{{- define "redis.username" -}}
+  {{- if .Values.redis.enabled -}}
+    {{- .Values.redis.username -}}
+  {{- else -}}
+    {{- .Values.comp.redis.username -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "redis.password" -}}
+  {{- if and .Values.redis.enabled .Values.redis.auth -}}
+    {{- .Values.redis.auth.password | default "" -}}
+  {{- else -}}
+    {{- .Values.comp.redis.password | default "" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "redis.port" -}}
+  {{- if .Values.redis.enabled -}}
+    {{- .Values.redis.master.service.port | default "6379" -}}
+  {{- else -}}
+    {{- .Values.comp.redis.port | default "6379" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "redis.encryptedPassword" -}}
+  {{- if (include "redis.password" .) -}}
+    {{- include "redis.password" . | b64enc -}}
+  {{- end -}}
+{{- end -}}
+
+{{- define "redis.url" -}}
+{{- printf "%s:%s" (include "redis.host" .) (include "redis.port" .) -}}
 {{- end -}}
