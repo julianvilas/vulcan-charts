@@ -37,11 +37,11 @@ kind: Secret
 metadata:
   name: myrelease-vulcan-api
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: api
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: api
 type: Opaque
 data:
   PG_PASSWORD: "VEJE"
@@ -54,11 +54,11 @@ kind: Secret
 metadata:
   name: myrelease-vulcan-crontinuous
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: crontinuous
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: crontinuous
 type: Opaque
 data:
   VULCAN_TOKEN: "VEJEVEJEVEJE"
@@ -69,11 +69,11 @@ kind: Secret
 metadata:
   name: myrelease-vulcan-dogstatsd
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: dogstatsd
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: dogstatsd
 type: Opaque
 data:
   DD_API_KEY: "VEJE"
@@ -84,11 +84,11 @@ kind: Secret
 metadata:
   name: myrelease-vulcan-metrics
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: metrics
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: metrics
 type: Opaque
 data:
   DEVHOSE_TOKEN: "dG9rZW4="
@@ -100,11 +100,11 @@ kind: Secret
 metadata:
   name: myrelease-vulcan-persistence
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: persistence
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: persistence
 type: Opaque
 data:
   POSTGRES_PASSWORD: "VEJE"
@@ -116,11 +116,11 @@ kind: Secret
 metadata:
   name: myrelease-vulcan-reportsgenerator
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: reportsgenerator
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: reportsgenerator
 type: Opaque
 data:
   PG_PASSWORD: "VEJE"
@@ -131,11 +131,11 @@ kind: Secret
 metadata:
   name: myrelease-vulcan-scanengine
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: scanengine
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: scanengine
 type: Opaque
 data:
   PG_PASSWORD: "VEJE"
@@ -146,11 +146,11 @@ kind: Secret
 metadata:
   name: myrelease-vulcan-vulndb
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: vulndb
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: vulndb
 type: Opaque
 data:
   PG_PASSWORD: "VEJE"
@@ -161,11 +161,11 @@ kind: Secret
 metadata:
   name: myrelease-vulcan-vulndbapi
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: vulndbapi
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: vulndbapi
 type: Opaque
 data:
   PG_PASSWORD: "VEJE"
@@ -344,11 +344,11 @@ kind: ConfigMap
 metadata:
   name: myrelease-vulcan-api-proxy
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: api
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: api-proxy
 data:
   haproxy.cfg: |
     global
@@ -388,11 +388,11 @@ kind: ConfigMap
 metadata:
   name: myrelease-vulcan-crontinuous-proxy
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: crontinuous
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: crontinuous-proxy
 data:
   haproxy.cfg: |
     global
@@ -432,11 +432,11 @@ kind: ConfigMap
 metadata:
   name: myrelease-vulcan-goaws
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: goaws
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: goaws
 data:
   goaws.yaml: |
     Local:
@@ -488,11 +488,11 @@ kind: ConfigMap
 metadata:
   name: myrelease-vulcan-insights-proxy
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: insights
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: insights
 data:
   haproxy.cfg: |
     global
@@ -540,11 +540,11 @@ kind: ConfigMap
 metadata:
   name: myrelease-vulcan-persistence-proxy
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: persistence
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: persistence-proxy
 data:
   haproxy.cfg: |
     global
@@ -584,11 +584,11 @@ kind: ConfigMap
 metadata:
   name: myrelease-vulcan-reportsgenerator-proxy
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: reportsgenerator
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: reportsgenerator-proxy
 data:
   haproxy.cfg: |
     global
@@ -628,11 +628,11 @@ kind: ConfigMap
 metadata:
   name: myrelease-vulcan-results-proxy
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: results
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: results-proxy
 data:
   haproxy.cfg: |
     global
@@ -672,11 +672,11 @@ kind: ConfigMap
 metadata:
   name: myrelease-vulcan-scanengine-proxy
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: scanengine
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: scanengine-proxy
 data:
   haproxy.cfg: |
     global
@@ -716,11 +716,11 @@ kind: ConfigMap
 metadata:
   name: myrelease-vulcan-stream-proxy
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: stream
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: stream-proxy
 data:
   haproxy.cfg: |
     global
@@ -760,11 +760,11 @@ kind: ConfigMap
 metadata:
   name: myrelease-vulcan-ui-proxy
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: ui
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: ui-proxy
 data:
   haproxy.cfg: |
     global
@@ -804,11 +804,11 @@ kind: ConfigMap
 metadata:
   name: myrelease-vulcan-vulndbapi-proxy
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: vulndbapi
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: vulndbapi-proxy
 data:
   haproxy.cfg: |
     global
@@ -997,11 +997,11 @@ kind: Service
 metadata:
   name: myrelease-vulcan-api
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: api
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: api
 spec:
   type: ClusterIP
   ports:
@@ -1019,11 +1019,11 @@ kind: Service
 metadata:
   name: myrelease-vulcan-crontinuous
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: crontinuous
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: crontinuous
 spec:
   type: ClusterIP
   ports:
@@ -1041,11 +1041,11 @@ kind: Service
 metadata:
   name: myrelease-vulcan-goaws
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: goaws
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: goaws
 spec:
   type: ClusterIP
   ports:
@@ -1063,11 +1063,11 @@ kind: Service
 metadata:
   name: myrelease-vulcan-insights
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: insights
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: insights
 spec:
   type: ClusterIP
   ports:
@@ -1085,11 +1085,11 @@ kind: Service
 metadata:
   name: myrelease-vulcan-persistence
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: persistence
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: persistence
 spec:
   type: ClusterIP
   ports:
@@ -1107,11 +1107,11 @@ kind: Service
 metadata:
   name: myrelease-vulcan-reportsgenerator
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: reportsgenerator
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: reportsgenerator
 spec:
   type: ClusterIP
   ports:
@@ -1129,11 +1129,11 @@ kind: Service
 metadata:
   name: myrelease-vulcan-results
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: results
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: results
 spec:
   type: ClusterIP
   ports:
@@ -1151,11 +1151,11 @@ kind: Service
 metadata:
   name: myrelease-vulcan-scanengine
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: scanengine
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: scanengine
 spec:
   type: ClusterIP
   ports:
@@ -1173,11 +1173,11 @@ kind: Service
 metadata:
   name: myrelease-vulcan-stream
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: stream
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: stream
 spec:
   type: ClusterIP
   ports:
@@ -1195,11 +1195,11 @@ kind: Service
 metadata:
   name: myrelease-vulcan-ui
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: ui
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: ui
 spec:
   type: ClusterIP
   ports:
@@ -1217,11 +1217,11 @@ kind: Service
 metadata:
   name: myrelease-vulcan-vulndbapi
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: vulndbapi
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: vulndbapi
 spec:
   type: ClusterIP
   ports:
@@ -1348,11 +1348,11 @@ kind: Deployment
 metadata:
   name: myrelease-vulcan-api
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: api
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: api
 spec:
   selector:
     matchLabels:
@@ -1364,8 +1364,8 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: api
       annotations:
-        checksum/secrets: 065eb3c116adcd54fb6b7361375402302acf3d1b3a42bf48521c2064703259f6
-        checksum/config-proxy: 430d11cfdf06fd0eeb7753eceb504a40905f5fdf333ba10746c9695dc23f48e4
+        checksum/secrets: 13100c79037d3e2713b4039405a3d234cf503d397ee8b37a72011146ff5f5bd2
+        checksum/config-proxy: 03133a76e9544b6e6f3766502f64d0105cbdcb9c5b8407faaba7a0842ce30cc6
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
     spec:
@@ -1531,11 +1531,11 @@ kind: Deployment
 metadata:
   name: myrelease-vulcan-crontinuous
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: crontinuous
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: crontinuous
 spec:
   selector:
     matchLabels:
@@ -1547,8 +1547,8 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: crontinuous
       annotations:
-        checksum/secrets: 9b40d939e5d8851a3d12909611ae088f8695a3a8315494d05b9875f291454bd7
-        checksum/config-proxy: 7a9ff685af6768c75cfc9a7722014b180663701e41032f1bb06e714b50bc63b3
+        checksum/secrets: d14a9ec5e75d5a0b27a46825dd93d170ff2448a77d3d81ff15015aec43402c49
+        checksum/config-proxy: e40f3f661acd0d92b46374e07e390dc75914ca326c9dd621bc5eae11a927c3b7
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
     spec:
@@ -1651,11 +1651,11 @@ kind: Deployment
 metadata:
   name: myrelease-vulcan-goaws
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: goaws
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: goaws
 spec:
   selector:
     matchLabels:
@@ -1667,7 +1667,7 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: goaws
       annotations:
-        checksum/config: 9764e49c3c2a2c332977f090ae7144c803f660d265b273af23f6f090e6bcd9b8
+        checksum/config: 2bd6038f27b7b28c815a74ef6cc5c1fecfa818c43d14da10f55adee1f6eab046
     spec:
       containers:
       - name: goaws
@@ -1691,11 +1691,11 @@ kind: Deployment
 metadata:
   name: myrelease-vulcan-insights
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: insights
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: insights
 spec:
   selector:
     matchLabels:
@@ -1707,7 +1707,7 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: insights
       annotations:
-        checksum/config: ae78f3bdf3bfc91f4fe4e4f8c9a5457819610ea3baa34204a633a21e45b04113
+        checksum/config: f46a46fbb3a732c5772da0c9a6336dc0b7b8f58647d8b0a729cb06f1a95025a5
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
     spec:
@@ -1826,11 +1826,11 @@ kind: Deployment
 metadata:
   name: myrelease-vulcan-metrics
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: metrics
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: metrics
 spec:
   selector:
     matchLabels:
@@ -1925,11 +1925,11 @@ kind: Deployment
 metadata:
   name: myrelease-vulcan-persistence
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: persistence
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: persistence
 spec:
   selector:
     matchLabels:
@@ -1941,8 +1941,8 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: persistence
       annotations:
-        checksum/secrets: 911c6f86a2ec3decd51314f8838cc54459aa09bf24c0d7577e7bb383e1295554
-        checksum/config-proxy: 3151e6a108ce8bd5b672ea6f322cfdbdb956427df391ef2aebbc022bffb77e0e
+        checksum/secrets: 12fd46aa951e2066e05abdc3f143e97871c9d5a5598623bbf585b4ab88c32cd3
+        checksum/config-proxy: 1203687cf9f74590a57a319d867ab8408a2c9d03b1936cf53e3f228766dc14da
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
     spec:
@@ -2072,11 +2072,11 @@ kind: Deployment
 metadata:
   name: myrelease-vulcan-reportsgenerator
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: reportsgenerator
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: reportsgenerator
 spec:
   selector:
     matchLabels:
@@ -2088,8 +2088,8 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: reportsgenerator
       annotations:
-        checksum/secrets: 106dabcea10ca50a85ae410036c1db26a256198d6e584ce9c12e173d5b4db9d8
-        checksum/config-proxy: c1dd9fc8495a31037e3e64aed4eb09945ecde91a29fd2766c6397a1c0d0c32fb
+        checksum/secrets: 544302a326c11f7fac5187a2d0a6893dd8f7cadc370b5baae2edd2eaaa9199b4
+        checksum/config-proxy: 5623ce9727008e4d2cbcfdbecaeeca8fdfe2bd5a0a2c4cc48cc402fa5c575b70
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
     spec:
@@ -2246,11 +2246,11 @@ kind: Deployment
 metadata:
   name: myrelease-vulcan-results
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: results
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: results
 spec:
   selector:
     matchLabels:
@@ -2262,7 +2262,7 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: results
       annotations:
-        checksum/config-proxy: 889a9e304015fded6ad60e3ea92495b8c3b71461039bdb6b414317fbd332e7b0
+        checksum/config-proxy: b559e4789f67835f935eeb8566a468f5c1bb79d12e87ccf4966684bccaf42cdf
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
     spec:
@@ -2370,11 +2370,11 @@ kind: Deployment
 metadata:
   name: myrelease-vulcan-scanengine
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: scanengine
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: scanengine
 spec:
   selector:
     matchLabels:
@@ -2386,8 +2386,8 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: scanengine
       annotations:
-        checksum/secrets: 151cafab84fb11c02713d083259c429c7d3deae2688ba60500e991ce6da9126b
-        checksum/config-proxy: bdfccf5fa5abe44073d6aeb882965d1a15b0b0587d0131fb95a279bcbbfd8e99
+        checksum/secrets: 14e98fb8c6ce2e64cc21e60a893e90b4e5a4d3970f6219e1d54e05e10c58893a
+        checksum/config-proxy: 84186a4ee695cb9ddc9231e94bea026c16aa4c07e9ebae3758eee29c0c0207f0
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
     spec:
@@ -2523,8 +2523,9 @@ kind: Deployment
 metadata:
   name: myrelease-vulcan-sqsexporter
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: sqsexporter
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: sqsexporter
@@ -2577,11 +2578,11 @@ kind: Deployment
 metadata:
   name: myrelease-vulcan-stream
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: stream
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: stream
 spec:
   selector:
     matchLabels:
@@ -2593,7 +2594,7 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: stream
       annotations:
-        checksum/config-proxy: ac1119a231287803c9fdb74c0c0e0e123662655f5cca5a15acbfba31c2f20677
+        checksum/config-proxy: 5ecaea5707c530ae8cdd3832ee980a69c184f46bd63def83be2d0ad24bc00a66
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
     spec:
@@ -2687,11 +2688,11 @@ kind: Deployment
 metadata:
   name: myrelease-vulcan-ui
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: ui
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: ui
 spec:
   selector:
     matchLabels:
@@ -2703,7 +2704,7 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: ui
       annotations:
-        checksum/config-proxy: 3af3dd568f76e45913660b45da6ca7cb5a9de0491e386a8a9e7d596c0528093e
+        checksum/config-proxy: f2221ec1d916a5746e8fc2b6189aac36f25141a518fd07cf5df55f2a50c9664c
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
     spec:
@@ -2785,11 +2786,11 @@ kind: Deployment
 metadata:
   name: myrelease-vulcan-vulndb
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: vulndb
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: vulndb
 spec:
   selector:
     matchLabels:
@@ -2801,7 +2802,7 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: vulndb
       annotations:
-        checksum/secrets: 56951f86d2133e0adaefad713ca6f7f18f6c5f4fba7ba7e2efa10b78f397b41a
+        checksum/secrets: 38e4696d02b2ed9b53f439a1c7839c820b3b59161f8ac50791f48dfcd58173ef
         
     spec:
       initContainers:
@@ -2869,11 +2870,11 @@ kind: Deployment
 metadata:
   name: myrelease-vulcan-vulndbapi
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: vulndbapi
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: vulndbapi
 spec:
   selector:
     matchLabels:
@@ -2885,8 +2886,8 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: vulndbapi
       annotations:
-        checksum/secrets: 4163b873407098a876b91b1eab8f315129181f1c8a3b6cc93878faf6cafdacab
-        checksum/config-proxy: a1911e97cfd1eabe6006feb8320c8f7aa75525e5bb246f9458aa1fc9e8b44e2b
+        checksum/secrets: e2db735f08635a2616bcb97e9eb0272e086958c636887b6873e94b6ad813055a
+        checksum/config-proxy: d9dc9aa6ad1a49aa163240cf0a53570903aa276fbea500e1c6d51bc8bb1d8ccb
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
     spec:
@@ -3323,11 +3324,11 @@ kind: Ingress
 metadata:
   name: myrelease-vulcan-api
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: api
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: api
   annotations:
     nginx.ingress.kubernetes.io/cors-allow-origin: https://www.vulcan.local
     nginx.ingress.kubernetes.io/enable-cors: "true"
@@ -3348,11 +3349,11 @@ kind: Ingress
 metadata:
   name: myrelease-vulcan-goaws
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: goaws
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: goaws
 spec:
   rules:
     - host: "goaws.vulcan.local"
@@ -3369,11 +3370,11 @@ kind: Ingress
 metadata:
   name: myrelease-vulcan-insights
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: insights
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: insights
   annotations:
     nginx.ingress.kubernetes.io/configuration-snippet: |
       more_set_headers "X-Frame-Options: SAMEORIGIN";
@@ -3398,11 +3399,11 @@ kind: Ingress
 metadata:
   name: myrelease-vulcan-persistence
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: persistence
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: persistence
 spec:
   rules:
     - host: "persistence.vulcan.local"
@@ -3419,11 +3420,11 @@ kind: Ingress
 metadata:
   name: myrelease-vulcan-results
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: results
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: results
 spec:
   rules:
     - host: "results.vulcan.local"
@@ -3440,11 +3441,11 @@ kind: Ingress
 metadata:
   name: myrelease-vulcan-stream
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: stream
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: stream
   annotations:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
@@ -3464,11 +3465,11 @@ kind: Ingress
 metadata:
   name: myrelease-vulcan-ui
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: ui
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: ui
 spec:
   rules:
     - host: "www.vulcan.local"
@@ -3485,11 +3486,11 @@ kind: Ingress
 metadata:
   name: myrelease-vulcan-vulndbapi
   labels:
-    helm.sh/chart: vulcan-0.3.2
+    helm.sh/chart: vulcan-0.3.3
     app.kubernetes.io/instance: vulcan
+    app.kubernetes.io/name: vulndbapi
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: vulndbapi
 spec:
   rules:
     - host: "vulndbapi.vulcan.local"
