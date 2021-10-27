@@ -24,7 +24,7 @@ anchors:
   dogstatsd: &dogstatsd
     image:
       repository: datadog/dogstatsd
-      tag: 7.27.0
+      tag: 7.31.0
     enabled: true
 
   # Default values for all the components
@@ -47,7 +47,7 @@ anchors:
       enabled: true
       image:
         repository: haproxy
-        tag: 2.3.13-alpine
+        tag: 2.3.14-alpine3.14
       port: 9090
       metricsPort: 9101
       cache:
@@ -130,8 +130,8 @@ anchors:
 
 waitfordb:
   image:
-    repository: postgres
-    tag: 9.6.21-alpine
+    repository: busybox
+    tag: 1.34.0
 
 
 postgresql:
@@ -610,7 +610,7 @@ metrics:
 
   # : redis sidecar
   redis:
-    image: bitnami/redis:6.2.3
+    image: bitnami/redis:6.2.6
 
   meta:
     sqs: true
