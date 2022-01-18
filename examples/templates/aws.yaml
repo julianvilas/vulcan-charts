@@ -1937,6 +1937,10 @@ spec:
             value: "arn:aws:sqs:eu-west-1:000000000000:V2ChecksBurp"
           - name: "QUEUES_2_CHECKTYPES"
             value: "[\"vulcan-burp\"]"
+          - name: "QUEUES_3_ARN"
+            value: "arn:aws:sqs:eu-west-1:000000000000:V2ChecksBurp"
+          - name: "QUEUES_3_CHECKTYPES"
+            value: "[]"
           
           - name: DOGSTATSD_ENABLED
             value: "true"

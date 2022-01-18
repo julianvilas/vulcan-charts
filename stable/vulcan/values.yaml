@@ -453,7 +453,8 @@ scanengine:
       # - arn: arn:aws:sqs:local:012345678900:VulcanK8SV2QueueZap
       #   checktypes: '["vulcan-zap"]'
       # - arn: arn:aws:sqs:local:012345678900:VulcanK8SV2QueueBurp
-      #   checktypes: '["vulcan-burp"]'
+      #   checktypes:
+      #   - vulcan-burp
     persistenceHost:
     streamUrl:
     checkCreator:

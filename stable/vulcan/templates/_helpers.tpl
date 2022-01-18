@@ -64,6 +64,17 @@ Pod labels
 {{- end }}
 {{- end -}}
 
+{{/*
+Encode a json into an string
+*/}}
+{{- define "encodeJson2String" -}}
+  {{- if or (kindIs "slice" .) (kindIs "map" .) -}}
+    {{- . | toJson -}}
+  {{- else -}}
+    {{- . -}}
+  {{- end -}}
+{{- end -}}
+
 {{- define "api.fullname" -}}
 {{- printf "%s-%s" (include "vulcan.fullname" .) .Values.api.name -}}
 {{- end -}}
