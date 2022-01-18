@@ -49,7 +49,15 @@ api:
     saml:
       callback: https://www.vulcan.local/api/v1/login/callback
       trustedDomains: '["www.vulcan.local"]'
-
+    globalPolicies:
+      - name: web-scanning-global
+        allowedAssettypes:
+        blockedAssettypes:
+        allowedChecks:
+          - vulcan-zap
+        blockedChecks:
+        excludingSuffixes:
+          - experimental
   ingress:
     enabled: true
     annotations:

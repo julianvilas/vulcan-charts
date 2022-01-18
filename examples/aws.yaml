@@ -62,6 +62,15 @@ api:
       metadata: https://org.issuer.com/app/appcode/sso/saml/metadata
       trustedDomains: '["vulcan.example.com"]'
     secretKey: apisecretkey
+    globalPolicies:
+      - name: web-scanning-global
+        allowedAssettypes:
+        blockedAssettypes:
+        allowedChecks:
+          - vulcan-zap
+        blockedChecks:
+        excludingSuffixes:
+          - experimental
   db:
     <<: *db
     host: api.postgres.host

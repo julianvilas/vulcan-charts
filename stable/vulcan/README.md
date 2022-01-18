@@ -1,6 +1,6 @@
 # vulcan
 
-![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.4.1](https://img.shields.io/badge/Version-0.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 A Helm chart for deploying Vulcan
 
@@ -272,6 +272,7 @@ A Helm chart for deploying Vulcan
 | api.conf.awscatalogue.key | string | `"key"` |  |
 | api.conf.awscatalogue.retries | int | `1` |  |
 | api.conf.awscatalogue.retry_interval | int | `2` |  |
+| api.conf.globalPolicies | string | `nil` | array of name/allowedAssettypes/blockedAssettypes/allowedChecks/blockedChecks/excludingSuffixes which allows to customise global program policies |
 | api.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
 | api.dogstatsd.image.tag | string | `"7.32.3"` |  |
 | api.dogstatsd.enabled | bool | `true` |  |
