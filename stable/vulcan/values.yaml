@@ -388,7 +388,7 @@ api:
       retries: 1
       retry_interval: 2
     # -- array of name/allowedAssettypes/blockedAssettypes/allowedChecks/blockedChecks/excludingSuffixes which allows to customise global program policies
-    globalPolicies:
+    globalPolicies: []
       # - name: web-scanning-global
       #   allowedChecks:
       #     - vulcan-zap
@@ -461,11 +461,11 @@ scanengine:
       default:
         arn: arn:aws:sqs:local:012345678900:VulcanK8SV2ChecksGeneric
       # -- array of arn/checktypes
-      other:
+      other: []
       # - arn: arn:aws:sqs:local:012345678900:VulcanK8SV2QueueZap
       #   checktypes: '["vulcan-zap"]'
       # - arn: arn:aws:sqs:local:012345678900:VulcanK8SV2QueueBurp
-      #   checktypes: '["vulcan-burp"]'
+      #   checktypes: [vulcan-burp]
     persistenceHost:
     streamUrl:
     checkCreator:

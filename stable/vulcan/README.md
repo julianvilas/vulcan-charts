@@ -272,7 +272,7 @@ A Helm chart for deploying Vulcan
 | api.conf.awscatalogue.key | string | `"key"` |  |
 | api.conf.awscatalogue.retries | int | `1` |  |
 | api.conf.awscatalogue.retry_interval | int | `2` |  |
-| api.conf.globalPolicies | string | `nil` | array of name/allowedAssettypes/blockedAssettypes/allowedChecks/blockedChecks/excludingSuffixes which allows to customise global program policies |
+| api.conf.globalPolicies | list | `[]` | array of name/allowedAssettypes/blockedAssettypes/allowedChecks/blockedChecks/excludingSuffixes which allows to customise global program policies |
 | api.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
 | api.dogstatsd.image.tag | string | `"7.32.3"` |  |
 | api.dogstatsd.enabled | bool | `true` |  |
@@ -351,7 +351,7 @@ A Helm chart for deploying Vulcan
 | scanengine.conf.scansSNS.topicArn | string | `"arn:aws:sns:local:012345678900:VulcanK8SScans"` |  |
 | scanengine.conf.checksSNS.topicArn | string | `"arn:aws:sns:local:012345678900:VulcanK8SChecks"` |  |
 | scanengine.conf.queues.default.arn | string | `"arn:aws:sqs:local:012345678900:VulcanK8SV2ChecksGeneric"` |  |
-| scanengine.conf.queues.other | string | `nil` | array of arn/checktypes |
+| scanengine.conf.queues.other | list | `[]` | array of arn/checktypes |
 | scanengine.conf.persistenceHost | string | `nil` |  |
 | scanengine.conf.streamUrl | string | `nil` |  |
 | scanengine.conf.checkCreator.numOfWorkers | int | `2` |  |
