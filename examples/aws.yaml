@@ -108,8 +108,8 @@ crontinuous:
     crontinuousBucket: s3-vulcan-crontinuous
     enableTeamsWhitelistReport: "false"
     enableTeamsWhitelistScan: "false"
-    teamsWhitelistReport: []
-    teamsWhitelistScan: []
+    teamsWhitelistReport: '["team1", "team2"]'
+    teamsWhitelistScan: [team1, team2]
     vulcanToken: supersecretvulcantoken
     vulcanUser: vulcanuser
   image:
@@ -237,7 +237,7 @@ reportsgenerator:
         vulcanUi: https://www.vulcan.example.com/
     queueArn: arn:aws:sqs:eu-west-1:000000000000:ReportsGenerator
     ses:
-      cc: ["vulcan@example.com"]
+      cc: '["vulcan@example.com"]'
       from: vulcan@example.com
   db:
     <<: *db
