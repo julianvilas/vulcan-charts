@@ -1644,7 +1644,7 @@ spec:
           - name: SES_FROM
             value: "vulcan@example.com"
           - name: SES_CC
-            value: "['vulcan@example.com']"
+            value: "[\"vulcan@example.com\"]"
           - name: SCAN_EMAIL_SUBJECT
             value: "Security Overview"
           - name: SCAN_S3_PUBLIC_BUCKET

@@ -372,9 +372,9 @@ api:
       metadata: https://okta/app/TBD/sso/saml/metadata
       issuer: http://okta/TBD
       callback:   # https://vulcan-api/api/v1/login/callback
-      trustedDomains: '[]'  # '["vulcan-api"]'
+      trustedDomains: []  # ["vulcan-api"]
     logLevel: INFO
-    defaultOwners: '[]'  # '["owner1","owner2"]'
+    defaultOwners: []  # ["owner1","owner2"]
     vulndbapiUrl:   # http://vulnerabilitydbapi
     persistenceHost:
     crontinuousUrl:
@@ -428,9 +428,9 @@ crontinuous:
     vulcanUser: tbd
     vulcanApi:    # http://host/api
     enableTeamsWhitelistScan: "false"
-    teamsWhitelistScan: '[]'
+    teamsWhitelistScan: []
     enableTeamsWhitelistReport: "false"
-    teamsWhitelistReport: '[]'
+    teamsWhitelistReport: []
 
 
 scanengine:
@@ -584,7 +584,8 @@ reportsgenerator:
     ses:
       region:
       from: tbd@tbd.com
-      cc: '["tbd@tbd.com"]'
+      cc: 
+      - tbd@tbd.com
 
   # -- postgres database settings
   db:

@@ -58,7 +58,7 @@ spec:
           - name: SAML_CALLBACK
             value: {{ .Values.comp.conf.saml.callback | quote }}
           - name: SAML_TRUSTED_DOMAINS
-            value: {{ .Values.comp.conf.saml.trustedDomains | quote }}
+            value: {{ default list .Values.comp.conf.saml.trustedDomains | toJson | quote }}
           - name: DEFAULT_OWNERS
             value: {{ .Values.comp.conf.defaultOwners | quote }}
           - name: SCANENGINE_URL

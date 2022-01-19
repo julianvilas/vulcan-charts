@@ -258,9 +258,9 @@ A Helm chart for deploying Vulcan
 | api.conf.saml.metadata | string | `"https://okta/app/TBD/sso/saml/metadata"` |  |
 | api.conf.saml.issuer | string | `"http://okta/TBD"` |  |
 | api.conf.saml.callback | string | `nil` |  |
-| api.conf.saml.trustedDomains | string | `"[]"` |  |
+| api.conf.saml.trustedDomains | list | `[]` |  |
 | api.conf.logLevel | string | `"INFO"` |  |
-| api.conf.defaultOwners | string | `"[]"` |  |
+| api.conf.defaultOwners | list | `[]` |  |
 | api.conf.vulndbapiUrl | string | `nil` |  |
 | api.conf.persistenceHost | string | `nil` |  |
 | api.conf.crontinuousUrl | string | `nil` |  |
@@ -312,9 +312,9 @@ A Helm chart for deploying Vulcan
 | crontinuous.conf.vulcanUser | string | `"tbd"` |  |
 | crontinuous.conf.vulcanApi | string | `nil` |  |
 | crontinuous.conf.enableTeamsWhitelistScan | string | `"false"` |  |
-| crontinuous.conf.teamsWhitelistScan | string | `"[]"` |  |
+| crontinuous.conf.teamsWhitelistScan | list | `[]` |  |
 | crontinuous.conf.enableTeamsWhitelistReport | string | `"false"` |  |
-| crontinuous.conf.teamsWhitelistReport | string | `"[]"` |  |
+| crontinuous.conf.teamsWhitelistReport | list | `[]` |  |
 | scanengine.enabled | bool | `true` |  |
 | scanengine.name | string | `"scanengine"` |  |
 | scanengine.<<.replicaCount | string | `nil` |  |
@@ -485,7 +485,7 @@ A Helm chart for deploying Vulcan
 | reportsgenerator.conf.generators.livereport.emailSubject | string | `nil` |  |
 | reportsgenerator.conf.ses.region | string | `nil` |  |
 | reportsgenerator.conf.ses.from | string | `"tbd@tbd.com"` |  |
-| reportsgenerator.conf.ses.cc | string | `"[\"tbd@tbd.com\"]"` |  |
+| reportsgenerator.conf.ses.cc[0] | string | `"tbd@tbd.com"` |  |
 | reportsgenerator.db | object | `{"<<":{"ca":null,"host":null,"name":null,"password":"TBD","port":5432,"sslMode":"disable","user":null},"name":"reportsgenerator"}` | postgres database settings |
 | reportsgenerator.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
 | reportsgenerator.dogstatsd.image.tag | string | `"7.32.3"` |  |
