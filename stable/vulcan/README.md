@@ -485,7 +485,7 @@ A Helm chart for deploying Vulcan
 | reportsgenerator.conf.generators.livereport.emailSubject | string | `nil` |  |
 | reportsgenerator.conf.ses.region | string | `nil` |  |
 | reportsgenerator.conf.ses.from | string | `"tbd@tbd.com"` |  |
-| reportsgenerator.conf.ses.cc[0] | string | `"tbd@tbd.com"` |  |
+| reportsgenerator.conf.ses.cc | list | `[]` |  |
 | reportsgenerator.db | object | `{"<<":{"ca":null,"host":null,"name":null,"password":"TBD","port":5432,"sslMode":"disable","user":null},"name":"reportsgenerator"}` | postgres database settings |
 | reportsgenerator.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
 | reportsgenerator.dogstatsd.image.tag | string | `"7.32.3"` |  |
