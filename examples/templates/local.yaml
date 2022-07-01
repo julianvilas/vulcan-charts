@@ -1724,7 +1724,7 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: goaws
       annotations:
-        checksum/config: f8cd2f9bcf237b80cd8e074c4bc5d84aebccfbf9ade3caf600b2338ad3adf9b5
+        checksum/config: 229ce28016c0f37732eb71051576466f8311404a628edbca3ea71d2ae006dbf0
     spec:
       containers:
       - name: goaws
