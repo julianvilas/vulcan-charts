@@ -1801,7 +1801,7 @@ spec:
         global-namespace: 'ns'
         app.kubernetes.io/name: scanengine
       annotations:
-        checksum/secrets: 468b39129b0bec42aa240662808b8fd4d76df8e715eae201aea652089a1474cd
+        checksum/secrets: 172a2a35d55b32f39f0e852c14a700b094f7f452ddb92948a4e46c5abe1cecf5
         checksum/config-proxy: 661738336e8ae7617f1a7a5110f36024f9cff3df2effcfd62cc5faa93d5e8909
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'

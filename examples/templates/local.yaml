@@ -2438,7 +2438,7 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: scanengine
       annotations:
-        checksum/secrets: 6a98d86e2647d0c9b6bb9403aaf5a023ea894e2e305370d3d147cf9a60986fc9
+        checksum/secrets: ff76b6caa4d4af25d5701d0fe380652c74ea9038f2eb3644af242192d8f68fc0
         checksum/config-proxy: 661738336e8ae7617f1a7a5110f36024f9cff3df2effcfd62cc5faa93d5e8909
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
