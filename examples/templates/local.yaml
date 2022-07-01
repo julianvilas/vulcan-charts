@@ -1605,7 +1605,7 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: crontinuous
       annotations:
-        checksum/secrets: bf354bf4627fa6b7607813eb82095cb39012db00cd08277e49a6951b1f365e74
+        checksum/secrets: 4de1dea9168b8ae8633f4ef69b1960d7808615887e0b1218cdfd1b1d987c09d1
         checksum/config-proxy: 61779492504d095c11f47249227b0a18234909a250822d148e2859fba85bae71
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'

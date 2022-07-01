@@ -1015,7 +1015,7 @@ spec:
         extra-label: crontinuous
         app.kubernetes.io/name: crontinuous
       annotations:
-        checksum/secrets: abd297a68ebd6e9d0b842087dfe8ca35c16f70f26f0bab5c26d9204dfd9eb7dd
+        checksum/secrets: c245235b9444293fe6b9709dfa6384a2baf941ad9af5ca33d3f0752e994f76a3
         checksum/config-proxy: 61779492504d095c11f47249227b0a18234909a250822d148e2859fba85bae71
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
