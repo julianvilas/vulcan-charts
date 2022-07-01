@@ -159,7 +159,7 @@ data:
       daemon
       maxconn 64
       log stdout format raw daemon
-
+  
     defaults
       mode http
       timeout connect 5s
@@ -167,19 +167,19 @@ data:
       timeout server 50s
       timeout tunnel 3600s
       option  http-server-close
-
+  
     frontend http
       bind *:9090
       log global
       option httplog clf
       http-request capture req.hdr(Host) len 50
       http-request capture req.hdr(User-Agent) len 100
-
+  
       default_backend app
-
+  
     backend app
       server app 127.0.0.1:8080
-
+  
     frontend stats
       bind *:9101
       option http-use-htx
@@ -202,7 +202,7 @@ data:
       daemon
       maxconn 64
       log stdout format raw daemon
-
+  
     defaults
       mode http
       timeout connect 5s
@@ -210,19 +210,19 @@ data:
       timeout server 25s
       timeout tunnel 3600s
       option  http-server-close
-
+  
     frontend http
       bind *:9090
       log global
       option httplog clf
       http-request capture req.hdr(Host) len 50
       http-request capture req.hdr(User-Agent) len 100
-
+  
       default_backend app
-
+  
     backend app
       server app 127.0.0.1:8080
-
+  
     frontend stats
       bind *:9101
       option http-use-htx
@@ -309,7 +309,7 @@ data:
       daemon
       maxconn 64
       log stdout format raw daemon
-
+  
     defaults
       mode http
       timeout connect 5s
@@ -317,19 +317,19 @@ data:
       timeout server 25s
       timeout tunnel 3600s
       option  http-server-close
-
+  
     frontend http
       bind *:9090
       log global
       option httplog clf
       http-request capture req.hdr(Host) len 50
       http-request capture req.hdr(User-Agent) len 100
-
+  
       default_backend app
-
+  
     backend app
       server app 127.0.0.1:8080
-
+  
     frontend stats
       bind *:9101
       option http-use-htx
@@ -352,7 +352,7 @@ data:
       daemon
       maxconn 64
       log stdout format raw daemon
-
+  
     defaults
       mode http
       timeout connect 5s
@@ -360,19 +360,19 @@ data:
       timeout server 25s
       timeout tunnel 3600s
       option  http-server-close
-
+  
     frontend http
       bind *:9090
       log global
       option httplog clf
       http-request capture req.hdr(Host) len 50
       http-request capture req.hdr(User-Agent) len 100
-
+  
       default_backend app
-
+  
     backend app
       server app 127.0.0.1:8080
-
+  
     frontend stats
       bind *:9101
       option http-use-htx
@@ -395,7 +395,7 @@ data:
       daemon
       maxconn 64
       log stdout format raw daemon
-
+  
     defaults
       mode http
       timeout connect 5s
@@ -403,19 +403,19 @@ data:
       timeout server 25s
       timeout tunnel 3600s
       option  http-server-close
-
+  
     frontend http
       bind *:9090
       log global
       option httplog clf
       http-request capture req.hdr(Host) len 50
       http-request capture req.hdr(User-Agent) len 100
-
+  
       default_backend app
-
+  
     backend app
       server app 127.0.0.1:8080
-
+  
     frontend stats
       bind *:9101
       option http-use-htx
@@ -438,7 +438,7 @@ data:
       daemon
       maxconn 64
       log stdout format raw daemon
-
+  
     defaults
       mode http
       timeout connect 5s
@@ -446,19 +446,19 @@ data:
       timeout server 25s
       timeout tunnel 3600s
       option  http-server-close
-
+  
     frontend http
       bind *:9090
       log global
       option httplog clf
       http-request capture req.hdr(Host) len 50
       http-request capture req.hdr(User-Agent) len 100
-
+  
       default_backend app
-
+  
     backend app
       server app 127.0.0.1:8080
-
+  
     frontend stats
       bind *:9101
       option http-use-htx
@@ -481,7 +481,7 @@ data:
       daemon
       maxconn 64
       log stdout format raw daemon
-
+  
     defaults
       mode http
       timeout connect 5s
@@ -489,19 +489,19 @@ data:
       timeout server 25s
       timeout tunnel 3600s
       option  http-server-close
-
+  
     frontend http
       bind *:9090
       log global
       option httplog clf
       http-request capture req.hdr(Host) len 50
       http-request capture req.hdr(User-Agent) len 100
-
+  
       default_backend app
-
+  
     backend app
       server app 127.0.0.1:8080
-
+  
     frontend stats
       bind *:9101
       option http-use-htx
@@ -524,7 +524,7 @@ data:
       daemon
       maxconn 64
       log stdout format raw daemon
-
+  
     defaults
       mode http
       timeout connect 5s
@@ -532,19 +532,19 @@ data:
       timeout server 25s
       timeout tunnel 3600s
       option  http-server-close
-
+  
     frontend http
       bind *:9090
       log global
       option httplog clf
       http-request capture req.hdr(Host) len 50
       http-request capture req.hdr(User-Agent) len 100
-
+  
       default_backend app
-
+  
     backend app
       server app 127.0.0.1:8080
-
+  
     frontend stats
       bind *:9101
       option http-use-htx
@@ -567,7 +567,7 @@ data:
       daemon
       maxconn 64
       log stdout format raw daemon
-
+  
     defaults
       mode http
       timeout connect 5s
@@ -578,7 +578,7 @@ data:
     cache small
       total-max-size 64     # mb
       max-age 600           # seconds
-
+  
     frontend http
       bind *:9090
       log global
@@ -587,12 +587,12 @@ data:
       http-response cache-store small
       http-request capture req.hdr(Host) len 50
       http-request capture req.hdr(User-Agent) len 100
-
+  
       default_backend app
-
+  
     backend app
       server app 127.0.0.1:8080
-
+  
     frontend stats
       bind *:9101
       option http-use-htx
@@ -834,7 +834,7 @@ spec:
         app.kubernetes.io/name: api
       annotations:
         checksum/secrets: ad66f9a6edd60c589c1cce11bc905dd9779aad74e32c9e1fcbb1542f6b7d9eba
-        checksum/config-proxy: 636977f8dd6835e024c991437c3a3641db7b6e33a51e17bb98322fcf28933310
+        checksum/config-proxy: 7d6d9738ee4a99fe9a9422ca87600bb95a6e2fe246ce0a0aa20c86644790669c
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
         iam.amazonaws.com/role: arn:aws:iam::000000000000:role/APIRole
@@ -1016,7 +1016,7 @@ spec:
         app.kubernetes.io/name: crontinuous
       annotations:
         checksum/secrets: c245235b9444293fe6b9709dfa6384a2baf941ad9af5ca33d3f0752e994f76a3
-        checksum/config-proxy: 61779492504d095c11f47249227b0a18234909a250822d148e2859fba85bae71
+        checksum/config-proxy: 4ba45566a092b043208fcf6bf26a0d842fc23e0e10b03c5802c85c930bb6e1c9
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
         iam.amazonaws.com/role: arn:aws:iam::000000000000:role/CrontinuousRole
@@ -1362,7 +1362,7 @@ spec:
         app.kubernetes.io/name: persistence
       annotations:
         checksum/secrets: 2d50e66c3c987f2c48059104ed7aea115948e3a48aaee4d2166237ad097f58b3
-        checksum/config-proxy: 6c67bb6c5068c8adb7e999168325747a1abf25d546eaa9ab3bccefe9eb7fd3d7
+        checksum/config-proxy: 4ba45566a092b043208fcf6bf26a0d842fc23e0e10b03c5802c85c930bb6e1c9
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
         iam.amazonaws.com/role: arn:aws:iam::000000000000:role/PersistenceRole
@@ -1495,7 +1495,7 @@ spec:
         app.kubernetes.io/name: reportsgenerator
       annotations:
         checksum/secrets: 29b58905bade044a3d851605414fab08c8240b30aaeceddb244d746f2b739039
-        checksum/config-proxy: 26dce9f124ceb377008594f444c91a10fe5a68b2ba04d8e3be5eda4d8812aa24
+        checksum/config-proxy: 4ba45566a092b043208fcf6bf26a0d842fc23e0e10b03c5802c85c930bb6e1c9
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
         iam.amazonaws.com/role: arn:aws:iam::000000000000:role/ReportsGeneratorRole
@@ -1688,7 +1688,7 @@ spec:
         global-namespace: 'ns'
         app.kubernetes.io/name: results
       annotations:
-        checksum/config-proxy: 10917d04d8ae06d9d5b1d003e8188d929eda9c6e3fd09ed7fde464f9825698bc
+        checksum/config-proxy: 4ba45566a092b043208fcf6bf26a0d842fc23e0e10b03c5802c85c930bb6e1c9
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
         iam.amazonaws.com/role: arn:aws:iam::000000000000:role/ResultsRole
@@ -1802,7 +1802,7 @@ spec:
         app.kubernetes.io/name: scanengine
       annotations:
         checksum/secrets: 172a2a35d55b32f39f0e852c14a700b094f7f452ddb92948a4e46c5abe1cecf5
-        checksum/config-proxy: 661738336e8ae7617f1a7a5110f36024f9cff3df2effcfd62cc5faa93d5e8909
+        checksum/config-proxy: 4ba45566a092b043208fcf6bf26a0d842fc23e0e10b03c5802c85c930bb6e1c9
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
         iam.amazonaws.com/role: arn:aws:iam::000000000000:role/ScanEngineRole
@@ -2011,7 +2011,7 @@ spec:
         app.kubernetes.io/name: stream
       annotations:
         checksum/secrets: 976c786d7fce7a2a83029393229730727070c5f150d74e12c6303a0e33029eda
-        checksum/config-proxy: 227c8578a7f5395fd4b9bb71c16234b2842110eacb5a717f76e13dc9e0fc4a3c
+        checksum/config-proxy: 4ba45566a092b043208fcf6bf26a0d842fc23e0e10b03c5802c85c930bb6e1c9
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
         iam.amazonaws.com/role: arn:aws:iam::000000000000:role/StreamRole
@@ -2129,7 +2129,7 @@ spec:
         global-namespace: 'ns'
         app.kubernetes.io/name: ui
       annotations:
-        checksum/config-proxy: e3037ec88156eaebef76365dca92abef2e50bb4f5de0eb5313074032c762ce3a
+        checksum/config-proxy: 4ba45566a092b043208fcf6bf26a0d842fc23e0e10b03c5802c85c930bb6e1c9
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
     spec:
@@ -2317,7 +2317,7 @@ spec:
         app.kubernetes.io/name: vulndbapi
       annotations:
         checksum/secrets: 766e2200ecd1fedbf5bc59975fada3271dfbfbba21a6b4538d3646195d3fda04
-        checksum/config-proxy: 6aa692515aff25d11d22506adaf46739be0104f0ea1ca2021ee0fe7a4463ba42
+        checksum/config-proxy: 72ebd01141a03ed16ec65c6f03553608d7484add5632fae01dcbc280aacdc26b
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9101'
     spec:
