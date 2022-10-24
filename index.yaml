@@ -3,6 +3,34 @@ entries:
   vulcan:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-10-24T10:04:48.087708005Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.x.x
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.x.x
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.x.x
+    description: A Helm chart for deploying Vulcan
+    digest: 7b9af9ea5664fa028ae2b29434f17132dd22c9c03f72cbea25cb75cf3cda370e
+    home: https://github.com/adevinta/vulcan-charts
+    icon: https://raw.githubusercontent.com/adevinta/vulcan-charts/master/docs/logo/vulcan.png
+    maintainers:
+    - email: vulcan@adevinta.com
+      name: Adevinta
+    name: vulcan
+    type: application
+    urls:
+    - https://github.com/adevinta/vulcan-charts/releases/download/vulcan-0.5.2/vulcan-0.5.2.tgz
+    version: 0.5.2
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-10-07T10:44:41.098128493Z"
     dependencies:
     - condition: postgresql.enabled
@@ -274,4 +302,4 @@ entries:
     urls:
     - https://adevinta.github.io/vulcan-charts/vulcan-0.3.0.tgz
     version: 0.3.0
-generated: "2022-10-07T10:44:41.098170194Z"
+generated: "2022-10-24T10:04:48.087770805Z"
