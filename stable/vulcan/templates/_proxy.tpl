@@ -48,8 +48,8 @@ haproxy.cfg: |
     log global
     option httplog clf
   {{- if .Values.comp.proxy.cache.enabled }}
-    http-request cache-use small
-    http-response cache-store small
+    http-response set-header X-Cache-Status HIT if !{ srv_id -m found }
+    http-response set-header X-Cache-Status MISS if { srv_id -m found }
   {{- end }}
     http-request capture req.hdr(Host) len 50
     http-request capture req.hdr(User-Agent) len 100
@@ -61,6 +61,10 @@ haproxy.cfg: |
     default_backend app
 
   backend app
+  {{- if .Values.comp.proxy.cache.enabled }}
+    http-request cache-use small
+    http-response cache-store small
+  {{- end }}
     server app 127.0.0.1:{{ .Values.comp.containerPort }}
 
   frontend stats
