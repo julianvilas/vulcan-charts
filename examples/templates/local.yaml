@@ -2871,10 +2871,22 @@ spec:
             value: "arn:aws:sqs:local:012345678900:VulcanK8SVulnDBChecks"
           - name: SNS_TOPIC_ARN
             value: "arn:aws:sns:local:012345678900:VulcanK8SVulnDBVulns"
+          - name: SNS_ENABLED
+            value: "true"
           - name: RESULTS_URL
             value: http://vulcan-results.vulcan.com
           - name: RESULTS_INTERNAL_URL
             value: "http://myrelease-vulcan-results"
+          - name: KAFKA_ENABLED
+            value: "false"
+          - name: KAFKA_USER
+            value: 
+          - name: KAFKA_PASSWORD
+            value: 
+          - name: KAFKA_BROKER_URL
+            value: 
+          - name: KAFKA_TOPIC
+            value: 
           - name: AWS_SNS_ENDPOINT
             value: "http://myrelease-vulcan-goaws"
           - name: AWS_SQS_ENDPOINT
