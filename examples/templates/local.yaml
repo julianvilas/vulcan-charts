@@ -2994,6 +2994,16 @@ spec:
             value: "5432"
           - name: PG_SSLMODE
             value: "disable"
+          - name: PG_HOST_READ
+            value: "vulnerabilitydb.read.postgres.host"
+          - name: PG_NAME_READ
+            value: "vulcanapi"
+          - name: PG_USER_READ
+            value: "vulcan"
+          - name: PG_PORT_READ
+            value: "5432"
+          - name: PG_SSLMODE_READ
+            value: "verify-full"
           - name: PG_CA_B64
             value: ""
           - name: LOG_LEVEL

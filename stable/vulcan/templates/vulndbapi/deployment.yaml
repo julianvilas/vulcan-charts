@@ -45,6 +45,18 @@ spec:
             value: {{ include "pg.port" . | quote }}
           - name: PG_SSLMODE
             value: {{ include "pg.sslMode" . | quote }}
+      {{- if .Values.comp.conf.readReplicaHost}}
+          - name: PG_HOST_READ
+            value: {{ .Values.comp.conf.readReplicaHost | quote }}
+          - name: PG_NAME_READ
+            value: {{ include "pg.database" . | quote }}
+          - name: PG_USER_READ
+            value: {{ include "pg.username" . | quote }}
+          - name: PG_PORT_READ
+            value: {{ include "pg.port" . | quote }}
+          - name: PG_SSLMODE_READ
+            value: {{ include "pg.sslMode" . | quote }}
+      {{- end }}
           - name: PG_CA_B64
             value: {{ include "pg.b64ca" . | quote }}
           - name: LOG_LEVEL

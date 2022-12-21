@@ -617,6 +617,7 @@ A Helm chart for deploying Vulcan
 | vulndbapi.image.pullPolicy | string | `"Always"` |  |
 | vulndbapi.healthcheckPath | string | `"/healthcheck"` |  |
 | vulndbapi.conf.logLevel | string | `"info"` |  |
+| vulndbapi.conf.readReplicaHost | string | `""` |  |
 | vulndbapi.db | object | `{"<<":{"ca":null,"host":null,"name":null,"password":"TBD","port":5432,"sslMode":"disable","user":null},"name":"vulnerabilitydb"}` | postgres database settings |
 | vulndb.enabled | bool | `true` |  |
 | vulndb.name | string | `"vulndb"` |  |

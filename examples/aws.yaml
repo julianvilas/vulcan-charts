@@ -424,6 +424,7 @@ vulndb:
 vulndbapi:
   conf:
     logLevel: info
+    readReplicaHost: "vulnerabilitydb.read.postgres.host"
   db:
     <<: *db
     host: vulnerabilitydb.postgres.host
