@@ -120,3 +120,5 @@ vulndbapi:
     hosts:
       - host: vulndbapi.vulcan.local
         paths: [/]
+  conf:
+    readReplicaHost: "vulnerabilitydb.read.postgres.host"

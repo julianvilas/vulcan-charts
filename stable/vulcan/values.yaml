@@ -660,6 +660,7 @@ vulndbapi:
 
   conf:
     logLevel: info
+    readReplicaHost: ""
 
   # -- postgres database settings
   db:
