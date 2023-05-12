@@ -1,7 +1,6 @@
 # Adevinta Vulcan Helm Repository
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.org/adevinta/vulcan-charts.svg?branch=master)](https://travis-ci.org/adevinta/vulcan-charts)
 [![Test](https://github.com/adevinta/vulcan-charts/actions/workflows/test.yml/badge.svg)](https://github.com/adevinta/vulcan-charts/actions/workflows/test.yml)
 [![Release](https://github.com/adevinta/vulcan-charts/actions/workflows/release.yml/badge.svg)](https://github.com/adevinta/vulcan-charts/actions/workflows/release.yml)
 
