@@ -1953,7 +1953,6 @@ metadata:
     app.kubernetes.io/instance: vulcan
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: sqsexporter
-    app.kubernetes.io/name: sqsexporter
 spec:
   selector:
     matchLabels:
