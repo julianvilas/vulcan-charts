@@ -34,6 +34,12 @@ anchors:
     image:
       pullPolicy: Always
 
+    # -- defines the required services for the component
+    meta:
+      sqs: false
+      sns: false
+      s3: false
+
     # -- custom extra labels
     extraPodLabels: {}
     # foo: bar
@@ -141,8 +147,8 @@ postgresql:
     port: 5432
   auth:
     username: postgres
-    postgresPassword: TBD
-    password: TBD
+    postgresPassword: secret
+    password: secret
     database: persistence
   primary:
     initdb:
@@ -162,7 +168,7 @@ postgresql:
       prometheus.io/scrape: "true"
       prometheus.io/port: "9187"
   metrics:
-    enabled: true
+    enabled: false
 
 redis:
   enabled: false
@@ -184,11 +190,15 @@ goaws:
   <<: *comp
 
   image:
-    repository: pafortin/goaws
-    tag: v0.3.1
+    repository: admiralpiett/goaws
+    tag: v0.4.1
     pullPolicy: Always
 
   containerPort: 8080
+
+  visibilityTimeout: 14400
+  receiveMessageWaitTimeSeconds: 0
+
   config:
     goaws.yaml: |
       Local:
@@ -197,8 +207,8 @@ goaws:
         AccountId: "012345678900"
         LogToFile: false
         QueueAttributeDefaults:
-          VisibilityTimeout: 30
-          ReceiveMessageWaitTimeSeconds: 0
+          VisibilityTimeout: {{ .Values.goaws.visibilityTimeout }}
+          ReceiveMessageWaitTimeSeconds: {{ .Values.goaws.receiveMessageWaitTimeSeconds }}
         Queues:
           - Name: VulcanK8SAPIScans
           - Name: VulcanK8SMetricsChecks
@@ -215,23 +225,23 @@ goaws:
           - Name: VulcanK8SChecks
             Subscriptions:
               - QueueName: VulcanK8SMetricsChecks
-                Raw: true
+                Raw: false
               - QueueName: VulcanK8SVulnDBChecks
-                Raw: true
+                Raw: false
           - Name: VulcanK8SScans
             Subscriptions:
               - QueueName: VulcanK8SAPIScans
-                Raw: true
+                Raw: false
               - QueueName: VulcanK8SMetricsScans
-                Raw: true
+                Raw: false
           - Name: VulcanK8SReportsGen
             Subscriptions:
               - QueueName: VulcanK8SReportsGenerator
-                Raw: true
+                Raw: false
           - Name: VulcanK8SVulnDBVulns
             Subscriptions:
               - QueueName: VulcanK8SMetricsFindings
-                Raw: true
+                Raw: false
         RandomLatency:
           Min: 0
           Max: 0
@@ -249,8 +259,8 @@ minio:
     ports:
       api: 80
   auth:
-    rootUser: AKIAIOSFODNN7EXAMPLE
-    rootPassword: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+    rootUser: admin
+    rootPassword: adminsecret
   extraEnv:
     - name: MINIO_REGION_NAME
       value: local
@@ -271,7 +281,7 @@ results:
     region:
     bucketReports: reports
     bucketLogs: logs
-    linkBase: http://chart-example.local
+    linkBase: http://vulcan-results
 
   healthcheckPath: /healthcheck
 
@@ -551,6 +561,8 @@ insights:
       s3Bucket: public-insights
       prefix: "/public"
 
+  meta:
+    s3: true
 
 reportsgenerator:
   enabled: true
@@ -717,6 +729,9 @@ sqsexporter:
     repository: jesusfcr/sqs-prometheus-exporter
     tag: 0.4.0
     pullPolicy: Always
+
+  proxy:
+    enabled: false
 
   queueNamePrefix: VulcanK8S
   meta:

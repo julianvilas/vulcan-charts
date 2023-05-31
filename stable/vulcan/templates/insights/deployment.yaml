@@ -19,11 +19,7 @@ spec:
         app.kubernetes.io/name: {{ .Values.comp.name }}
       annotations:
         checksum/config: {{ include "insights-config" . | sha256sum }}
-        prometheus.io/scrape: 'true'
-        prometheus.io/port: '{{ .Values.comp.proxy.metricsPort }}'
-        {{- with .Values.comp.annotations }}
-          {{- toYaml . | nindent 8 }}
-        {{- end }}
+        {{- include "common-annotations" . | nindent 8 }}
     spec:
       containers:
         {{- include "common-deployment-sidecars" . | nindent 8 }}
@@ -42,6 +38,20 @@ spec:
               value: "/healthcheck"
             - name: APP_PORT
               value: {{ .Values.comp.containerPort | quote }}
+            {{- if and .Values.comp.meta.s3 .Values.minio.enabled }}
+            - name: AWS_API_ENDPOINT
+              value: {{ include "minio.url" . | quote }}
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "minio.fullname" . }}
+                  key: root-user
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "minio.fullname" . }}
+                  key: root-password
+            {{- end }}
           ports:
             - name: private
               containerPort: {{ .Values.comp.containerPort }}
@@ -61,22 +71,25 @@ spec:
               value: "/healthcheck"
             - name: APP_PORT
               value: {{ add .Values.comp.containerPort 1 | quote }}
+            {{- if and .Values.comp.meta.s3 .Values.minio.enabled }}
+            - name: AWS_API_ENDPOINT
+              value: {{ include "minio.url" . | quote }}
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "minio.fullname" . }}
+                  key: root-user
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "minio.fullname" . }}
+                  key: root-password
+            {{- end }}
           ports:
-            - name: private
+            - name: public
               containerPort: {{ add .Values.comp.containerPort 1 }}
               protocol: TCP
       volumes:
       {{- include "common-deployment-volumes" . | nindent 6 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-    {{- with .Values.comp.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.comp.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
+    {{- include "common-deployment-spec" . | nindent 6 }}
 {{- end -}}
