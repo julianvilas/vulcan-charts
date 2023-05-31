@@ -2285,10 +2285,22 @@ spec:
           
           - name: AWS_SQS_ENDPOINT
             value: "http://myrelease-vulcan-goaws"
+          - name: AWS_S3_ENDPOINT
+            value: "http://myrelease-vulcan-minio"
+          - name: PATH_STYLE
+            value: "true"
+          - name: AWS_S3_REGION
+            value: "local"
           - name: AWS_ACCESS_KEY_ID
-            value: ANYVALUE
+            valueFrom:
+              secretKeyRef:
+                name: myrelease-vulcan-minio
+                key: root-user
           - name: AWS_SECRET_ACCESS_KEY
-            value: ANYVALUE
+            valueFrom:
+              secretKeyRef:
+                name: myrelease-vulcan-minio
+                key: root-password
           - name: DOGSTATSD_ENABLED
             value: "true"
           - name: DOGSTATSD_HOST

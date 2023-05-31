@@ -16,9 +16,9 @@ A Helm chart for deploying Vulcan
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://registry-1.docker.io/bitnamicharts | minio | 12.6.2 |
-| oci://registry-1.docker.io/bitnamicharts | postgresql | 12.5.5 |
-| oci://registry-1.docker.io/bitnamicharts | redis | 17.11.3 |
+| https://charts.bitnami.com/bitnami | minio | 12.6.2 |
+| https://charts.bitnami.com/bitnami | postgresql | 12.5.5 |
+| https://charts.bitnami.com/bitnami | redis | 17.11.3 |
 
 ## Values
 
@@ -29,359 +29,359 @@ A Helm chart for deploying Vulcan
 | global.podLabels | object | `{}` | custom labels for all components |
 | anchors | object | `{"comp":{"affinity":{},"autoscaling":{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null},"containerPort":8080,"extraEnv":{},"extraPodLabels":{},"fullnameOverride":"","image":{"pullPolicy":"Always"},"imagePullSecrets":[],"ingress":{"annotations":{},"enabled":false,"hosts":[],"tls":[]},"lifecycle":{"preStopSleep":30},"livenessProbe":{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3},"meta":{"s3":false,"sns":false,"sqs":false},"nameOverride":"","nodeSelector":{},"podSecurityContext":{},"proxy":{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null},"readinessProbe":{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3},"replicaCount":null,"resources":{},"securityContext":{},"service":{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"},"tolerations":[]},"db":{"ca":null,"host":null,"name":null,"password":"TBD","port":5432,"sslMode":"disable","user":null},"dogstatsd":{"enabled":true,"image":{"repository":"datadog/dogstatsd","tag":"7.42.0"}}}` | Anchors |
 | anchors.db | object | `{"ca":null,"host":null,"name":null,"password":"TBD","port":5432,"sslMode":"disable","user":null}` | postgres database settings |
-| scanengine.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
-| reportsgenerator.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
-| stream.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
 | metrics.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
-| api.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
-| persistence.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
+| scanengine.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
 | results.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
+| stream.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
+| api.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
+| reportsgenerator.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
+| persistence.dogstatsd.image.repository | string | `"datadog/dogstatsd"` |  |
+| results.dogstatsd.image.tag | string | `"7.42.0"` |  |
 | scanengine.dogstatsd.image.tag | string | `"7.42.0"` |  |
+| metrics.dogstatsd.image.tag | string | `"7.42.0"` |  |
+| stream.dogstatsd.image.tag | string | `"7.42.0"` |  |
+| api.dogstatsd.image.tag | string | `"7.42.0"` |  |
 | persistence.dogstatsd.image.tag | string | `"7.42.0"` |  |
 | reportsgenerator.dogstatsd.image.tag | string | `"7.42.0"` |  |
-| api.dogstatsd.image.tag | string | `"7.42.0"` |  |
-| metrics.dogstatsd.image.tag | string | `"7.42.0"` |  |
-| results.dogstatsd.image.tag | string | `"7.42.0"` |  |
-| stream.dogstatsd.image.tag | string | `"7.42.0"` |  |
 | persistence.dogstatsd.enabled | bool | `true` |  |
-| stream.dogstatsd.enabled | bool | `true` |  |
-| api.dogstatsd.enabled | bool | `true` |  |
 | metrics.dogstatsd.enabled | bool | `true` |  |
-| results.dogstatsd.enabled | bool | `true` |  |
-| scanengine.dogstatsd.enabled | bool | `true` |  |
+| stream.dogstatsd.enabled | bool | `true` |  |
 | reportsgenerator.dogstatsd.enabled | bool | `true` |  |
-| stream.<<.replicaCount | string | `nil` |  |
-| results.<<.replicaCount | string | `nil` |  |
-| reportsgenerator.<<.replicaCount | string | `nil` |  |
-| sqsexporter.<<.replicaCount | string | `nil` |  |
-| metrics.<<.replicaCount | string | `nil` |  |
-| crontinuous.<<.replicaCount | string | `nil` |  |
-| ui.<<.replicaCount | string | `nil` |  |
+| scanengine.dogstatsd.enabled | bool | `true` |  |
+| api.dogstatsd.enabled | bool | `true` |  |
+| results.dogstatsd.enabled | bool | `true` |  |
+| goaws.<<.replicaCount | string | `nil` |  |
 | vulndb.<<.replicaCount | string | `nil` |  |
 | persistence.<<.replicaCount | string | `nil` |  |
-| vulndbapi.<<.replicaCount | string | `nil` |  |
+| crontinuous.<<.replicaCount | string | `nil` |  |
 | insights.<<.replicaCount | string | `nil` |  |
+| sqsexporter.<<.replicaCount | string | `nil` |  |
 | api.<<.replicaCount | string | `nil` |  |
-| goaws.<<.replicaCount | string | `nil` |  |
+| vulndbapi.<<.replicaCount | string | `nil` |  |
+| metrics.<<.replicaCount | string | `nil` |  |
 | scanengine.<<.replicaCount | string | `nil` |  |
-| scanengine.<<.image.pullPolicy | string | `"Always"` |  |
-| insights.<<.image.pullPolicy | string | `"Always"` |  |
-| api.<<.image.pullPolicy | string | `"Always"` |  |
+| ui.<<.replicaCount | string | `nil` |  |
+| results.<<.replicaCount | string | `nil` |  |
+| reportsgenerator.<<.replicaCount | string | `nil` |  |
+| stream.<<.replicaCount | string | `nil` |  |
 | vulndbapi.<<.image.pullPolicy | string | `"Always"` |  |
-| ui.<<.image.pullPolicy | string | `"Always"` |  |
-| persistence.<<.image.pullPolicy | string | `"Always"` |  |
-| results.<<.image.pullPolicy | string | `"Always"` |  |
 | metrics.<<.image.pullPolicy | string | `"Always"` |  |
-| crontinuous.<<.image.pullPolicy | string | `"Always"` |  |
-| reportsgenerator.<<.image.pullPolicy | string | `"Always"` |  |
+| api.<<.image.pullPolicy | string | `"Always"` |  |
 | sqsexporter.<<.image.pullPolicy | string | `"Always"` |  |
 | stream.<<.image.pullPolicy | string | `"Always"` |  |
-| goaws.<<.image.pullPolicy | string | `"Always"` |  |
 | vulndb.<<.image.pullPolicy | string | `"Always"` |  |
-| stream.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
-| anchors.comp.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
-| vulndbapi.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
-| reportsgenerator.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
-| metrics.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
-| insights.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
-| results.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
-| vulndb.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
-| ui.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
-| api.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
-| goaws.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
-| scanengine.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
-| sqsexporter.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
+| persistence.<<.image.pullPolicy | string | `"Always"` |  |
+| insights.<<.image.pullPolicy | string | `"Always"` |  |
+| scanengine.<<.image.pullPolicy | string | `"Always"` |  |
+| ui.<<.image.pullPolicy | string | `"Always"` |  |
+| crontinuous.<<.image.pullPolicy | string | `"Always"` |  |
+| reportsgenerator.<<.image.pullPolicy | string | `"Always"` |  |
+| goaws.<<.image.pullPolicy | string | `"Always"` |  |
+| results.<<.image.pullPolicy | string | `"Always"` |  |
 | crontinuous.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
+| ui.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
 | persistence.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
-| crontinuous.<<.extraPodLabels | object | `{}` | custom extra labels |
+| results.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
+| reportsgenerator.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
+| scanengine.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
+| goaws.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
+| sqsexporter.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
+| anchors.comp.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
+| stream.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
+| insights.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
+| vulndb.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
+| metrics.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
+| vulndbapi.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
+| api.<<.meta | object | `{"s3":false,"sns":false,"sqs":false}` | defines the required services for the component |
+| metrics.<<.extraPodLabels | object | `{}` | custom extra labels |
+| insights.<<.extraPodLabels | object | `{}` | custom extra labels |
+| vulndb.<<.extraPodLabels | object | `{}` | custom extra labels |
+| vulndbapi.<<.extraPodLabels | object | `{}` | custom extra labels |
+| anchors.comp.extraPodLabels | object | `{}` | custom extra labels |
 | sqsexporter.<<.extraPodLabels | object | `{}` | custom extra labels |
 | ui.<<.extraPodLabels | object | `{}` | custom extra labels |
-| stream.<<.extraPodLabels | object | `{}` | custom extra labels |
-| vulndb.<<.extraPodLabels | object | `{}` | custom extra labels |
-| api.<<.extraPodLabels | object | `{}` | custom extra labels |
-| insights.<<.extraPodLabels | object | `{}` | custom extra labels |
-| scanengine.<<.extraPodLabels | object | `{}` | custom extra labels |
-| results.<<.extraPodLabels | object | `{}` | custom extra labels |
-| vulndbapi.<<.extraPodLabels | object | `{}` | custom extra labels |
-| metrics.<<.extraPodLabels | object | `{}` | custom extra labels |
-| anchors.comp.extraPodLabels | object | `{}` | custom extra labels |
-| persistence.<<.extraPodLabels | object | `{}` | custom extra labels |
-| goaws.<<.extraPodLabels | object | `{}` | custom extra labels |
 | reportsgenerator.<<.extraPodLabels | object | `{}` | custom extra labels |
-| crontinuous.<<.extraEnv | object | `{}` | custom env variables |
+| results.<<.extraPodLabels | object | `{}` | custom extra labels |
+| stream.<<.extraPodLabels | object | `{}` | custom extra labels |
+| api.<<.extraPodLabels | object | `{}` | custom extra labels |
+| crontinuous.<<.extraPodLabels | object | `{}` | custom extra labels |
+| goaws.<<.extraPodLabels | object | `{}` | custom extra labels |
+| persistence.<<.extraPodLabels | object | `{}` | custom extra labels |
+| scanengine.<<.extraPodLabels | object | `{}` | custom extra labels |
+| persistence.<<.extraEnv | object | `{}` | custom env variables |
 | results.<<.extraEnv | object | `{}` | custom env variables |
+| anchors.comp.extraEnv | object | `{}` | custom env variables |
+| goaws.<<.extraEnv | object | `{}` | custom env variables |
+| vulndb.<<.extraEnv | object | `{}` | custom env variables |
+| ui.<<.extraEnv | object | `{}` | custom env variables |
+| reportsgenerator.<<.extraEnv | object | `{}` | custom env variables |
+| crontinuous.<<.extraEnv | object | `{}` | custom env variables |
 | api.<<.extraEnv | object | `{}` | custom env variables |
 | metrics.<<.extraEnv | object | `{}` | custom env variables |
-| insights.<<.extraEnv | object | `{}` | custom env variables |
 | stream.<<.extraEnv | object | `{}` | custom env variables |
-| persistence.<<.extraEnv | object | `{}` | custom env variables |
-| reportsgenerator.<<.extraEnv | object | `{}` | custom env variables |
-| vulndb.<<.extraEnv | object | `{}` | custom env variables |
+| insights.<<.extraEnv | object | `{}` | custom env variables |
 | scanengine.<<.extraEnv | object | `{}` | custom env variables |
-| goaws.<<.extraEnv | object | `{}` | custom env variables |
-| anchors.comp.extraEnv | object | `{}` | custom env variables |
 | vulndbapi.<<.extraEnv | object | `{}` | custom env variables |
-| ui.<<.extraEnv | object | `{}` | custom env variables |
 | sqsexporter.<<.extraEnv | object | `{}` | custom env variables |
-| api.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
-| scanengine.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
-| vulndb.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
 | vulndbapi.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
-| ui.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
-| reportsgenerator.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
-| insights.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
 | goaws.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
-| crontinuous.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
-| persistence.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
-| results.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
 | sqsexporter.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
-| metrics.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
-| anchors.comp.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
+| persistence.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
+| scanengine.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
+| insights.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
+| api.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
 | stream.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
+| metrics.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
+| ui.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
+| vulndb.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
+| anchors.comp.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
+| results.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
+| reportsgenerator.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
+| crontinuous.<<.proxy | object | `{"cache":{"enabled":false,"maxAge":240,"maxSize":64},"enabled":true,"image":{"repository":"haproxy","tag":"2.4.21-alpine"},"lifecycle":{"preStopSleep":30},"metricsPort":9101,"port":9090,"probe":false,"probeInitialDelay":5,"probePath":"/healthz","probeTimeoutSeconds":3,"resources":{},"timeoutClient":null,"timeoutConnect":null,"timeoutServer":null,"timeoutTunnel":null}` | proxy settings |
+| scanengine.<<.podSecurityContext | object | `{}` |  |
 | stream.<<.podSecurityContext | object | `{}` |  |
-| persistence.<<.podSecurityContext | object | `{}` |  |
-| metrics.<<.podSecurityContext | object | `{}` |  |
-| reportsgenerator.<<.podSecurityContext | object | `{}` |  |
-| crontinuous.<<.podSecurityContext | object | `{}` |  |
 | ui.<<.podSecurityContext | object | `{}` |  |
-| vulndb.<<.podSecurityContext | object | `{}` |  |
-| sqsexporter.<<.podSecurityContext | object | `{}` |  |
-| vulndbapi.<<.podSecurityContext | object | `{}` |  |
+| reportsgenerator.<<.podSecurityContext | object | `{}` |  |
 | insights.<<.podSecurityContext | object | `{}` |  |
 | results.<<.podSecurityContext | object | `{}` |  |
+| vulndbapi.<<.podSecurityContext | object | `{}` |  |
+| sqsexporter.<<.podSecurityContext | object | `{}` |  |
+| vulndb.<<.podSecurityContext | object | `{}` |  |
+| crontinuous.<<.podSecurityContext | object | `{}` |  |
 | api.<<.podSecurityContext | object | `{}` |  |
-| scanengine.<<.podSecurityContext | object | `{}` |  |
+| persistence.<<.podSecurityContext | object | `{}` |  |
 | goaws.<<.podSecurityContext | object | `{}` |  |
-| persistence.<<.securityContext | object | `{}` |  |
-| scanengine.<<.securityContext | object | `{}` |  |
-| metrics.<<.securityContext | object | `{}` |  |
-| vulndb.<<.securityContext | object | `{}` |  |
-| stream.<<.securityContext | object | `{}` |  |
-| crontinuous.<<.securityContext | object | `{}` |  |
-| goaws.<<.securityContext | object | `{}` |  |
+| metrics.<<.podSecurityContext | object | `{}` |  |
 | api.<<.securityContext | object | `{}` |  |
+| goaws.<<.securityContext | object | `{}` |  |
+| persistence.<<.securityContext | object | `{}` |  |
+| vulndb.<<.securityContext | object | `{}` |  |
+| crontinuous.<<.securityContext | object | `{}` |  |
 | vulndbapi.<<.securityContext | object | `{}` |  |
-| reportsgenerator.<<.securityContext | object | `{}` |  |
+| sqsexporter.<<.securityContext | object | `{}` |  |
 | insights.<<.securityContext | object | `{}` |  |
 | results.<<.securityContext | object | `{}` |  |
 | ui.<<.securityContext | object | `{}` |  |
-| sqsexporter.<<.securityContext | object | `{}` |  |
-| scanengine.<<.imagePullSecrets | list | `[]` |  |
-| insights.<<.imagePullSecrets | list | `[]` |  |
+| stream.<<.securityContext | object | `{}` |  |
+| metrics.<<.securityContext | object | `{}` |  |
+| scanengine.<<.securityContext | object | `{}` |  |
+| reportsgenerator.<<.securityContext | object | `{}` |  |
+| crontinuous.<<.imagePullSecrets | list | `[]` |  |
+| results.<<.imagePullSecrets | list | `[]` |  |
+| ui.<<.imagePullSecrets | list | `[]` |  |
+| vulndbapi.<<.imagePullSecrets | list | `[]` |  |
 | stream.<<.imagePullSecrets | list | `[]` |  |
 | metrics.<<.imagePullSecrets | list | `[]` |  |
-| ui.<<.imagePullSecrets | list | `[]` |  |
-| goaws.<<.imagePullSecrets | list | `[]` |  |
-| results.<<.imagePullSecrets | list | `[]` |  |
 | vulndb.<<.imagePullSecrets | list | `[]` |  |
-| reportsgenerator.<<.imagePullSecrets | list | `[]` |  |
 | api.<<.imagePullSecrets | list | `[]` |  |
-| vulndbapi.<<.imagePullSecrets | list | `[]` |  |
-| sqsexporter.<<.imagePullSecrets | list | `[]` |  |
+| goaws.<<.imagePullSecrets | list | `[]` |  |
+| scanengine.<<.imagePullSecrets | list | `[]` |  |
+| insights.<<.imagePullSecrets | list | `[]` |  |
 | persistence.<<.imagePullSecrets | list | `[]` |  |
-| crontinuous.<<.imagePullSecrets | list | `[]` |  |
-| metrics.<<.nameOverride | string | `""` |  |
-| scanengine.<<.nameOverride | string | `""` |  |
+| sqsexporter.<<.imagePullSecrets | list | `[]` |  |
+| reportsgenerator.<<.imagePullSecrets | list | `[]` |  |
+| results.<<.nameOverride | string | `""` |  |
 | api.<<.nameOverride | string | `""` |  |
 | persistence.<<.nameOverride | string | `""` |  |
+| goaws.<<.nameOverride | string | `""` |  |
+| vulndb.<<.nameOverride | string | `""` |  |
+| sqsexporter.<<.nameOverride | string | `""` |  |
 | crontinuous.<<.nameOverride | string | `""` |  |
 | vulndbapi.<<.nameOverride | string | `""` |  |
-| results.<<.nameOverride | string | `""` |  |
-| reportsgenerator.<<.nameOverride | string | `""` |  |
-| vulndb.<<.nameOverride | string | `""` |  |
-| insights.<<.nameOverride | string | `""` |  |
-| goaws.<<.nameOverride | string | `""` |  |
 | ui.<<.nameOverride | string | `""` |  |
-| sqsexporter.<<.nameOverride | string | `""` |  |
+| reportsgenerator.<<.nameOverride | string | `""` |  |
+| metrics.<<.nameOverride | string | `""` |  |
 | stream.<<.nameOverride | string | `""` |  |
-| sqsexporter.<<.fullnameOverride | string | `""` |  |
-| metrics.<<.fullnameOverride | string | `""` |  |
-| ui.<<.fullnameOverride | string | `""` |  |
-| persistence.<<.fullnameOverride | string | `""` |  |
-| results.<<.fullnameOverride | string | `""` |  |
-| api.<<.fullnameOverride | string | `""` |  |
-| scanengine.<<.fullnameOverride | string | `""` |  |
-| crontinuous.<<.fullnameOverride | string | `""` |  |
-| vulndb.<<.fullnameOverride | string | `""` |  |
-| goaws.<<.fullnameOverride | string | `""` |  |
-| reportsgenerator.<<.fullnameOverride | string | `""` |  |
-| insights.<<.fullnameOverride | string | `""` |  |
+| scanengine.<<.nameOverride | string | `""` |  |
+| insights.<<.nameOverride | string | `""` |  |
 | vulndbapi.<<.fullnameOverride | string | `""` |  |
+| ui.<<.fullnameOverride | string | `""` |  |
+| goaws.<<.fullnameOverride | string | `""` |  |
+| persistence.<<.fullnameOverride | string | `""` |  |
+| scanengine.<<.fullnameOverride | string | `""` |  |
+| sqsexporter.<<.fullnameOverride | string | `""` |  |
+| insights.<<.fullnameOverride | string | `""` |  |
+| reportsgenerator.<<.fullnameOverride | string | `""` |  |
+| crontinuous.<<.fullnameOverride | string | `""` |  |
 | stream.<<.fullnameOverride | string | `""` |  |
-| vulndbapi.<<.containerPort | int | `8080` |  |
-| api.<<.containerPort | int | `8080` |  |
-| sqsexporter.<<.containerPort | int | `8080` |  |
-| crontinuous.<<.containerPort | int | `8080` |  |
-| persistence.<<.containerPort | int | `8080` |  |
-| vulndb.<<.containerPort | int | `8080` |  |
-| goaws.<<.containerPort | int | `8080` |  |
-| metrics.<<.containerPort | int | `8080` |  |
-| insights.<<.containerPort | int | `8080` |  |
-| results.<<.containerPort | int | `8080` |  |
-| stream.<<.containerPort | int | `8080` |  |
-| scanengine.<<.containerPort | int | `8080` |  |
-| reportsgenerator.<<.containerPort | int | `8080` |  |
+| api.<<.fullnameOverride | string | `""` |  |
+| results.<<.fullnameOverride | string | `""` |  |
+| metrics.<<.fullnameOverride | string | `""` |  |
+| vulndb.<<.fullnameOverride | string | `""` |  |
 | ui.<<.containerPort | int | `8080` |  |
-| reportsgenerator.<<.lifecycle.preStopSleep | int | `30` |  |
-| vulndbapi.<<.lifecycle.preStopSleep | int | `30` |  |
-| scanengine.<<.lifecycle.preStopSleep | int | `30` |  |
-| stream.<<.lifecycle.preStopSleep | int | `30` |  |
-| results.<<.lifecycle.preStopSleep | int | `30` |  |
-| insights.<<.lifecycle.preStopSleep | int | `30` |  |
-| metrics.<<.lifecycle.preStopSleep | int | `30` |  |
-| goaws.<<.lifecycle.preStopSleep | int | `30` |  |
-| persistence.<<.lifecycle.preStopSleep | int | `30` |  |
-| crontinuous.<<.lifecycle.preStopSleep | int | `30` |  |
-| sqsexporter.<<.lifecycle.preStopSleep | int | `30` |  |
-| api.<<.lifecycle.preStopSleep | int | `30` |  |
-| ui.<<.lifecycle.preStopSleep | int | `30` |  |
+| vulndbapi.<<.containerPort | int | `8080` |  |
+| metrics.<<.containerPort | int | `8080` |  |
+| results.<<.containerPort | int | `8080` |  |
+| crontinuous.<<.containerPort | int | `8080` |  |
+| api.<<.containerPort | int | `8080` |  |
+| reportsgenerator.<<.containerPort | int | `8080` |  |
+| persistence.<<.containerPort | int | `8080` |  |
+| goaws.<<.containerPort | int | `8080` |  |
+| sqsexporter.<<.containerPort | int | `8080` |  |
+| scanengine.<<.containerPort | int | `8080` |  |
+| stream.<<.containerPort | int | `8080` |  |
+| insights.<<.containerPort | int | `8080` |  |
+| vulndb.<<.containerPort | int | `8080` |  |
 | vulndb.<<.lifecycle.preStopSleep | int | `30` |  |
-| reportsgenerator.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
-| anchors.comp.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
-| sqsexporter.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
-| stream.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
-| vulndbapi.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
-| ui.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
+| insights.<<.lifecycle.preStopSleep | int | `30` |  |
+| crontinuous.<<.lifecycle.preStopSleep | int | `30` |  |
+| goaws.<<.lifecycle.preStopSleep | int | `30` |  |
+| sqsexporter.<<.lifecycle.preStopSleep | int | `30` |  |
+| persistence.<<.lifecycle.preStopSleep | int | `30` |  |
+| vulndbapi.<<.lifecycle.preStopSleep | int | `30` |  |
+| results.<<.lifecycle.preStopSleep | int | `30` |  |
+| reportsgenerator.<<.lifecycle.preStopSleep | int | `30` |  |
+| ui.<<.lifecycle.preStopSleep | int | `30` |  |
+| scanengine.<<.lifecycle.preStopSleep | int | `30` |  |
+| api.<<.lifecycle.preStopSleep | int | `30` |  |
+| metrics.<<.lifecycle.preStopSleep | int | `30` |  |
+| stream.<<.lifecycle.preStopSleep | int | `30` |  |
 | crontinuous.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
-| api.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
-| persistence.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
-| scanengine.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
-| metrics.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
-| goaws.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
 | vulndb.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
-| results.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
+| metrics.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
 | insights.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
+| goaws.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
+| anchors.comp.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
+| reportsgenerator.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
+| persistence.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
+| stream.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
+| api.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
+| sqsexporter.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
+| ui.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
+| results.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
+| vulndbapi.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
+| scanengine.<<.livenessProbe | object | `{"enabled":true,"failureThreshold":10,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | liveness settings |
 | insights.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
-| persistence.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
-| crontinuous.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
-| stream.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
-| sqsexporter.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
-| metrics.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
-| api.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
-| ui.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
-| goaws.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
 | scanengine.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
-| vulndb.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
-| reportsgenerator.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
-| anchors.comp.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
+| ui.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
+| sqsexporter.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
 | vulndbapi.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
+| stream.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
 | results.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
+| metrics.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
+| persistence.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
+| goaws.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
+| crontinuous.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
+| anchors.comp.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
+| reportsgenerator.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
+| api.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
+| vulndb.<<.readinessProbe | object | `{"enabled":true,"failureThreshold":5,"initialDelaySeconds":5,"path":null,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":3}` | readiness settings |
+| stream.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
 | vulndbapi.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
 | results.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
-| goaws.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
-| scanengine.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
-| reportsgenerator.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
-| persistence.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
-| sqsexporter.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
-| anchors.comp.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
-| metrics.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
-| ui.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
-| insights.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
 | crontinuous.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
-| vulndb.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
-| stream.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
+| anchors.comp.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
+| ui.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
 | api.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
-| reportsgenerator.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
+| vulndb.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
+| insights.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
+| metrics.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
+| persistence.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
+| scanengine.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
+| sqsexporter.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
+| reportsgenerator.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
+| goaws.<<.readinessProbe.path | string | `nil` | defaults to healthcheckPath |
 | stream.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
-| vulndb.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
-| vulndbapi.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
-| goaws.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
-| persistence.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
-| crontinuous.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
-| results.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
-| sqsexporter.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
-| anchors.comp.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
+| reportsgenerator.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
 | metrics.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
-| ui.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
-| api.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
+| sqsexporter.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
+| persistence.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
+| anchors.comp.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
 | insights.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
+| vulndbapi.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
 | scanengine.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
-| ui.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
+| results.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
+| crontinuous.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
+| ui.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
+| goaws.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
+| api.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
+| vulndb.<<.autoscaling | object | `{"behavior":{},"enabled":false,"maxReplicas":5,"minReplicas":1,"targetCPUUtilizationPercentage":50,"targetMemoryUtilizationPercentage":null}` | autoscaling settings |
 | stream.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
-| vulndbapi.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
 | reportsgenerator.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
-| goaws.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
 | results.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
-| sqsexporter.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
 | anchors.comp.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
-| scanengine.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
-| api.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
-| insights.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
 | vulndb.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
-| metrics.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
-| crontinuous.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
 | persistence.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
-| crontinuous.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
-| metrics.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
-| vulndbapi.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
-| ui.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
+| vulndbapi.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
+| sqsexporter.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
+| metrics.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
+| insights.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
+| api.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
+| crontinuous.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
+| ui.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
+| goaws.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
+| scanengine.<<.service | object | `{"port":80,"portName":null,"protocol":"TCP","targetPort":null,"type":"ClusterIP"}` | service settings |
 | persistence.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
+| metrics.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
+| scanengine.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
+| anchors.comp.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
+| crontinuous.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
+| vulndb.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
+| vulndbapi.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
+| results.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
+| reportsgenerator.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
+| goaws.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
+| ui.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
+| api.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
+| sqsexporter.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
 | insights.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
 | stream.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
-| anchors.comp.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
-| sqsexporter.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
-| reportsgenerator.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
-| results.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
-| api.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
-| scanengine.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
-| vulndb.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
-| goaws.<<.ingress | object | `{"annotations":{},"enabled":false,"hosts":[],"tls":[]}` | ingress settings |
 | persistence.<<.resources | object | `{}` |  |
-| scanengine.<<.resources | object | `{}` |  |
-| reportsgenerator.<<.resources | object | `{}` |  |
-| api.<<.resources | object | `{}` |  |
-| vulndb.<<.resources | object | `{}` |  |
-| results.<<.resources | object | `{}` |  |
 | goaws.<<.resources | object | `{}` |  |
 | ui.<<.resources | object | `{}` |  |
+| results.<<.resources | object | `{}` |  |
+| reportsgenerator.<<.resources | object | `{}` |  |
+| vulndb.<<.resources | object | `{}` |  |
 | sqsexporter.<<.resources | object | `{}` |  |
-| metrics.<<.resources | object | `{}` |  |
-| crontinuous.<<.resources | object | `{}` |  |
-| vulndbapi.<<.resources | object | `{}` |  |
-| stream.<<.resources | object | `{}` |  |
 | insights.<<.resources | object | `{}` |  |
-| reportsgenerator.<<.nodeSelector | object | `{}` |  |
-| crontinuous.<<.nodeSelector | object | `{}` |  |
-| stream.<<.nodeSelector | object | `{}` |  |
-| vulndbapi.<<.nodeSelector | object | `{}` |  |
+| scanengine.<<.resources | object | `{}` |  |
+| vulndbapi.<<.resources | object | `{}` |  |
+| api.<<.resources | object | `{}` |  |
+| metrics.<<.resources | object | `{}` |  |
+| stream.<<.resources | object | `{}` |  |
+| crontinuous.<<.resources | object | `{}` |  |
 | sqsexporter.<<.nodeSelector | object | `{}` |  |
-| ui.<<.nodeSelector | object | `{}` |  |
-| persistence.<<.nodeSelector | object | `{}` |  |
-| results.<<.nodeSelector | object | `{}` |  |
 | goaws.<<.nodeSelector | object | `{}` |  |
-| vulndb.<<.nodeSelector | object | `{}` |  |
-| insights.<<.nodeSelector | object | `{}` |  |
-| scanengine.<<.nodeSelector | object | `{}` |  |
 | metrics.<<.nodeSelector | object | `{}` |  |
+| vulndb.<<.nodeSelector | object | `{}` |  |
+| stream.<<.nodeSelector | object | `{}` |  |
+| reportsgenerator.<<.nodeSelector | object | `{}` |  |
+| vulndbapi.<<.nodeSelector | object | `{}` |  |
+| results.<<.nodeSelector | object | `{}` |  |
+| persistence.<<.nodeSelector | object | `{}` |  |
+| insights.<<.nodeSelector | object | `{}` |  |
+| crontinuous.<<.nodeSelector | object | `{}` |  |
+| scanengine.<<.nodeSelector | object | `{}` |  |
 | api.<<.nodeSelector | object | `{}` |  |
-| ui.<<.tolerations | list | `[]` |  |
-| scanengine.<<.tolerations | list | `[]` |  |
-| vulndb.<<.tolerations | list | `[]` |  |
-| goaws.<<.tolerations | list | `[]` |  |
+| ui.<<.nodeSelector | object | `{}` |  |
 | sqsexporter.<<.tolerations | list | `[]` |  |
-| results.<<.tolerations | list | `[]` |  |
-| persistence.<<.tolerations | list | `[]` |  |
+| insights.<<.tolerations | list | `[]` |  |
+| scanengine.<<.tolerations | list | `[]` |  |
+| reportsgenerator.<<.tolerations | list | `[]` |  |
 | metrics.<<.tolerations | list | `[]` |  |
 | crontinuous.<<.tolerations | list | `[]` |  |
-| reportsgenerator.<<.tolerations | list | `[]` |  |
 | vulndbapi.<<.tolerations | list | `[]` |  |
+| vulndb.<<.tolerations | list | `[]` |  |
 | stream.<<.tolerations | list | `[]` |  |
-| insights.<<.tolerations | list | `[]` |  |
+| persistence.<<.tolerations | list | `[]` |  |
+| results.<<.tolerations | list | `[]` |  |
 | api.<<.tolerations | list | `[]` |  |
-| insights.<<.affinity | object | `{}` |  |
-| results.<<.affinity | object | `{}` |  |
-| ui.<<.affinity | object | `{}` |  |
-| vulndb.<<.affinity | object | `{}` |  |
+| ui.<<.tolerations | list | `[]` |  |
+| goaws.<<.tolerations | list | `[]` |  |
 | vulndbapi.<<.affinity | object | `{}` |  |
-| reportsgenerator.<<.affinity | object | `{}` |  |
-| crontinuous.<<.affinity | object | `{}` |  |
-| stream.<<.affinity | object | `{}` |  |
-| metrics.<<.affinity | object | `{}` |  |
-| goaws.<<.affinity | object | `{}` |  |
-| sqsexporter.<<.affinity | object | `{}` |  |
-| scanengine.<<.affinity | object | `{}` |  |
+| vulndb.<<.affinity | object | `{}` |  |
 | api.<<.affinity | object | `{}` |  |
+| ui.<<.affinity | object | `{}` |  |
 | persistence.<<.affinity | object | `{}` |  |
+| metrics.<<.affinity | object | `{}` |  |
+| results.<<.affinity | object | `{}` |  |
+| insights.<<.affinity | object | `{}` |  |
+| stream.<<.affinity | object | `{}` |  |
+| crontinuous.<<.affinity | object | `{}` |  |
+| reportsgenerator.<<.affinity | object | `{}` |  |
+| scanengine.<<.affinity | object | `{}` |  |
+| sqsexporter.<<.affinity | object | `{}` |  |
+| goaws.<<.affinity | object | `{}` |  |
 | waitfordb.image.repository | string | `"busybox"` |  |
 | waitfordb.image.tag | string | `"1.35.0"` |  |
 | postgresql.enabled | bool | `false` |  |
@@ -580,6 +580,7 @@ A Helm chart for deploying Vulcan
 | reportsgenerator.image.pullPolicy | string | `"Always"` |  |
 | reportsgenerator.healthcheckPath | string | `"/healthcheck"` |  |
 | reportsgenerator.meta.sqs | bool | `true` |  |
+| reportsgenerator.meta.s3 | bool | `true` |  |
 | reportsgenerator.conf.logLevel | string | `"error"` |  |
 | reportsgenerator.conf.queueArn | string | `"arn:aws:sqs:local:012345678900:VulcanK8SReportsGenerator"` |  |
 | reportsgenerator.conf.queueName | string | `"VulcanK8SReportsGenerator"` |  |

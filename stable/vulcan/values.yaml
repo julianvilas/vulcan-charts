@@ -578,6 +578,7 @@ reportsgenerator:
 
   meta:
     sqs: true
+    s3: true
 
   conf:
     logLevel: "error"
