@@ -517,7 +517,7 @@ A Helm chart for deploying Vulcan
 | api.conf.defaultOwners | string | `"[]"` |  |
 | api.conf.vulndbapiUrl | string | `nil` |  |
 | api.conf.vulcantrackerUrl | string | `nil` |  |
-| api.conf.vulcantrackerTeams | string | `"team1,team2"` |  |
+| api.conf.vulcantrackerTeams | string | `nil` |  |
 | api.conf.persistenceHost | string | `nil` |  |
 | api.conf.crontinuousUrl | string | `nil` |  |
 | api.conf.reportsgeneratorUrl | string | `nil` |  |

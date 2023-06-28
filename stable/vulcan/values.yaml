@@ -393,7 +393,7 @@ api:
     defaultOwners: '[]'  # '["owner1","owner2"]'
     vulndbapiUrl:   # http://vulnerabilitydbapi
     vulcantrackerUrl:  # http://vulcantracker
-    vulcantrackerTeams: "team1,team2"
+    vulcantrackerTeams:   # "team1,team2"
     persistenceHost:
     crontinuousUrl:
     reportsgeneratorUrl:
