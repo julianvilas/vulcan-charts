@@ -204,6 +204,7 @@ data:
     CREATE DATABASE scanengine;
     CREATE DATABASE reportsgenerator;
     CREATE DATABASE vulnerabilitydb;
+    CREATE DATABASE tracker;
 ---
 # Source: vulcan/charts/redis/templates/configmap.yaml
 apiVersion: v1
