@@ -387,11 +387,9 @@ api:
     bucketLogs: logs
     s3PrivateBucket: insights
     s3PublicBucket: public-insights
-    queueArn: arn:aws:sqs:local:012345678900:VulcanK8SAPIScans
     queueName: VulcanK8SAPIScans
     reports:
       snsArn: arn:aws:sns:local:012345678900:VulcanK8SReportsGen
-      redirectUrl:
       vulcanUIUrl:
     secretKey: TBDTBD
     cookieDomain:     # default .Values.global.domain
@@ -602,24 +600,6 @@ reportsgenerator:
     scanengineUrl:
     resultsUrl:
     generators:
-      scan:
-        emailSubject: "Security Overview"
-        publicBucket: public-insights
-        privateBucket: insights
-        gaId: UA-000000000-0
-        proxyEndpoint:     # https://vulcan-insights
-        contact:
-          companyName: Example
-          email: vulcan@example.com
-          jira: https://jira.example.com/
-          slackChannel: https://example.slack.com/archives/XXXXX
-          supportEmail: vulcan@example.com
-        docs:
-          apiDocLink: https://docs.example.com/vulcan/vulcan-api/examples/#how-do-i-list-the-members-of-a-team
-          roadmapLink: https://docs.example.com/vulcan/roadmap
-        vulcanUi:     # https://vulcan-www
-        viewReport:   # vulcan-api/api/v1/report?team_id=%s&scan_id=%s
-        redirectUrl:  # https://public-redirect/index.html?reportUrl=
       livereport:
         emailSubject:   # Vulcan Digest
     ses:

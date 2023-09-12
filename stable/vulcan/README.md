@@ -66,6 +66,10 @@ A Helm chart for deploying Vulcan
 | crontinuous.<<.replicaCount | string | `nil` |  |
 | goaws.<<.replicaCount | string | `nil` |  |
 | persistence.<<.replicaCount | string | `nil` |  |
+| vulndb.<<.replicaCount | string | `nil` |  |
+| tracker.<<.replicaCount | string | `nil` |  |
+| scanengine.<<.replicaCount | string | `nil` |  |
+| stream.<<.replicaCount | string | `nil` |  |
 | ui.<<.replicaCount | string | `nil` |  |
 | tracker.<<.replicaCount | string | `nil` |  |
 | api.<<.image.pullPolicy | string | `"Always"` |  |
@@ -534,10 +538,8 @@ A Helm chart for deploying Vulcan
 | api.conf.bucketLogs | string | `"logs"` |  |
 | api.conf.s3PrivateBucket | string | `"insights"` |  |
 | api.conf.s3PublicBucket | string | `"public-insights"` |  |
-| api.conf.queueArn | string | `"arn:aws:sqs:local:012345678900:VulcanK8SAPIScans"` |  |
 | api.conf.queueName | string | `"VulcanK8SAPIScans"` |  |
 | api.conf.reports.snsArn | string | `"arn:aws:sns:local:012345678900:VulcanK8SReportsGen"` |  |
-| api.conf.reports.redirectUrl | string | `nil` |  |
 | api.conf.reports.vulcanUIUrl | string | `nil` |  |
 | api.conf.secretKey | string | `"TBDTBD"` |  |
 | api.conf.cookieDomain | string | `nil` |  |
@@ -647,21 +649,6 @@ A Helm chart for deploying Vulcan
 | reportsgenerator.conf.sqsNumProcessors | string | `nil` |  |
 | reportsgenerator.conf.scanengineUrl | string | `nil` |  |
 | reportsgenerator.conf.resultsUrl | string | `nil` |  |
-| reportsgenerator.conf.generators.scan.emailSubject | string | `"Security Overview"` |  |
-| reportsgenerator.conf.generators.scan.publicBucket | string | `"public-insights"` |  |
-| reportsgenerator.conf.generators.scan.privateBucket | string | `"insights"` |  |
-| reportsgenerator.conf.generators.scan.gaId | string | `"UA-000000000-0"` |  |
-| reportsgenerator.conf.generators.scan.proxyEndpoint | string | `nil` |  |
-| reportsgenerator.conf.generators.scan.contact.companyName | string | `"Example"` |  |
-| reportsgenerator.conf.generators.scan.contact.email | string | `"vulcan@example.com"` |  |
-| reportsgenerator.conf.generators.scan.contact.jira | string | `"https://jira.example.com/"` |  |
-| reportsgenerator.conf.generators.scan.contact.slackChannel | string | `"https://example.slack.com/archives/XXXXX"` |  |
-| reportsgenerator.conf.generators.scan.contact.supportEmail | string | `"vulcan@example.com"` |  |
-| reportsgenerator.conf.generators.scan.docs.apiDocLink | string | `"https://docs.example.com/vulcan/vulcan-api/examples/#how-do-i-list-the-members-of-a-team"` |  |
-| reportsgenerator.conf.generators.scan.docs.roadmapLink | string | `"https://docs.example.com/vulcan/roadmap"` |  |
-| reportsgenerator.conf.generators.scan.vulcanUi | string | `nil` |  |
-| reportsgenerator.conf.generators.scan.viewReport | string | `nil` |  |
-| reportsgenerator.conf.generators.scan.redirectUrl | string | `nil` |  |
 | reportsgenerator.conf.generators.livereport.emailSubject | string | `nil` |  |
 | reportsgenerator.conf.ses.region | string | `nil` |  |
 | reportsgenerator.conf.ses.from | string | `"tbd@tbd.com"` |  |

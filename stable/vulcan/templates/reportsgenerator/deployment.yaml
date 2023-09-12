@@ -58,42 +58,6 @@ spec:
             value: {{ .Values.comp.conf.ses.from | quote }}
           - name: SES_CC
             value: {{ .Values.comp.conf.ses.cc | quote }}
-          - name: SCAN_EMAIL_SUBJECT
-            value: {{ .Values.comp.conf.generators.scan.emailSubject | quote }}
-          - name: SCAN_S3_PUBLIC_BUCKET
-            value: {{ .Values.comp.conf.generators.scan.publicBucket | quote }}
-          - name: SCAN_S3_PRIVATE_BUCKET
-            value: {{ .Values.comp.conf.generators.scan.privateBucket | quote }}
-          - name: SCAN_GA_ID
-            value: {{ .Values.comp.conf.generators.scan.gaId | quote }}
-          - name: SCAN_COMPANY_NAME
-            value: {{ .Values.comp.conf.generators.scan.contact.companyName | quote }}
-          - name: SCAN_SUPPORT_EMAIL
-            value: {{ .Values.comp.conf.generators.scan.contact.supportEmail | quote }}
-          - name: SCAN_CONTACT_EMAIL
-            value: {{ .Values.comp.conf.generators.scan.contact.email | quote }}
-          - name: SCAN_CONTACT_CHANNEL
-            value: {{ .Values.comp.conf.generators.scan.contact.slackChannel | quote }}
-          - name: SCAN_CONTACT_JIRA
-            value: {{ .Values.comp.conf.generators.scan.contact.jira | quote }}
-          - name: SCAN_DOCS_API_LINK
-            value: {{ .Values.comp.conf.generators.scan.docs.apiDocLink | quote }}
-          - name: SCAN_DOCS_ROADMAP_LINK
-            value: {{ .Values.comp.conf.generators.scan.docs.roadmapLink | quote }}
-          - name: PERSISTENCE_ENDPOINT  # We keep this PERSISTENCE variable for compatibility
-            value: {{ .Values.comp.conf.scanengineUrl | default (include "scanengine.url" .) | quote }}
-          - name: RESULTS_ENDPOINT
-            value: {{ .Values.comp.conf.resultsUrl | default (include "results.url" .) | quote }}
-          - name: SCAN_PROXY_ENDPOINT
-            value: {{ .Values.comp.conf.generators.scan.proxyEndpoint | quote }}
-          - name: VULCAN_UI
-            value: {{ .Values.comp.conf.generators.scan.vulcanUi | quote }}
-          - name: SCAN_VIEW_REPORT
-            value: {{ printf "%sapi/v1/report?team_id=%s&scan_id=%s" .Values.comp.conf.generators.scan.vulcanUi "%s" "%s" | quote }}
-          {{- if .Values.comp.conf.generators.scan.redirectUrl }}
-          - name: SCAN_REDIRECT_URL
-            value: {{ .Values.comp.conf.generators.scan.redirectUrl | quote }}
-          {{- end }}
           - name: LIVEREPORT_EMAIL_SUBJECT
             value: {{ .Values.comp.conf.generators.livereport.emailSubject | quote }}
         {{- include "common-container-envs" . | nindent 10 }}
