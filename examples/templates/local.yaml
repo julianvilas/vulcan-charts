@@ -483,7 +483,6 @@ data:
         VisibilityTimeout: 14400
         ReceiveMessageWaitTimeSeconds: 0
       Queues:
-        - Name: VulcanK8SAPIScans
         - Name: VulcanK8SMetricsChecks
         - Name: VulcanK8SMetricsFindings
         - Name: VulcanK8SMetricsScans
@@ -500,8 +499,6 @@ data:
               Raw: false
         - Name: VulcanK8SScans
           Subscriptions:
-            - QueueName: VulcanK8SAPIScans
-              Raw: false
             - QueueName: VulcanK8SMetricsScans
               Raw: false
         - Name: VulcanK8SReportsGen
@@ -1711,7 +1708,7 @@ spec:
         app.kubernetes.io/instance: vulcan
         app.kubernetes.io/name: goaws
       annotations:
-        checksum/config: f66262dad64e014c95dfaa48d6fbf34ce0e55d18568e6af33f87981acbafbbf4
+        checksum/config: 91280277b3911db6b6142a3bb962f821a31a7800b116b4071d53694717d2c7dc
     spec:
       containers:
       - name: goaws

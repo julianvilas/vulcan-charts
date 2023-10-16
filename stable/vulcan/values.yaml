@@ -222,7 +222,6 @@ goaws:
           VisibilityTimeout: {{ .Values.goaws.visibilityTimeout }}
           ReceiveMessageWaitTimeSeconds: {{ .Values.goaws.receiveMessageWaitTimeSeconds }}
         Queues:
-          - Name: VulcanK8SAPIScans
           - Name: VulcanK8SMetricsChecks
           - Name: VulcanK8SMetricsFindings
           - Name: VulcanK8SMetricsScans
@@ -242,8 +241,6 @@ goaws:
                 Raw: false
           - Name: VulcanK8SScans
             Subscriptions:
-              - QueueName: VulcanK8SAPIScans
-                Raw: false
               - QueueName: VulcanK8SMetricsScans
                 Raw: false
           - Name: VulcanK8SReportsGen
@@ -387,7 +384,6 @@ api:
     bucketLogs: logs
     s3PrivateBucket: insights
     s3PublicBucket: public-insights
-    queueName: VulcanK8SAPIScans
     reports:
       snsArn: arn:aws:sns:local:012345678900:VulcanK8SReportsGen
       vulcanUIUrl:
