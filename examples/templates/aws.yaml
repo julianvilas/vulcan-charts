@@ -1050,14 +1050,10 @@ spec:
             value: "http://myrelease-vulcan-scanengine/v1/"
           - name: SCHEDULER_URL
             value: "http://myrelease-vulcan-crontinuous/"
-          - name: SQS_QUEUE_ARN
-            value: "arn:aws:sqs:eu-west-1:000000000000:APIScans"
           - name: REPORTS_SNS_ARN
             value: "arn:aws:sns:eu-west-1:000000000000:ReportsGen"
           - name: REPORTS_API_URL
             value: "http://myrelease-vulcan-reportsgenerator/"
-          - name: SCAN_REDIRECT_URL
-            value: 
           - name: VULCAN_UI_URL
             value: "https://www.vulcan.example.com"
           - name: PERSISTENCE_HOST
@@ -1762,38 +1758,6 @@ spec:
             value: "vulcan@example.com"
           - name: SES_CC
             value: "['vulcan@example.com']"
-          - name: SCAN_EMAIL_SUBJECT
-            value: "Security Overview"
-          - name: SCAN_S3_PUBLIC_BUCKET
-            value: "s3-vulcan-public-insights"
-          - name: SCAN_S3_PRIVATE_BUCKET
-            value: "s3-vulcan-insights"
-          - name: SCAN_GA_ID
-            value: "UA-109338366-3"
-          - name: SCAN_COMPANY_NAME
-            value: "Example"
-          - name: SCAN_SUPPORT_EMAIL
-            value: "vulcan@example.com"
-          - name: SCAN_CONTACT_EMAIL
-            value: "vulcan@example.com"
-          - name: SCAN_CONTACT_CHANNEL
-            value: "https://www.slack.com/archives/XXXXX"
-          - name: SCAN_CONTACT_JIRA
-            value: "https://jira.com/"
-          - name: SCAN_DOCS_API_LINK
-            value: "https://www.domain.com/org/vulcan-api/examples/#how-do-i-list-the-members-of-a-team"
-          - name: SCAN_DOCS_ROADMAP_LINK
-            value: "https://docs.google.com/spreadsheets/d/xxxxxxxxxxxxxxx/edit?usp=sharing"
-          - name: PERSISTENCE_ENDPOINT  # We keep this PERSISTENCE variable for compatibility
-            value: "http://myrelease-vulcan-scanengine"
-          - name: RESULTS_ENDPOINT
-            value: "http://myrelease-vulcan-results"
-          - name: SCAN_PROXY_ENDPOINT
-            value: "https://insights.vulcan.example.com"
-          - name: VULCAN_UI
-            value: "https://www.vulcan.example.com/"
-          - name: SCAN_VIEW_REPORT
-            value: "https://www.vulcan.example.com/api/v1/report?team_id=%s&scan_id=%s"
           - name: LIVEREPORT_EMAIL_SUBJECT
             value: "Vulcan Digest"
           
