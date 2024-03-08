@@ -38,11 +38,20 @@ Before committing changes execute the following commands:
 
 ```sh
 # Validate the charts.
-./test.sh -f
+./test.sh true
 
-# Generate the example / README.md files.
-./build.sh
+# Compare against the latest chart version updating deps
+./compare.sh latest true
 
-# Review the updated files and add to the repository.
-git add .
+# Compare against the latest chart version without updating deps
+./compare.sh latest false
+
+# Compare against a release
+./compare.sh 1.1.0 true
+
+# Compare results with other version (i.e. master)
+git clone . base
+git -C base checkout master
+
+./compare.sh base/stable/vulcan true
 ```
