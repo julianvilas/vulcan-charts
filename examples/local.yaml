@@ -105,13 +105,6 @@ insights:
         paths: [/]
 
 reportsgenerator:
-  conf:
-    generators:
-      scan:
-        vulcanUi: http://www.vulcan.local/
-        proxyEndpoint: http://insights.vulcan.local
-    ses:
-      cc: '["tbd@tbd.com"]'
   ingress:
     enabled: false
 

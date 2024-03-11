@@ -371,8 +371,6 @@ api:
     debug: "false"
     bucketReports: reports
     bucketLogs: logs
-    s3PrivateBucket: insights
-    s3PublicBucket: public-insights
     reports:
       snsArn: arn:aws:sns:local:012345678900:VulcanK8SReportsGen
       vulcanUIUrl:

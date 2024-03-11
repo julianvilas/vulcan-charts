@@ -228,25 +228,6 @@ reportsgenerator:
   annotations:
     iam.amazonaws.com/role: arn:aws:iam::000000000000:role/ReportsGeneratorRole
   conf:
-    generators:
-      livereport:
-        emailSubject: Vulcan Digest
-      scan:
-        contact:
-          companyName: Example
-          email: vulcan@example.com
-          jira: https://jira.com/
-          slackChannel: https://www.slack.com/archives/XXXXX
-          supportEmail: vulcan@example.com
-        docs:
-          apiDocLink: https://www.domain.com/org/vulcan-api/examples/#how-do-i-list-the-members-of-a-team
-          roadmapLink: https://docs.google.com/spreadsheets/d/xxxxxxxxxxxxxxx/edit?usp=sharing
-        emailSubject: Security Overview
-        gaId: UA-109338366-3
-        privateBucket: s3-vulcan-insights
-        proxyEndpoint: https://insights.vulcan.example.com
-        publicBucket: s3-vulcan-public-insights
-        vulcanUi: https://www.vulcan.example.com/
     queueArn: arn:aws:sqs:eu-west-1:000000000000:ReportsGenerator
     sqsNumProcessors: 3
     ses:
