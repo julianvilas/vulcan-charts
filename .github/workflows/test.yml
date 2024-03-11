@@ -75,7 +75,7 @@ jobs:
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
           ct install --since ${{ steps.changed.outputs.since }} \
-            --helm-extra-set-args "-f examples/local.yaml --set=metrics.enabled=false --set=api.enabled=false"
+            --helm-extra-set-args "-f examples/local.yaml --set=api.enabled=false"
 
   compare:
 

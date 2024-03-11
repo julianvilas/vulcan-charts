@@ -134,24 +134,6 @@ extraManifests:
         Example file
 dogstatsd:
   apiKey: xxxxxxxxxxxxxxxxxxxxx
-metrics:
-  annotations:
-    iam.amazonaws.com/role: arn:aws:iam::000000000000:role/MetricsRole
-  conf:
-    checksQueueArn: arn:aws:sqs:eu-west-1:000000000000:MetricsChecks
-    devHoseFindingsSource: vulcan-findings
-    devHoseMetricsSource: usage
-    devHoseTenant: purple
-    devHoseToken: secretdevhosetoken
-    devHoseURL: http://devhosehost.com/devhose
-    findingsQueueArn: arn:aws:sqs:eu-west-1:000000000000:MetricsFindings
-    scansQueueArn: arn:aws:sqs:eu-west-1:000000000000:MetricsScans
-    vulcanAPIExternal: https://api.vulcan.example.com/api
-    vulcanAPIToken: supersecretvulcantoken
-  image:
-    tag: tag-metrics
-  imagePullSecrets:
-  - name: pullsecretname
 persistence:
   annotations:
     iam.amazonaws.com/role: arn:aws:iam::000000000000:role/PersistenceRole
