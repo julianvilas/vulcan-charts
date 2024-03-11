@@ -78,14 +78,6 @@ Pod labels
 {{- printf "%s-%s" (include "vulcan.fullname" .) .Values.goaws.name -}}
 {{- end -}}
 
-{{- define "insights.fullname" -}}
-{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.insights.name -}}
-{{- end -}}
-
-{{- define "metrics.fullname" -}}
-{{- printf "%s-%s" (include "vulcan.fullname" .) .Values.metrics.name -}}
-{{- end -}}
-
 {{- define "persistence.fullname" -}}
 {{- printf "%s-%s" (include "vulcan.fullname" .) .Values.persistence.name -}}
 {{- end -}}

@@ -134,57 +134,6 @@ extraManifests:
         Example file
 dogstatsd:
   apiKey: xxxxxxxxxxxxxxxxxxxxx
-insights:
-  annotations:
-    iam.amazonaws.com/role: arn:aws:iam::000000000000:role/InsightsRole
-  autoscaling:
-    enabled: true
-  conf:
-    private:
-      s3Bucket: s3-vulcan-insights
-    public:
-      s3Bucket: s3-vulcan-public-insights
-  imagePullSecrets:
-  - name: pullsecretname
-  ingress:
-    annotations:
-      certmanager.k8s.io/cluster-issuer: letsencrypt
-      nginx.ingress.kubernetes.io/configuration-snippet: |
-        more_set_headers "X-Frame-Options: SAMEORIGIN";
-        more_set_headers "X-Content-Type-Options: nosniff";
-        more_set_headers "X-Frame-Options: DENY";
-        more_set_headers "X-Xss-Protection: 1";
-        more_set_headers "Strict-Transport-Security: max-age=31536000; includeSubDomains";
-        more_set_headers "Content-Security-Policy: default-src 'none'; script-src 'self' 'unsafe-inline' https://insights.vulcan.example.com https://www.google-analytics.com; font-src 'self' https://insights.vulcan.example.com; connect-src 'self' https://insights.vulcan.example.com; img-src 'self' https://insights.vulcan.example.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://insights.vulcan.example.com; object-src 'none'";
-      nginx.ingress.kubernetes.io/cors-allow-origin: '*'
-      nginx.ingress.kubernetes.io/enable-cors: "true"
-    enabled: true
-    hosts:
-    - host: insights.vulcan.example.com
-      paths:
-      - /
-    tls:
-    - hosts:
-      - insights.vulcan.example.com
-      secretName: vulcan-insights-tls
-metrics:
-  annotations:
-    iam.amazonaws.com/role: arn:aws:iam::000000000000:role/MetricsRole
-  conf:
-    checksQueueArn: arn:aws:sqs:eu-west-1:000000000000:MetricsChecks
-    devHoseFindingsSource: vulcan-findings
-    devHoseMetricsSource: usage
-    devHoseTenant: purple
-    devHoseToken: secretdevhosetoken
-    devHoseURL: http://devhosehost.com/devhose
-    findingsQueueArn: arn:aws:sqs:eu-west-1:000000000000:MetricsFindings
-    scansQueueArn: arn:aws:sqs:eu-west-1:000000000000:MetricsScans
-    vulcanAPIExternal: https://api.vulcan.example.com/api
-    vulcanAPIToken: supersecretvulcantoken
-  image:
-    tag: tag-metrics
-  imagePullSecrets:
-  - name: pullsecretname
 persistence:
   annotations:
     iam.amazonaws.com/role: arn:aws:iam::000000000000:role/PersistenceRole
@@ -228,25 +177,6 @@ reportsgenerator:
   annotations:
     iam.amazonaws.com/role: arn:aws:iam::000000000000:role/ReportsGeneratorRole
   conf:
-    generators:
-      livereport:
-        emailSubject: Vulcan Digest
-      scan:
-        contact:
-          companyName: Example
-          email: vulcan@example.com
-          jira: https://jira.com/
-          slackChannel: https://www.slack.com/archives/XXXXX
-          supportEmail: vulcan@example.com
-        docs:
-          apiDocLink: https://www.domain.com/org/vulcan-api/examples/#how-do-i-list-the-members-of-a-team
-          roadmapLink: https://docs.google.com/spreadsheets/d/xxxxxxxxxxxxxxx/edit?usp=sharing
-        emailSubject: Security Overview
-        gaId: UA-109338366-3
-        privateBucket: s3-vulcan-insights
-        proxyEndpoint: https://insights.vulcan.example.com
-        publicBucket: s3-vulcan-public-insights
-        vulcanUi: https://www.vulcan.example.com/
     queueArn: arn:aws:sqs:eu-west-1:000000000000:ReportsGenerator
     sqsNumProcessors: 3
     ses:

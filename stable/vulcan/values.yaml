@@ -248,7 +248,7 @@ minio:
   enabled: false
   nameOverride: minio
   mode: standalone
-  defaultBuckets: "reports,logs,scans,insights,public-insights,crontinuous"
+  defaultBuckets: "reports,logs,scans,crontinuous"
   serviceAccount:
     create: false
   persistence:
@@ -371,8 +371,6 @@ api:
     debug: "false"
     bucketReports: reports
     bucketLogs: logs
-    s3PrivateBucket: insights
-    s3PublicBucket: public-insights
     reports:
       snsArn: arn:aws:sns:local:012345678900:VulcanK8SReportsGen
       vulcanUIUrl:
@@ -526,40 +524,6 @@ ui:
       # -- if not set redirects to UI's dashboard.html
       link:   # vulcan metrics dashboard
 
-
-insights:
-  enabled: true
-  name: insights
-  <<: *comp
-
-  image:
-    repository: pottava/s3-proxy
-    tag: "2.0"
-    pullPolicy: Always
-
-  healthcheckPath: /healthcheck
-
-  # -- proxy settings. mandatory for insights
-  proxy:
-    <<: *proxy
-    enabled: true
-    cache:
-      enabled: true
-
-  conf:
-    region:
-    log: "false"
-    private:
-      name: private
-      s3Bucket: insights
-      prefix: ""
-    public:
-      name: public
-      s3Bucket: public-insights
-      prefix: "/public"
-
-  meta:
-    s3: true
 
 reportsgenerator:
   enabled: true
