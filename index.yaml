@@ -3,6 +3,38 @@ entries:
   vulcan:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2024-08-23T07:29:55.578781232Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 12.5.7
+    - condition: redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 17.11.5
+    - condition: minio.enabled
+      name: minio
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 12.6.4
+    - condition: localstack.enabled
+      name: localstack
+      repository: https://localstack.github.io/helm-charts
+      version: 0.6.10
+    description: A Helm chart for deploying Vulcan
+    digest: 3c6c4438e8128fe583690a63e36445961c229208e4985a30b8b0f0e48cbc6467
+    home: https://github.com/adevinta/vulcan-charts
+    icon: https://raw.githubusercontent.com/adevinta/vulcan-charts/master/docs/logo/vulcan.png
+    maintainers:
+    - email: vulcan@adevinta.com
+      name: Adevinta
+    name: vulcan
+    type: application
+    urls:
+    - https://github.com/adevinta/vulcan-charts/releases/download/vulcan-1.3.2/vulcan-1.3.2.tgz
+    version: 1.3.2
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2024-08-12T15:26:34.035924675Z"
     dependencies:
     - condition: postgresql.enabled
@@ -590,4 +622,4 @@ entries:
     urls:
     - https://adevinta.github.io/vulcan-charts/vulcan-0.3.0.tgz
     version: 0.3.0
-generated: "2024-08-12T15:26:34.03602964Z"
+generated: "2024-08-23T07:29:55.578952523Z"
