@@ -483,6 +483,7 @@ scanengine:
     checksSNS:
       topicArn: arn:aws:sns:{{ .Values.global.region }}:{{ .Values.global.accountId }}:VulcanK8SChecks
     queues:
+      enableRedis: false
       default:
         arn: arn:aws:sqs:{{ .Values.global.region }}:{{ .Values.global.accountId }}:VulcanK8SV2ChecksGeneric
       # -- array of arn/checktypes
@@ -501,6 +502,13 @@ scanengine:
   db:
     <<: *db
     name: scanengine
+
+  redis:
+    host:
+    port:
+    username:
+    password:
+    db:
 
   dogstatsd: *dogstatsd
 
