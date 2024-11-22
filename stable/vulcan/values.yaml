@@ -699,3 +699,46 @@ extraManifests: {}
   # config2: |
   #   apiVersion: v1
   #   ...
+
+checks:
+  name: checks
+  gateway:
+    enabled: false
+    image:
+      repository: checks-gateway
+      tag: dev
+    queueArn: arn:aws:sqs:{{ .Values.global.region }}:{{ .Values.global.accountId }}:VulcanK8SV2ChecksGeneric
+  controller:
+    image:
+      repository: checks-controller
+      tag: dev
+    queueArn: "" # arn:aws:sqs:{{ .Values.global.region }}:{{ .Values.global.accountId }}:VulcanK8SScanEngineCheckStatus
+    bucketReports: reports
+    pathTemplate: asynq/{{.ScanID}}/{{.CheckID}}.json
+  checks: 
+    sleep:
+      enabled: false
+      concurrency: 3
+      image:
+        repository: vulcansec/vulcan-sleep
+        tag: checkshttp
+      vars: []
+    # trivy:
+    #   concurrency: 10
+    #   image:
+    #     repository: vulcansec/vulcan-trivy
+    #     tag: checkshttp
+    #   vars:
+    #   - GITHUB_ENTERPRISE_ENDPOINT
+    #   - GITHUB_ENTERPRISE_TOKEN
+    #   - REGISTRY_DOMAIN
+    #   - REGISTRY_USERNAME
+    #   - REGISTRY_PASSWORD
+  ingressEnabled: false
+
+  redis:
+    host:
+    port:
+    username:
+    password:
+    db: 

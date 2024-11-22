@@ -1,0 +1,162 @@
+{{- $_ := (set .Values "comp" .Values.checks) -}}
+{{- if .Values.checks.gateway.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "vulcan.fullname" $ }}-checkgw
+  labels: {{- include "vulcan.labels" $ | nindent 4 }}
+    app.kubernetes.io/name: {{ include "vulcan.fullname" $ }}-checkgw
+spec:
+  selector:
+    matchLabels: {{- include "vulcan.selectorLabels" $ | nindent 6 }}
+      app.kubernetes.io/name: {{ include "vulcan.fullname" $ }}-checkgw
+  template:
+    metadata:
+      labels: {{- include "vulcan.podLabels" $ | nindent 8 }}
+        app.kubernetes.io/name: {{ include "vulcan.fullname" $ }}-checkgw
+    spec:
+      containers:
+      - name: checkgw
+        image:  {{ .Values.checks.gateway.image.repository }}:{{ .Values.checks.gateway.image.tag }}
+        env:
+          - name: REDIS_HOST
+            value: {{ include "vulcan.redis.host" $ | quote }}
+          - name: REDIS_USR
+            value: {{ include "vulcan.redis.username" $ | quote }}
+          - name: REDIS_PORT
+            value: {{ include "vulcan.redis.port" $ | quote }}
+          - name: REDIS_DB
+            value: {{ include "vulcan.redis.db" $ | quote }}
+          - name: AWS_DEFAULT_REGION
+            value: {{ $.Values.global.region | quote }}
+          - name: CHECKS_SQS_ARN
+            value: {{ tpl $.Values.checks.gateway.queueArn $ | quote }}
+          - name: AWS_SQS_ENDPOINT
+            value: {{ include "sqs.url" $ | quote }}
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                key: root-user
+                name: vulcan-minio
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                key: root-password
+                name: vulcan-minio
+---
+{{- end }}
+{{- range $key, $value := .Values.checks.checks }}
+{{- if $value.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "vulcan.fullname" $ }}-check-{{ $key }}
+  labels: {{- include "vulcan.labels" $ | nindent 4 }}
+    app.kubernetes.io/name: {{ include "vulcan.fullname" $ }}-check-{{ $key }}
+spec:
+  selector:
+    matchLabels: {{- include "vulcan.selectorLabels" $ | nindent 6 }}
+      app.kubernetes.io/name: {{ include "vulcan.fullname" $ }}-check-{{ $key }}
+  template:
+    metadata:
+      labels: {{- include "vulcan.podLabels" $ | nindent 8 }}
+        app.kubernetes.io/name: {{ include "vulcan.fullname" $ }}-check-{{ $key }}
+      annotations:
+
+    spec:
+      containers:
+      - name: check
+        image:  {{ $value.image.repository }}:{{ $value.image.tag }}
+        envFrom:
+        # TODO: set the requiered vars for each check
+        - secretRef:
+            name: vulcan-agent-vars
+        env:
+        - name: VULCAN_HTTP_PORT
+          value: "8080"
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+      - name: controller
+        image:  {{ $.Values.checks.controller.image.repository }}:{{ $.Values.checks.controller.image.tag }}
+        env:
+          - name: REDIS_HOST
+            value: {{ include "vulcan.redis.host" $ | quote }}
+          - name: REDIS_USR
+            value: {{ include "vulcan.redis.username" $ | quote }}
+          - name: REDIS_PORT
+            value: {{ include "vulcan.redis.port" $ | quote }}
+          - name: REDIS_DB
+            value: {{ include "vulcan.redis.db" $ | quote }}
+          - name: CHECK_NAME
+            value: {{ $key }}
+          - name: CHECK_ENDPOINT
+            value: http://localhost:8080
+          - name: CONCURRENCY
+            value: {{ $value.concurrency | quote }}
+          - name: AWS_DEFAULT_REGION
+            value: {{ $.Values.global.region | quote }}
+          - name: CHECKS_SQS_ARN
+            value: {{ tpl $.Values.checks.controller.queueArn $| quote }}
+          - name: AWS_S3_BUCKET
+            value: {{ $.Values.checks.controller.bucketReports | quote }}
+          - name: AWS_S3_PATH_TEMPLATE
+            value: {{ $.Values.checks.controller.pathTemplate | quote }}
+          - name: AWS_S3_ENDPOINT
+            value: {{ include "minio.url" $ | quote }}
+          - name: AWS_SQS_ENDPOINT
+            value: {{ include "sqs.url" $ | quote }}
+          - name: PATH_STYLE
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                key: root-user
+                name: vulcan-minio
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                key: root-password
+                name: vulcan-minio
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "vulcan.fullname" $ }}-check-{{ $key }}
+  labels: {{- include "vulcan.labels" $ | nindent 4 }}
+    app.kubernetes.io/name: {{ include "vulcan.fullname" $ }}-check-{{ $key }}
+spec:
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector: {{- include "vulcan.selectorLabels" $ | nindent 4 }}
+    app.kubernetes.io/name: {{ include "vulcan.fullname" $ }}-check-{{ $key }}
+{{- if $.Values.checks.ingresEnabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "vulcan.fullname" $ }}-check-{{ $key }}
+  labels: {{- include "vulcan.labels" $ | nindent 4 }}
+    app.kubernetes.io/name: {{ include "vulcan.fullname" $ }}-check-{{ $key }}
+spec:
+  rules:
+  - host: {{ $key }}-check.localhost.direct
+    http:
+      paths:
+      - backend:
+          service:
+            name: {{ include "vulcan.fullname" $ }}-check-{{ $key }}
+            port:
+              number: 80
+        path: /
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - {{ $key }}-checks.localhost.direct
+    secretName: localhost-direct-tls
+{{- end }}
+{{- end }}
+{{- end }}
