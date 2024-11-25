@@ -61,8 +61,10 @@ spec:
     metadata:
       labels: {{- include "vulcan.podLabels" $ | nindent 8 }}
         app.kubernetes.io/name: {{ include "vulcan.fullname" $ }}-check-{{ $key }}
+      {{- with $.Values.checks.annotations }}
       annotations:
-
+        {{ toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       containers:
       - name: check
@@ -103,21 +105,7 @@ spec:
             value: {{ $.Values.checks.controller.bucketReports | quote }}
           - name: AWS_S3_PATH_TEMPLATE
             value: {{ $.Values.checks.controller.pathTemplate | quote }}
-          - name: AWS_S3_ENDPOINT
-            value: {{ include "minio.url" $ | quote }}
-          - name: AWS_SQS_ENDPOINT
-            value: {{ include "sqs.url" $ | quote }}
-          - name: PATH_STYLE
-          - name: AWS_ACCESS_KEY_ID
-            valueFrom:
-              secretKeyRef:
-                key: root-user
-                name: vulcan-minio
-          - name: AWS_SECRET_ACCESS_KEY
-            valueFrom:
-              secretKeyRef:
-                key: root-password
-                name: vulcan-minio
+          {{- include "common-container-envs" $ | nindent 10 }}
 ---
 apiVersion: v1
 kind: Service

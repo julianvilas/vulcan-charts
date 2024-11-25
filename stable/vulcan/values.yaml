@@ -712,9 +712,10 @@ checks:
     image:
       repository: checks-controller
       tag: dev
-    queueArn: "" # arn:aws:sqs:{{ .Values.global.region }}:{{ .Values.global.accountId }}:VulcanK8SScanEngineCheckStatus
+    queueArn: # arn:aws:sqs:{{ .Values.global.region }}:{{ .Values.global.accountId }}:VulcanK8SScanEngineCheckStatus
     bucketReports: reports
-    pathTemplate: asynq/{{.ScanID}}/{{.CheckID}}.json
+    pathTemplate: asynq/{{.CheckID}}/{{.CheckID}}.json
+  annotations:
   checks: 
     sleep:
       enabled: false
@@ -735,6 +736,10 @@ checks:
     #   - REGISTRY_USERNAME
     #   - REGISTRY_PASSWORD
   ingressEnabled: false
+
+  meta:
+    s3: true
+    sqs: true
 
   redis:
     host:
