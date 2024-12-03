@@ -716,8 +716,11 @@ checks:
     bucketReports: reports
     pathTemplate: asynq/{{.CheckID}}/{{.CheckID}}.json
   annotations:
+  keda:
+    enabled: false
   checks: 
     sleep:
+      serviceAccount: ""
       enabled: false
       concurrency: 3
       image:
@@ -735,6 +738,10 @@ checks:
     #   - REGISTRY_DOMAIN
     #   - REGISTRY_USERNAME
     #   - REGISTRY_PASSWORD
+      # minReplicaCount: 0
+      # maxReplicaCount: 5
+      # listLength: 10
+
   ingressEnabled: false
 
   meta:
