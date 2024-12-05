@@ -701,48 +701,8 @@ extraManifests: {}
   #   ...
 
 checks:
+  enabled: false
   name: checks
-  gateway:
-    enabled: false
-    image:
-      repository: checks-gateway
-      tag: dev
-    queueArn: arn:aws:sqs:{{ .Values.global.region }}:{{ .Values.global.accountId }}:VulcanK8SV2ChecksGeneric
-  controller:
-    image:
-      repository: checks-controller
-      tag: dev
-    queueArn: # arn:aws:sqs:{{ .Values.global.region }}:{{ .Values.global.accountId }}:VulcanK8SScanEngineCheckStatus
-    bucketReports: reports
-    pathTemplate: asynq/{{.CheckID}}/{{.CheckID}}.json
-  annotations:
-  keda:
-    enabled: false
-  checks: 
-    sleep:
-      serviceAccount: ""
-      enabled: false
-      concurrency: 3
-      image:
-        repository: vulcansec/vulcan-sleep
-        tag: checkshttp
-      vars: []
-    # trivy:
-    #   concurrency: 10
-    #   image:
-    #     repository: vulcansec/vulcan-trivy
-    #     tag: checkshttp
-    #   vars:
-    #   - GITHUB_ENTERPRISE_ENDPOINT
-    #   - GITHUB_ENTERPRISE_TOKEN
-    #   - REGISTRY_DOMAIN
-    #   - REGISTRY_USERNAME
-    #   - REGISTRY_PASSWORD
-      # minReplicaCount: 0
-      # maxReplicaCount: 5
-      # listLength: 10
-
-  ingressEnabled: false
 
   meta:
     s3: true
@@ -754,3 +714,41 @@ checks:
     username:
     password:
     db: 
+
+  gateway:
+    enabled: false
+    imagePullSecrets: []
+    # - name: xxx
+    serviceAccount:
+    image:
+      repository: checks-gateway
+      tag: dev
+    queueArn: # arn:aws:sqs:{{ .Values.global.region }}:{{ .Values.global.accountId }}:VulcanK8SV2ChecksGeneric
+  controller:
+    image:
+      repository: checks-controller
+      tag: dev
+    queueArn: # arn:aws:sqs:{{ .Values.global.region }}:{{ .Values.global.accountId }}:VulcanK8SScanEngineCheckStatus
+    bucketReports: reports
+    pathTemplate: dt={{.Dt}}/{{.CheckID}}/{{.CheckID}}.json
+  annotations:
+  keda:
+    enabled: false
+  checks: 
+
+    sleep:
+      enabled: false
+      image:
+        repository: vulcansec/vulcan-sleep
+        tag: checkshttp
+      serviceAccount: ""
+      imagePullSecrets:
+      - name: foo
+      concurrency: 3
+      vars: []
+      assets: []
+      timeout: 20
+      options: "{\"sleep_time\":10}"
+      minReplicaCount: 0
+      maxReplicaCount: 5
+  ingressEnabled: false

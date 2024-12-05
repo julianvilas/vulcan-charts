@@ -14,7 +14,16 @@ spec:
     metadata:
       labels: {{- include "vulcan.podLabels" $ | nindent 8 }}
         app.kubernetes.io/name: {{ include "vulcan.fullname" $ }}-checkgw
+      annotations:
+        checksum/config: {{ include "checks-config" . | sha256sum }}
     spec:
+      {{- with .Values.checks.gateway.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- with .Values.checks.gateway.serviceAccount }}
+      serviceAccountName: {{ . }}
+      {{- end }}
       containers:
       - name: checkgw
         image:  {{ .Values.checks.gateway.image.repository }}:{{ .Values.checks.gateway.image.tag }}
@@ -33,16 +42,37 @@ spec:
             value: {{ tpl $.Values.checks.gateway.queueArn $ | quote }}
           - name: AWS_SQS_ENDPOINT
             value: {{ include "sqs.url" $ | quote }}
-          - name: AWS_ACCESS_KEY_ID
-            valueFrom:
-              secretKeyRef:
-                key: root-user
-                name: vulcan-minio
-          - name: AWS_SECRET_ACCESS_KEY
-            valueFrom:
-              secretKeyRef:
-                key: root-password
-                name: vulcan-minio
+          - name: PERSISTENCE_PORT
+            value: "8080"
+          - name: CHECKTYPES_PATH
+            value: /config/checktypes.json
+          {{- include "common-container-envs" $ | nindent 10 }}
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ include "vulcan.fullname" $ }}-checks
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "vulcan.fullname" $ }}-checkgw
+  labels: {{- include "vulcan.labels" $ | nindent 4 }}
+    app.kubernetes.io/name: {{ include "vulcan.fullname" $ }}-checkgw
+spec:
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector: {{- include "vulcan.selectorLabels" $ | nindent 4 }}
+    app.kubernetes.io/name: {{ include "vulcan.fullname" $ }}-checkgw
 ---
 {{- end }}
 {{- range $key, $value := .Values.checks.checks }}
