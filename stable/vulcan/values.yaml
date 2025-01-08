@@ -713,7 +713,7 @@ checks:
     port:
     username:
     password:
-    db: 
+    db:
 
   gateway:
     enabled: false
@@ -723,12 +723,12 @@ checks:
     image:
       repository: checks-gateway
       tag: dev
-    queueArn: # arn:aws:sqs:{{ .Values.global.region }}:{{ .Values.global.accountId }}:VulcanK8SV2ChecksGeneric
+    queueArn:   # arn:aws:sqs:{{ .Values.global.region }}:{{ .Values.global.accountId }}:VulcanK8SV2ChecksGeneric
   controller:
     image:
       repository: checks-controller
       tag: dev
-    queueArn: # arn:aws:sqs:{{ .Values.global.region }}:{{ .Values.global.accountId }}:VulcanK8SScanEngineCheckStatus
+    queueArn:  # arn:aws:sqs:{{ .Values.global.region }}:{{ .Values.global.accountId }}:VulcanK8SScanEngineCheckStatus
     bucketReports: reports
     pathTemplate: dt={{.Dt}}/{{.CheckID}}/{{.CheckID}}.json
   annotations:
@@ -741,7 +741,7 @@ checks:
   secretVars: vulcan-agent-vars
 
   checks:
-    sleep:
+    vulca-sleep:
       enabled: false
       image:
         repository: vulcansec/vulcan-sleep

@@ -229,7 +229,7 @@ spec:
       metadata:
         address: {{ printf "%s:%s" (include "vulcan.redis.host" $) (include "vulcan.redis.port" $) }}
         databaseIndex: {{ include "vulcan.redis.db" $ | quote }}
-        listName: {{ printf "asynq:{vulcan-%s}:pending" $key }}
+        listName: {{ printf "asynq:{%s}:pending" $key }}
         listLength: {{ $value.listLength | default 5 | quote }}
         activationListLength: "1" # optional
         enableTLS: "false" # optional
