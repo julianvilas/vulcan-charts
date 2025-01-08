@@ -734,8 +734,13 @@ checks:
   annotations:
   keda:
     enabled: false
-  checks: 
+  ingressEnabled: false
 
+  # secretVars is a secret with all the vars for the checks.
+  # TODO: Define at check level to allow more flexibility, or just a raw extraEnv.
+  secretVars: vulcan-agent-vars
+
+  checks:
     sleep:
       enabled: false
       image:
@@ -748,7 +753,8 @@ checks:
       vars: []
       assets: []
       timeout: 20
-      options: "{\"sleep_time\":10}"
+      options:   # OR options: "{\"sleep_time\":10}"
+        sleep_time: 10
       minReplicaCount: 0
       maxReplicaCount: 5
-  ingressEnabled: false
+      resources: {}

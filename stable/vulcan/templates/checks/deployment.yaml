@@ -27,6 +27,7 @@ spec:
       containers:
       - name: checkgw
         image:  {{ .Values.checks.gateway.image.repository }}:{{ .Values.checks.gateway.image.tag }}
+        imagePullPolicy: Always
         env:
           - name: REDIS_HOST
             value: {{ include "vulcan.redis.host" $ | quote }}
@@ -103,14 +104,10 @@ spec:
       {{- with $value.serviceAccount }}
       serviceAccountName: {{ . }}
       {{- end }}
-      initContainers:
+      containers:
       - name: check
         image:  {{ $value.image.repository }}:{{ $value.image.tag }}
-        restartPolicy: Always
-        envFrom:
-        # TODO: set the requiered vars for each check
-        # - secretRef:
-        #     name: vulcan-agent-vars
+        imagePullPolicy: Always
         env:
         - name: VULCAN_HTTP_PORT
           value: "8080"
@@ -118,16 +115,36 @@ spec:
         - name: {{ $v }}
           valueFrom:
             secretKeyRef:
-              name: vulcan-agent-vars
+              name: {{ $.Values.checks.secretVars }}
               key: {{ $v }}
         {{- end }}
         ports:
         - name: http
           containerPort: 8080
           protocol: TCP
-      containers:
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+          failureThreshold: 5
+        {{- with $value.resources }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      initContainers:
       - name: controller
         image:  {{ $.Values.checks.controller.image.repository }}:{{ $.Values.checks.controller.image.tag }}
+        imagePullPolicy: Always
+        restartPolicy: Always
         env:
           - name: REDIS_HOST
             value: {{ include "vulcan.redis.host" $ | quote }}
