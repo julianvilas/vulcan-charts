@@ -745,7 +745,7 @@ checks:
       enabled: false
       image:
         repository: vulcansec/vulcan-sleep
-        tag: checkshttp
+        tag: edge
       serviceAccount: ""
       imagePullSecrets:
       - name: foo
@@ -757,4 +757,5 @@ checks:
         sleep_time: 10
       minReplicaCount: 0
       maxReplicaCount: 5
+      shutdownTimeout: 10
       resources: {}

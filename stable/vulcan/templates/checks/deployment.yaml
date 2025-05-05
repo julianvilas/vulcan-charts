@@ -41,8 +41,6 @@ spec:
             value: {{ $.Values.global.region | quote }}
           - name: CHECKS_SQS_ARN
             value: {{ tpl $.Values.checks.gateway.queueArn $ | quote }}
-          - name: AWS_SQS_ENDPOINT
-            value: {{ include "sqs.url" $ | quote }}
           - name: PERSISTENCE_PORT
             value: "8080"
           - name: CHECKTYPES_PATH
@@ -104,6 +102,9 @@ spec:
       {{- with $value.serviceAccount }}
       serviceAccountName: {{ . }}
       {{- end }}
+      {{- with $value.shutdownTimeout }}
+      terminationGracePeriodSeconds: {{ . }}
+      {{- end }}
       containers:
       - name: check
         image:  {{ $value.image.repository }}:{{ $value.image.tag }}
@@ -111,6 +112,10 @@ spec:
         env:
         - name: VULCAN_HTTP_PORT
           value: "8080"
+        {{- with $value.shutdownTimeout }}
+        - name: VULCAN_HTTP_SHUTDOWN_TIMEOUT
+          value: {{ . | quote }}
+        {{- end }}
         {{- range $i, $v := $value.vars }}
         - name: {{ $v }}
           valueFrom:
@@ -118,6 +123,10 @@ spec:
               name: {{ $.Values.checks.secretVars }}
               key: {{ $v }}
         {{- end }}
+        - name: VULCAN_CHECKTYPE_NAME
+          value: {{ $value.image.repository }}
+        - name: VULCAN_CHECKTYPE_VERSION
+          value: {{ $value.image.tag }}
         ports:
         - name: http
           containerPort: 8080
